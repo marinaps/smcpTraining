@@ -11,7 +11,7 @@ if(!function_exists('correct_disordered'))
      *
      * @param string $id con el id de la pregunta
      * @param string $post con la respuesta dada por el alumno
-     * @param string $id_exam con el id del examples_answers
+     * @param string $id_exam con el id del examen
      */
     function correct_disordered($id, $post, $id_exam)
     {
@@ -38,61 +38,72 @@ if(!function_exists('correct_disordered'))
         $ci->chat->create_entry($id_exam, $id, $entry, 2);
 
         return $es_correcta;
-
     }
 }
 
-//si no existe la función validate_hours la creamos
+//si no existe la función correct_truefalse la creamos
 if(!function_exists('correct_truefalse'))
 {
     /**
-     * Funcion para validar una hora en formato: hhmm. Desde 0000 hours hasta 2359 
+     * Funcion para corregir una frase true/false
      *  
-     * @return boolean true si la hora es correcta
+     * @return boolean true si la respuesta es correcta
+     *
+     * @param string $id con el id de la pregunta
+     * @param string $post con la respuesta dada por el alumno
+     * @param string $id_exam con el id del examen
      */
     function correct_truefalse($id, $post, $id_exam)
     {
-         //respuesta correcta
+        
         $ci =& get_instance();
-                $correct_answer = $ci->chat->correct_truefalse($id);
+        
+        //se obtiene la respuesta correcta
+        $correct_answer = $ci->chat->correct_truefalse($id);
 
-                //comprueba si la respuesta dada es igual a la correcta
-                if(strcasecmp(strtolower($post), strtolower($correct_answer->true_statement)) == 0 )
-                {
-                    $es_correcta = TRUE;
-                    $entry = array(
-                        'answer' => $post,
-                        'correct' => TRUE
-                        );
-                }else{
-                    $es_correcta = FALSE;
-                    $entry = array(
-                        'answer' => $post,
-                        'correct' => FALSE
-                        );
-                }
-                //actualiza un entry con la respuesta y si es correcta o no
-                $ci->chat->create_entry($id_exam, $id, $entry, 3);
+        //comprueba si la respuesta dada es igual a la correcta
+        if(strcasecmp(strtolower($post), strtolower($correct_answer->true_statement)) == 0 )
+        {
+            $es_correcta = TRUE;
+            $entry = array(
+                'answer' => $post,
+                'correct' => TRUE
+                );
+        }else{
+            $es_correcta = FALSE;
+            $entry = array(
+                'answer' => $post,
+                'correct' => FALSE
+                );
+        }
 
-                return $es_correcta;
+        //actualiza un entry con la respuesta y si es correcta o no
+        $ci->chat->create_entry($id_exam, $id, $entry, 3);
 
+        return $es_correcta;
     }
 }
 
 
-//si no existe la función validate_hours la creamos
+//si no existe la función correct_audioquestions la creamos
 if(!function_exists('correct_audioquestions'))
 {
     /**
-     * Funcion para validar una hora en formato: hhmm. Desde 0000 hours hasta 2359 
+     * Funcion para corregir una frase con audio
      *  
-     * @return boolean true si la hora es correcta
+     * @return boolean true si la respuesta es correcta
+     *
+     * @param string $id con el id de la pregunta
+     * @param string $post con la respuesta dada por el alumno
+     * @param string $id_exam con el id del examen
      */
     function correct_audioquestions($id, $post, $id_exam)
     {
-         //respuesta correcta
+         
         $ci =& get_instance();
-        $correct_answerr = $ci->chat->correct_audio_write($id);  //respuesta correcta
+
+        //se obtiene la respuesta correcta
+        $correct_answerr = $ci->chat->correct_audio_write($id); 
 
         //comprueba si la respuesta dada es igual a la correcta
         if(strcasecmp(strtolower($post), strtolower($correct_answerr->statement)) == 0 )
@@ -109,9 +120,11 @@ if(!function_exists('correct_audioquestions'))
                 'correct' => FALSE
                 );
         }
-        $ci->chat->create_entry($id_exam, $id, $entry, 4); //crea la entry con la respuesta y si es o no correcta
-        return $es_correcta;
 
+        //crea la entry con la respuesta y si es o no correcta
+        $ci->chat->create_entry($id_exam, $id, $entry, 4); 
+
+        return $es_correcta;
     }
 }
 
