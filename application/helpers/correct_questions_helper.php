@@ -134,7 +134,7 @@ if(!function_exists('correct_variablequestions'))
     /**
      * Funcion para corregir una frase con variables
      *  
-     * @return boolean true si la hora es correcta
+     * @return boolean true si la respuesta es correcta
      *
      * @param string $id con el id de la pregunta
      * @param string $id_exam con el id del examen
@@ -225,7 +225,10 @@ if(!function_exists('validar_frase'))
     /**
      * Funcion para validar una frase
      *  
-     * @return boolean true si la hora es correcta
+     * @return boolean true si la frase es correcta
+     *
+     * @param string $frasealumno con la frase dada
+     * @param string $frasecorrecta con la frase correcta
      */
  function validar_frase($frasealumno, $frasecorrecta)
     {
@@ -244,7 +247,7 @@ if(!function_exists('validar_frase'))
             //con strtolower se convierten las cadenas primero a minuscula y luego se compara si son iguales
             if(strcasecmp(strtolower($frasealumno), strtolower($frasecorrecta)) != 0 )
             { 
-                //si no son iguales entonces la respuesta es una respuesta no correcta y se devuelve FALSE
+                //si no son iguales entonces la respuesta es una respuesta incorrecta y se devuelve FALSE
                 $respuesta = FALSE;
             }
 
@@ -269,16 +272,12 @@ if(!function_exists('validar_frase'))
             //Se va iterando por cada porcion que hemos dividio la frase
             for ($i = 0; $i < $resultado && $verdadero; $i++) 
             {   
-                //echo "________________________________________";
-                //echo "<br>";
-
                 //Si es una parte PAR entonces se trata de una parte que no tiene variables y entonces entra en el if
                 if($i%2==0)
                 {
                     /* //PRUEBAS
                     echo "resultado 1: ".$verdadero;
                     echo "<br>";
-
                     echo "___frase: ". trim($porciones[$i]);
                     echo "<br>";
                     echo var_dump( trim($porciones[$i]));
@@ -290,7 +289,6 @@ if(!function_exists('validar_frase'))
                     echo "<br>";
                     echo "___parte ".$i.": "; 
                     */
-
 
                     //El substr devuelve la parte de la frase del alumno desde cont hasta lo que ocupa la parte que estamos validando, es dicer, $long[$i].
                     //Luego comparamos esta parte que hemos obtenido de la frase dada por el alumno con la parte de la frase correcta que estamos validando.
@@ -351,18 +349,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            /*
-                            echo "<br>";
-                            echo "partes: ".$partes['0'];
-                            echo "<br>";
-                            echo "----resultado de porciones impares:----".$porciones[$i];
-                            echo "<br>"; */
-
                             $verdadero=validate_beaufort(trim($partes[0]));
-
-                            //echo "----HA ENTRADOOO beaufort----". $verdadero." _";
-                            //echo var_dump($verdadero);
-                            //echo "<br>";
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -383,108 +370,56 @@ if(!function_exists('validar_frase'))
 
                         case "mmsi":
 
-                            //echo "----Parte impar----".$i.": ".substr($frasealumno,$cont, 8 );
-
                             //Es 8 porque el numero de caracteres para el mmsi es siepre de 8
                             $partes = explode(" ", substr($frasealumno,$cont, 8 ));
 
-                            /*
-                            echo "<br>";
-                            echo $partes['0'];
-                            echo "<br>";
-                            echo "----resultado de porciones impares:----".$porciones[$i];
-                            echo "<br>"; */
-
                             $verdadero=validate_MMSI(trim($partes[0]));
-
-                            //echo "----HA ENTRADOOO direction----". $verdadero." _";
-                            //echo var_dump($verdadero);
-                            //echo "<br>";
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
                         case "date":
 
-                            //echo "----Parte impar----".$i.": ".substr($frasealumno,$cont, 18 );
                             //trim — Elimina espacio en blanco (u otro tipo de caracteres) del inicio y el final de la cadena
 
-                            //Se coge
                             $partes = explode(" ", trim(substr($frasealumno,$cont, 14 )));
 
                             //Si la ultima parte(la del mes) tiene detras una coma la quita 
                             if(substr($partes[1], -1) == ',')
                                 $partes[1] = substr($partes[1], 0, -1); 
 
-                            //echo "<br>";
-                            //echo $partes[0];
-                            //echo "<br>";
-                            //echo "----resultado de porciones impares:----".$porciones[$i];
-                            //echo "<br>";
-
                             $verdadero=validate_date(trim(substr($frasealumno,$cont, 14 )));
-
-                            //echo "----HA ENTRADOOO date----". $verdadero." _";
-                            //echo var_dump($verdadero);
-                            //echo "<br>";
 
                             $cont = $cont + strlen(trim($partes[0])) + strlen(trim($partes[1])) + 1;
                             break;
 
                           case "number":
 
-                            //echo "----Parte impar----".$i.": ".substr($frasealumno,$cont, 4 );
-
                             $partes = explode(" ", trim(substr($frasealumno,$cont, 4 )));
 
                             //Si detras tiene una coma la quita 
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            /*
-                            echo "<br>";
-                            echo $partes[0];
-                            echo "<br>";
-                            echo "----resultado de porciones impares:----".$porciones[$i];
-                            echo "<br>"; */
-
                             $verdadero=validate_number(trim($partes[0]));
-
-                            //echo "----HA ENTRADOOO number----". $verdadero." _";
-                            //echo var_dump($verdadero);
-                            //echo "<br>";
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
                         case "speed":
 
-                            //echo "----Parte impar----".$i.": ".substr($frasealumno,$cont, 4 );
-
                             $partes = explode(" ", trim(substr($frasealumno,$cont, 4 )));
 
                             //Si detras tiene una coma la quita 
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            /*
-                            echo "<br>";
-                            echo $partes[0];
-                            echo "<br>";
-                            echo "----resultado de porciones impares:----".$porciones[$i];
-                            echo "<br>"; */
-
                             $verdadero=validate_speed(trim($partes[0]));
 
-                            //echo "----HA ENTRADOOO number----". $verdadero." _";
-                            //echo var_dump($verdadero);
-                            //echo "<br>";
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
                         case "vhf channel":
-
-                            //echo "----Parte impar----".$i.": ".substr($frasealumno,$cont, 2 );
 
                             $partes = explode(" ", trim(substr($frasealumno,$cont, 2 )));
 
@@ -492,51 +427,25 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            /*
-                            echo "<br>";
-                            echo $partes[0];
-                            echo "<br>";
-                            echo "----resultado de porciones impares:----".$porciones[$i];
-                            echo "<br>"; */
-
                             $verdadero=validate_vhfchannel_hourswithin(trim($partes[0]));
-
-                            //echo "----HA ENTRADOOO vhf channel----". $verdadero." _";
-                            //echo var_dump($verdadero);
-                            //echo "<br>";
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
                         case "hours within":
 
-                            //echo "----Parte impar----".$i.": ".substr($frasealumno,$cont, 2 );
-
                             $partes = explode(" ", trim(substr($frasealumno,$cont, 2 )));
 
                              //Si detras tiene una coma la quita 
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            /*
-                            echo "<br>";
-                            echo $partes[0];
-                            echo "<br>";
-                            echo "----resultado de porciones impares:----".$porciones[$i];
-                            echo "<br>"; */
-
                             $verdadero=validate_vhfchannel_hourswithin(trim($partes[0]));
-
-                            //echo "----HA ENTRADOOO vhf channel----". $verdadero." _";
-                            //echo var_dump($verdadero);
-                            //echo "<br>";
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
                         
                         case "mvname":
-
-                            //echo "----Parte impar----".$i.": ".substr($frasealumno,$cont, 8 );
 
                             $partes = explode(" ", trim(substr($frasealumno,$cont, 8 )));
 
@@ -544,25 +453,12 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            /*
-                            echo "<br>";
-                            echo $partes[0];
-                            echo "<br>";
-                            echo "----resultado de porciones impares:----".$porciones[$i];
-                            echo "<br>"; */
-
                             $verdadero=validate_mvname(trim($partes[0]));
-
-                            //echo "----HA ENTRADOOO name----". $verdadero." _";
-                            //echo var_dump($verdadero);
-                            //echo "<br>";
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
                         case "charted name":
-
-                            //echo "----Parte impar----".$i.": ".substr($frasealumno,$cont, 5 );
 
                             $partes = explode(" ", trim(substr($frasealumno,$cont, 5 )));
 
