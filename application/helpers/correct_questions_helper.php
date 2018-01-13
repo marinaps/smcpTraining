@@ -206,22 +206,10 @@ if(!function_exists('correct_variablequestions'))
             }
         }
 
-        if($es_correcta)
-        {
-            $correctas = TRUE;
-            $entry = array(
+        $entry = array(
                 'answer' => $respuesta_dada,
-                'correct' => TRUE
+                'correct' => $es_correcta
                 );
-        }
-        else
-        {
-            $incorrectas = FALSE;
-            $entry = array(
-                'answer' => $respuesta_dada,
-                'correct' => FALSE
-                );
-        }
 
         //crea la entry con la respuesta y si es o no correcta
         $ci->chat->create_entry($id_exam, $id, $entry, 1);
