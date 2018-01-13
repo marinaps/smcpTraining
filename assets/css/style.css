@@ -1,0 +1,184 @@
+/* General styles */
+
+body {
+	background-color: #EDEF93 !important; 
+	font-family: 'Oswald', sans-serif;
+	padding-top: 120px;
+}
+
+p {
+	font-size: 16px;	
+}
+
+h1 {
+	font-size: 34px;
+	line-height: 54px;
+}
+
+h2 {
+	font-size: 30px;
+}
+
+h3 {
+	font-size: 26px;
+}
+
+h4 {
+	font-size: 22px;
+}
+
+h5 {
+	font-size: 18px;
+}
+
+/* Dar margen superior a las columnas */
+.margincolum { 
+	margin-top: 30px; 
+	margin-right: 0px;
+} 
+
+/* Dar margenes superior e inferior al contenido del nav */
+.altura {
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
+.colortablas {
+	background-color: #A1B9ED;
+}
+
+.menuprincipal {
+    border: 2px solid rgba(255, 255, 255, 0.5);
+
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.menuprincipal:active{
+
+	background: rgba(0, 0, 0, 0.1);
+    border: 2px solid #fff
+}
+
+
+.menuprincipal:hover{
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.margenimg{
+	margin-top: 10px;
+}
+
+.containermenu {
+	margin: auto ;
+	max-width: 1000px;
+}
+
+.btn-round {
+	border-radius: 30px;
+}
+
+/* Category view wrapper */
+
+	.dq-category-outer-wrapper {
+		margin: 5%;
+		border: 1px solid #0F6190;
+		border-radius: 10px;
+		font-family: 'Dosis', sans-serif;
+		background:#ffffff;
+	}
+	.dq-category-title {
+		text-align: center;
+		background: #297FB0;
+		border-top-left-radius: 9px;
+		border-top-right-radius: 9px;
+		color: white;
+		font-size: 24px;
+		padding: 8px 8px;
+	}
+
+	.category-section {
+		width:100%;
+		padding: 2%;
+		vertical-align:top;
+	}
+
+/* Chat view wrapper */
+
+	.dq-test-outer-wrapper {
+	    margin: 5%;
+	    border: 1px solid #0F6190;
+	    border-radius: 10px;
+	    font-family: 'Dosis', sans-serif;
+	    background:#ffffff;
+    }
+   .dq-test-title { 
+	    text-align: center;
+	    background: #297FB0;
+	    border-top-left-radius: 9px;
+	    border-top-right-radius: 9px;
+	    color: white;
+	    font-size: 24px;
+	    padding: 8px 8px;
+    }
+   .half-width {
+	    display: inline-block;
+	    width:45%;
+	    padding: 2%;
+	    text-align:center;
+	    vertical-align:top;
+    }
+ 
+ 
+   .left { 
+    	text-align:left!important;
+  	}
+  	.right {
+    	text-align:right;
+  	}
+  	.center {
+    	text-align:center;
+  	}
+  
+  	.inline-block {
+    	display:inline-block;
+  	}
+  	.display-none {
+   		display: none;
+  	}
+  	
+  	.question-section {
+	    width:100%;
+	    padding: 4%;
+	    vertical-align:top;
+  	}
+  	.question-tbl {
+    	font-size: 20px;
+  	}
+  	.question-tbl td{
+    	vertical-align: top;
+  	}
+  	input[name='dq-op']{
+	    width: 17px;
+	    height: 17px;
+	    position: relative;
+	    top: 3px;
+ 	 }
+
+  	.option {  /* margen del input de las preguntas*/
+	    margin: 10px 0px;
+	    font-size: 17px;
+  	}
+  
+  	.display-score {
+	    background-color: #D9F0FD;
+	    border: 1px solid #297FB0;
+  	}
+  	.with-score div{
+    	padding: 5px 50px;
+  	}
+
+
+ 

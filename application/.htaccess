@@ -1,0 +1,24 @@
+<IfModule mod_rewrite.c>
+   # Turn on URL rewriting
+   RewriteEngine On
+   RewriteBase /
+
+   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+   RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+   # Protect application and system files from being viewed when the index.php is missing
+   RewriteCond $1 ^(application|system|private|logs)
+
+   # Rewrite to index.php/access_denied/URL
+   RewriteRule ^(.*)$ index.php/access_denied/$1 [PT,L]
+
+   # Allow these directories and files to be displayed directly:
+   RewriteCond $1  ^(index\.php|robots\.txt|favicon\.ico|public|assets|resources|css|js|images|_assets|img)
+
+  # No rewriting
+   RewriteRule ^(.*)$ - [PT,L]
+
+  # Rewrite to index.php/URL
+  RewriteRule ^(.*)$ /smcpTraining/index.php/$1 [PT,L] 
+
+  </IfModule> 
