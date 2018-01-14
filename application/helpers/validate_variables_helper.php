@@ -84,7 +84,7 @@ if(!function_exists('validate_callsign'))
 if(!function_exists('validate_cardinalpoint'))
 {
     /**
-     * Funcion para validar el cardinal point
+     * Funcion para validar el cardinal point. Distingue entre mayusculas y minusculas.
      * Correctos: N, E, S , W, NE, NW, SE, SW, NNE, ENE, ESE, SSE, SSW, WSW, WNW, NNW
      *
      * @return boolean true si cardinal point es correcto
@@ -113,6 +113,44 @@ if(!function_exists('validate_cardinalpoint'))
             return TRUE;
         else
             return FALSE;
+    }
+}
+
+//si no existe la función validate_charted_name la creamos
+if(!function_exists('validate_charted_name'))
+{
+    /**
+     * Funcion para validar charted name. Distingue entre mayusculas y minusculas.
+     * Correcto: BUOY5 y ALFA5.
+     *
+     * @return boolean true si charted name es correcto
+     *
+     * @param string $chartedname con la variable dada por el alumno
+     */
+    function validate_charted_name($chartedname)
+    {
+        $ci =& get_instance();
+
+        //obtiene el id de la variable charted name
+        $data= array();
+        $ci->db->select('id');
+        $ci->db->from('type_variable');
+        $ci->db->where('variable', 'charted name');
+        $query = $ci->db->get();
+        $data=$query->row()->id; 
+
+        //se busca si existe la variable $chartedname en la tabla variable y cuyo id corresponta con la variable charted name
+        $ci->db->select('*');
+        $ci->db->from('variable');
+        $ci->db->where('name like BINARY', $chartedname); //binary lo que hace es que distinga las mayusculas y minusculas
+        $ci->db->where('id_type_variable', $data);
+        $result = $ci->db->get();
+
+        if($result->num_rows() != 0)
+            return TRUE;
+        else
+            return FALSE;
+
     }
 }
 
@@ -322,36 +360,6 @@ if(!function_exists('validate_mvname'))
 }
 
 
-if(!function_exists('validate_charted_name'))
-{
-    /**
-     * Funcion para validar charted name. Distingue entre mayusculas y minusculas.
-     * Please use “BUOY5" , “ALFA5".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_charted_name($chartedname)
-    {
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'charted name');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $chartedname); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-
-    }
-}
 
 
 
