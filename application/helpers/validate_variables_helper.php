@@ -592,35 +592,6 @@ if(!function_exists('validate_object'))
     }
 }
 
-if(!function_exists('validate_locationaboard'))
-{
-    /**
-     * Funcion para validar el name light vessel. Distingue mayusculas y minusculas.
-     * Please use "TRACY5".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_locationaboard($locationaboard)
-    {
 
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'location aboard');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $locationaboard); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-}
 
 //end application/helpers/ayuda_helper.php

@@ -461,6 +461,76 @@ if(!function_exists('validar_frase'))
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
+                        case "fromrefpoint":
+
+                            $partes = explode(" ", trim(substr($frasealumno, $cont, 6)));
+
+                            //Si detras tiene una coma la quita 
+                            if(substr($partes[0], -1) == ',')
+                                $partes[0] = substr($partes[0], 0, -1); 
+
+                            $is_correct=validate_restricted($porciones[$i], trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
+
+                        case "location aboard":
+
+                            $partes = explode(" ", trim(substr($frasealumno,$cont, 17 )));
+
+                            $aux = FALSE;
+
+                            //Como pueden ser una dos o tres palabras, se va comprobando por partes
+
+                            //se comprueba si se trata solo de una palabra 
+                            if(!$aux)
+                            {
+                                //Si detras tiene una coma la quita 
+                                if(substr($partes[0], -1) == ',')
+                                    $partes[0] = substr($partes[0], 0, -1); 
+
+                                $is_correct=validate_restricted($porciones[$i], trim($partes[0]));
+                                if($is_correct)
+                                {   
+                                    $aux = TRUE;
+                                    $cont = $cont + strlen(trim($partes[0]));
+                                }
+                            }
+                            
+                            //se comprueba si son dos
+                            if(!$aux) 
+                            {
+                                //Concatena las dos partes con un espacio entre medio
+                                $result = $partes[0]." ".$partes[1];
+
+                                 //Si detras tiene una coma la quita 
+                                if(substr($result, -1) == ',')
+                                    $result = substr($result, 0, -1); 
+
+                                $is_correct=validate_restricted($porciones[$i], trim($result));
+
+                                if($is_correct)
+                                    {   
+                                        $aux = TRUE;
+                                        $cont = $cont + strlen(trim($result));
+                                    }
+                            }
+                            
+                            //se comprueba si son 3
+                            if(!$aux) 
+                            {
+                                //Concatena las dos partes con un espacio entre medio
+                                $result = $partes[0]." ".$partes[1]." ".$partes[2];
+
+                                 //Si detras tiene una coma la quita 
+                                if(substr($result, -1) == ',')
+                                    $result = substr($result, 0, -1); 
+
+                                $is_correct=validate_restricted($porciones[$i], trim($result));
+
+                                $cont = $cont + strlen(trim($result));
+                            }
+                            break;
 
 
 
@@ -704,62 +774,7 @@ if(!function_exists('validar_frase'))
                             }
                             break;
 
-                        case "location aboard":
-
-                            $partes = explode(" ", trim(substr($frasealumno,$cont, 24 )));
-
-                            $aux = FALSE;
-
-                            //Primero comprueba las partes por separado
-                            foreach ($partes as $parte) 
-                            {   
-                                if(!$aux)
-                                {
-                                    //Si detras tiene una coma la quita 
-                                    if(substr($parte, -1) == ',')
-                                        $parte = substr($parte, 0, -1); 
-
-                                    $is_correct=validate_locationaboard(trim($parte));
-                                    if($is_correct)
-                                    {   
-                                        $aux = TRUE;
-                                        $cont = $cont + strlen(trim($parte));
-                                    }
-                                }
-                            }
-
-                            if(!$aux) //Y luego las junta
-                            {
-                                //Concatena las dos partes con un espacio entre medio
-                                $result = $partes[0]." ".$partes[1];
-
-                                 //Si detras tiene una coma la quita 
-                                if(substr($result, -1) == ',')
-                                    $result = substr($result, 0, -1); 
-
-                                $is_correct=validate_locationaboard(trim($result));
-
-                                if($is_correct)
-                                    {   
-                                        $aux = TRUE;
-                                        $cont = $cont + strlen(trim($result));
-                                    }
-                            }
-                            
-                            if(!$aux) //Y luego las junta
-                            {
-                                //Concatena las dos partes con un espacio entre medio
-                                $result = $partes[0]." ".$partes[1]." ".$partes[2];
-
-                                 //Si detras tiene una coma la quita 
-                                if(substr($result, -1) == ',')
-                                    $result = substr($result, 0, -1); 
-
-                                $is_correct=validate_locationaboard(trim($result));
-
-                                $cont = $cont + strlen(trim($result));
-                            }
-                            break;
+                        
 
 
                         default:
