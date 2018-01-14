@@ -332,7 +332,7 @@ if(!function_exists('validar_frase'))
                             $result = $partes[0]." ".$partes[1];
 
                             //se envia a la funcion de validar y esta nos devuelve TRUE o FALSE dependiendo de si es correcta o no.
-                            $is_correct=validate_at_position(trim($result));
+                            $is_correct=validate_restricted($porciones[$i], trim($result));
 
                             //al final sumamos al contador la longitud de la parte que hemos validado.
                             $cont = $cont + strlen(trim($result));
@@ -374,7 +374,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
     
-                            $is_correct=validate_cardinalpoint(trim($partes[0]));
+                            $is_correct=validate_restricted($porciones[$i], trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -387,7 +387,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $is_correct=validate_charted_name(trim($partes[0]));
+                            $is_correct=validate_restricted($porciones[$i], trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -415,7 +415,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $is_correct=validate_datum(trim($partes[0]));
+                            $is_correct=validate_restricted($porciones[$i], trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -447,6 +447,20 @@ if(!function_exists('validar_frase'))
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
+
+                        case "flag state":
+
+                            $partes = explode(" ", trim(substr($frasealumno, $cont, 6)));
+
+                            //Si detras tiene una coma la quita 
+                            if(substr($partes[0], -1) == ',')
+                                $partes[0] = substr($partes[0], 0, -1); 
+
+                            $is_correct=validate_restricted($porciones[$i], trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
+
 
 
 

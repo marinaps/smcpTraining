@@ -1,34 +1,34 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-//si no existe la función validate_at_position la creamos
-if(!function_exists('validate_at_position'))
+//si no existe la función validate_restricted la creamos
+if(!function_exists('validate_restricted'))
 {
     /**
-     * Funcion para validar at position. Distingue mayusculas y minusculas.
-     * Las dos opciones son: Cape Paloma y Cape Trafalgar.
+     * Funcion para validar las variables que son restrictivas.
+     * Distingue entre mayusculas y minusculas.
      *
      * @return boolean true si la variable es correcta
      *
-     * @param string $atposition con la variable dada por el alumno
+     * @param string $typevariable con el tipo de variable(nombre de la variable, ex: charted name)
+     * @param string $variable con la variable dada por el alumno
      */
-    function validate_at_position($atposition)
+    function validate_restricted($typevariable, $variable)
     {
         $ci =& get_instance();
 
+        //obtiene el id de la variable charted name
         $data= array();
-
-        //primero se obtiene el id de la variable atposition
         $ci->db->select('id');
         $ci->db->from('type_variable');
-        $ci->db->where('variable', 'atposition');
+        $ci->db->where('variable', $typevariable);
         $query = $ci->db->get();
         $data=$query->row()->id; 
 
-        //y luego se busca si existe la variable $atposition en la tabla variable y cuyo id corresponta con la variable atposition
+        //se busca si existe la variable $chartedname en la tabla variable y cuyo id corresponta con la variable charted name
         $ci->db->select('*');
         $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $atposition); //binary lo que hace es que distinga las mayusculas y minusculas
+        $ci->db->where('name like BINARY', $variable); //binary lo que hace es que distinga las mayusculas y minusculas
         $ci->db->where('id_type_variable', $data);
         $result = $ci->db->get();
 
@@ -36,6 +36,7 @@ if(!function_exists('validate_at_position'))
             return TRUE;
         else
             return FALSE;
+
     }
 }
 
@@ -77,80 +78,6 @@ if(!function_exists('validate_callsign'))
             return TRUE;
         else
             return FALSE;
-    }
-}
-
-//si no existe la función validate_cardinalpoint la creamos
-if(!function_exists('validate_cardinalpoint'))
-{
-    /**
-     * Funcion para validar el cardinal point. Distingue entre mayusculas y minusculas.
-     * Correctos: N, E, S , W, NE, NW, SE, SW, NNE, ENE, ESE, SSE, SSW, WSW, WNW, NNW
-     *
-     * @return boolean true si cardinal point es correcto
-     *
-     * @param string $cardinalpoint con la variable dada por el alumno
-     */
-    function validate_cardinalpoint($cardinalpoint)
-    {
-        //obtiene el id de la variable cardinal point
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'cardinal point');
-        $query = $ci->db->get();
-        $data=$query->row()->id;
-
-        //se busca si existe la variable $cardinalpoint en la tabla variable y cuyo id corresponta con la variable cardinal point
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $cardinalpoint); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-}
-
-//si no existe la función validate_charted_name la creamos
-if(!function_exists('validate_charted_name'))
-{
-    /**
-     * Funcion para validar charted name. Distingue entre mayusculas y minusculas.
-     * Correcto: BUOY5 y ALFA5.
-     *
-     * @return boolean true si charted name es correcto
-     *
-     * @param string $chartedname con la variable dada por el alumno
-     */
-    function validate_charted_name($chartedname)
-    {
-        $ci =& get_instance();
-
-        //obtiene el id de la variable charted name
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'charted name');
-        $query = $ci->db->get();
-        $data=$query->row()->id; 
-
-        //se busca si existe la variable $chartedname en la tabla variable y cuyo id corresponta con la variable charted name
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $chartedname); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-
     }
 }
 
@@ -219,41 +146,6 @@ if(!function_exists('validate_date'))
 
         //si no cumple nada de lo anterior entonces devuelve TRUE
         return TRUE;
-    }
-}
-
-//si no existe la función validate_datum la creamos
-if(!function_exists('validate_datum'))
-{
-    /**
-     * Funcion para validar datum. Distingue mayusculas y minusculas.
-     * Please use "SEA2", "SEA5".
-     * 
-     * @return boolean true si datum es correcto
-     *
-     * @param string $datum con la variable dada por el alumno
-     */
-    function validate_datum($datum)
-    {
-        //obtiene el id de la variable datum
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'datum');
-        $query = $ci->db->get();
-        $data=$query->row()->id; 
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $datum); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
     }
 }
 
@@ -330,6 +222,7 @@ if(!function_exists('validate_degrees'))
         }        
     }
 }
+
 
 
 
