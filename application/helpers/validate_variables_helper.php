@@ -278,6 +278,59 @@ if(!function_exists('validate_decimal'))
     }
 }
 
+//si no existe la función validate_degrees la creamos
+if(!function_exists('validate_degrees'))
+{
+    /**
+     * Funcion para validar los grados
+     * Minimo: 3 números (4 caracteres) y máximo: 4 números (5 caracteres)
+     * Cantidad máxima: 360º. Ejemplo: 005º y 140,5º
+     * 
+     * @return boolean true si degrees es correcto
+     *
+     * @param string $degrees con la variable dada por el alumno
+     */
+    function validate_degrees($degrees)
+    {
+        $aux   = 'º';
+        $pos_degrees = strpos($degrees, $aux);
+       
+       //si pos_degrees no tiene el º de los grados devuelve falso
+        if ($pos_degrees === FALSE) 
+        {  
+            return FALSE;
+        }
+        else
+        { 
+            //devuelve la cadena sin el ultimo caracter(º).
+            $sin_degrees = mb_substr($degrees, 0, -1);  
+
+            //si los grados tienen coma puede llegar solo a 359 grados.
+            if(strpos($sin_degrees, ',')) 
+            {
+                $pattern_1="/^(00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9])$/";
+                $pattern_2="/^([1-9])$/";
+
+                $parts = explode(",", $sin_degrees);
+
+                if(preg_match($pattern_1, $parts[0]) && preg_match($pattern_2, $parts[1]) )
+                    return TRUE;
+                return FALSE;
+
+            }
+            else //si no tiene coma puede llegar a 360 grados
+            {
+                $pattern_3="/^(00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|360)$/";
+
+                //preg_match() devuelve 1 si pattern coincide con el subject dado(en este caso con sin_degrees), 0 si no, o FALSE si ocurrió un error.
+                if(preg_match($pattern_3, $sin_degrees))
+                    return TRUE;
+                return FALSE;
+            }
+        }        
+    }
+}
+
 
 
 
@@ -366,14 +419,14 @@ if(!function_exists('validate_speed'))
 
 
 
-if(!function_exists('validate_vhfchannel_hourswithin'))
+if(!function_exists('validate_vhfchannel'))
 {
     /**
      * Funcion para validar el vhf channel
      * Numerico: maximo 2 caracteres
      * Devuelve TRUE|FALSE
      */
-    function validate_vhfchannel_hourswithin($vhfchannel)
+    function validate_vhfchanne($vhfchannel)
     {
         if (is_numeric($vhfchannel) && strlen($vhfchannel) <= 2 && $vhfchannel != 0)
         {
@@ -455,55 +508,7 @@ if(!function_exists('validate_search_pattern'))
 }
 
 
-if(!function_exists('validate_bearing_course'))
-{
-    /**
-     * Funcion para validar el bearing y el course(son iguales)
-     * Minimo: 3 números (4 caracteres)
-     * Máximo: 4 números (5 caracteres)
-     * Cantidad máxima: 360º
-     * Ejemplo: 005º y 140,5º
-     * Devuelve TRUE|FALSE
-     */
-    function validate_bearing_course($bearing)
-    {
-        $degrees   = 'º';
-        $pos_degrees = strpos($bearing, $degrees);
-       
-       //Si pos_degrees no tiene el º de los grados devuelve falso
-        if ($pos_degrees === FALSE) 
-        {  
-            return FALSE;
-        }
-        else
-        { 
-            $sin_degrees = mb_substr($bearing, 0, -1);  // devuelve la cadena sin el ultimo caracter
 
-            if(strpos($sin_degrees, ',')) //Si los grados tienen coma puede llegar solo a 359 grados.
-            {
-                $pattern_1="/^(00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9])$/";
-                $pattern_2="/^([1-9])$/";
-
-                $parts = explode(",", $sin_degrees);
-
-                if(preg_match($pattern_1, $parts[0]) && preg_match($pattern_2, $parts[1]) )
-                    return TRUE;
-                return FALSE;
-
-            }
-            else //Si no tiene coma puede llegar a 360 grados
-            {
-                $pattern_3="/^(00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|360)$/";
-
-                //preg_match() devuelve 1 si pattern coincide con el subject dado(en este caso con time), 0 si no, o FALSE si ocurrió un error.
-                if(preg_match($pattern_3, $sin_degrees))
-                    return TRUE;
-                return FALSE;
-            }
-
-        }        
-    }
-}
 
 if(!function_exists('validate_frequency'))
 {

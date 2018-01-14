@@ -427,8 +427,23 @@ if(!function_exists('validar_frase'))
                             //Si detras tiene una coma la quita 
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
-                            
+
                             $is_correct=validate_decimal(trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
+
+                        case "degrees":
+
+                            /* Realiza una operación substr() multibyte de forma segura basada en el número de caracteres. 
+                            Esto arregla los problemas con los caracteres especiales como los grados(º) */
+                            $partes = explode(" ", trim(mb_substr($frasealumno, $cont, 6)));
+
+                            //Si detras tiene una coma la quita 
+                            if(mb_substr($partes[0], -1) == ',')
+                                $partes[0] = mb_substr($partes[0], 0, -1); 
+
+                            $is_correct=validate_degrees(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -515,19 +530,7 @@ if(!function_exists('validar_frase'))
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
-                        case "hours within":
-
-                            $partes = explode(" ", trim(substr($frasealumno,$cont, 2 )));
-
-                             //Si detras tiene una coma la quita 
-                            if(substr($partes[0], -1) == ',')
-                                $partes[0] = substr($partes[0], 0, -1); 
-
-                            $is_correct=validate_vhfchannel_hourswithin(trim($partes[0]));
-
-                            $cont = $cont + strlen(trim($partes[0]));
-                            break;
-                        
+                
                         case "mvname":
 
                             $partes = explode(" ", trim(substr($frasealumno,$cont, 8 )));
@@ -556,35 +559,6 @@ if(!function_exists('validar_frase'))
 
                         
 
-                        case "course":
-
-                            /* Realiza una operación substr() multibyte de forma segura basada en el número de caracteres.
-                               Esto arregla los problemas con los caracteres especiales como los grados(º)*/
-                            $partes = explode(" ", trim(mb_substr($frasealumno, $cont, 6)));
-
-                            //Si detras tiene una coma la quita 
-                            if(mb_substr($partes[0], -1) == ',')
-                                $partes[0] = mb_substr($partes[0], 0, -1); 
-
-                            $is_correct=validate_bearing_course(trim($partes[0]));
-
-                            $cont = $cont + strlen(trim($partes[0]));
-                            break;
-
-                         case "bearing": //Es igual que course
-
-                            /* Realiza una operación substr() multibyte de forma segura basada en el número de caracteres.
-                               Esto arregla los problemas con los caracteres especiales como los grados(º)*/
-                            $partes = explode(" ", trim(mb_substr($frasealumno, $cont, 6)));
-
-                            //Si detras tiene una coma la quita 
-                            if(mb_substr($partes[0], -1) == ',')
-                                $partes[0] = mb_substr($partes[0], 0, -1); 
-
-                            $is_correct=validate_bearing_course(trim($partes[0]));
-
-                            $cont = $cont + strlen(trim($partes[0]));
-                            break;
 
                         case "frequency":
 
