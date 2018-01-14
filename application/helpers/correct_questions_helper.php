@@ -268,16 +268,16 @@ if(!function_exists('validar_frase'))
             }
 
             $cont = 0; //este contador va sumando los caracteres de los strings de las partes para poder avanzar
-            $verdadero = TRUE;
+            $is_correct = TRUE;
 
             //Se va iterando por cada porcion que hemos dividio la frase
-            for ($i = 0; $i < $resultado && $verdadero; $i++) 
+            for ($i = 0; $i < $resultado && $is_correct; $i++) 
             {   
                 //Si es una parte PAR entonces se trata de una parte que no tiene variables y entonces entra en el if
                 if($i%2==0)
                 {
                     /* //PRUEBAS
-                    echo "resultado 1: ".$verdadero;
+                    echo "resultado 1: ".$is_correct;
                     echo "<br>";
                     echo "___frase: ". trim($porciones[$i]);
                     echo "<br>";
@@ -296,19 +296,19 @@ if(!function_exists('validar_frase'))
                     if(strncmp (trim($porciones[$i]), trim(substr($frasealumno,$cont, $long[$i])),  $long[$i]) != 0)
                     {
                         //Si las partes no son iguales entonces devuelvo FALSE para indicar que la frase no es correcta.
-                        $verdadero = FALSE;
+                        $is_correct = FALSE;
                     }
                     /*
                     echo strncmp(trim($porciones[$i]), trim(substr($frasealumno,$cont, $long[$i] )),$long[$i]);
                     echo "<br>";
-                    echo "resultado 2: ".$verdadero;
+                    echo "resultado 2: ".$is_correct;
                     echo "<br>"; */
 
-                    //Al final sumamos al contador la longitud de la parte que hemos validado.
+                    //al final sumamos al contador la longitud de la parte que hemos validado.
                     $cont = $cont + $long[$i]; 
                 }
                 else 
-                {  //Si es una parte IMPAR indica que es una parte que contiene una variables y entonces entra enel else.
+                {  //si es una parte IMPAR indica que es una parte que contiene una variables y entonces entra enel else.
 
                     //la porcion contendra el nombre de la variables que se va a evaluar, por lo tanto se hace un switch para ver de que variable se trata.
                     switch ($porciones[$i]) 
@@ -331,10 +331,26 @@ if(!function_exists('validar_frase'))
                             //concatena las dos partes con un espacio entre medio
                             $result = $partes[0]." ".$partes[1];
 
-                            //Se envia a la funcion de validar y esta nos devuelve TRUE o FALSE dependiendo de si es correcta o no.
-                            $verdadero=validate_at_position(trim($result));
+                            //se envia a la funcion de validar y esta nos devuelve TRUE o FALSE dependiendo de si es correcta o no.
+                            $is_correct=validate_at_position(trim($result));
 
+                            //al final sumamos al contador la longitud de la parte que hemos validado.
                             $cont = $cont + strlen(trim($result));
+                            break;
+
+                        case "beaufort":
+            
+                            //Cogemos la parte del string de la frase del alumno que corresponde con un limite de 2 caracteres, ya que beaufort son siempre 2 caracteres(de 0-12 es correcto).
+                            $partes = explode(" ", substr($frasealumno, $cont, 2 ));
+
+                            /* Puede ser que la frase tenga una coma detras y que el numero sea de una cifra
+                              por lo tanto con esto vemos si hay una coma al final y si la hay se coge solo el numero  */
+                            if(substr($partes[0], -1) == ',')
+                                $partes[0] = substr($partes[0], 0, -1); 
+
+                            $is_correct=validate_beaufort(trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
                             break;
 
                         case "time":
@@ -343,7 +359,7 @@ if(!function_exists('validar_frase'))
                             //Cogemos la parte del string de la frase del alumno que corresponde con un limite de 4 caracteres, ya que la hora son siempre 4 caracteres. 
 
                             //Se envia a la funcion de validar las horas y esta nos devuelve TRUE o FALSE dependiendo de si es una hora correcta o no.
-                            $verdadero=validate_time(substr($frasealumno,$cont, 4));
+                            $is_correct=validate_time(substr($frasealumno,$cont, 4));
 
                             /*
                             echo "----Parte impar----".$i.": ".substr($frasealumno,$cont, 4 );
@@ -351,7 +367,7 @@ if(!function_exists('validar_frase'))
                             echo "----resultado de porciones impares:----".$porciones[$i];
                             echo "<br>";
                             echo "----HA ENTRADOOO hour----";
-                            echo var_dump($verdadero);
+                            echo var_dump($is_correct);
                             echo "<br>";
                             echo "<br>"; */
 
@@ -362,22 +378,7 @@ if(!function_exists('validar_frase'))
                             //echo "<br>";
                             break;
 
-                        case "beaufort":
-                            //Es un 2 porque el maximo numero de caracteres posible es 2(de 0-12 es correcto)
-
-                            //Cogemos la parte del string de la frase del alumno que corresponde con un limite de 2 caracteres, ya que beaufort son siempre 2 caracteres. 
-                            $partes = explode(" ", substr($frasealumno,$cont, 2 ));
-
-                            /* Puede ser que la frase tenga una coma detras y que el numero sea de una cifra
-                              por lo tanto se cogera el numero y la coma, con esto vemos si hay una coma al final
-                              y si la hay se coge solo el numero  */
-                            if(substr($partes[0], -1) == ',')
-                                $partes[0] = substr($partes[0], 0, -1); 
-
-                            $verdadero=validate_beaufort(trim($partes[0]));
-
-                            $cont = $cont + strlen(trim($partes[0]));
-                            break;
+                      
                         
                         case "cardinalpoint": //HAY QUE HACERLO
 
@@ -388,7 +389,7 @@ if(!function_exists('validar_frase'))
                                 $partes[0] = substr($partes[0], 0, -1); 
     
 
-                            $verdadero=validate_cardinalpoint(trim($partes[0]));
+                            $is_correct=validate_cardinalpoint(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -398,7 +399,7 @@ if(!function_exists('validar_frase'))
                             //Es 8 porque el numero de caracteres para el mmsi es siepre de 8
                             $partes = explode(" ", substr($frasealumno,$cont, 8 ));
 
-                            $verdadero=validate_MMSI(trim($partes[0]));
+                            $is_correct=validate_MMSI(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -413,7 +414,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[1], -1) == ',')
                                 $partes[1] = substr($partes[1], 0, -1); 
 
-                            $verdadero=validate_date(trim(substr($frasealumno,$cont, 14 )));
+                            $is_correct=validate_date(trim(substr($frasealumno,$cont, 14 )));
 
                             $cont = $cont + strlen(trim($partes[0])) + strlen(trim($partes[1])) + 1;
                             break;
@@ -426,7 +427,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_number(trim($partes[0]));
+                            $is_correct=validate_number(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -439,7 +440,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_speed(trim($partes[0]));
+                            $is_correct=validate_speed(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -452,7 +453,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_vhfchannel_hourswithin(trim($partes[0]));
+                            $is_correct=validate_vhfchannel_hourswithin(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -465,7 +466,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_vhfchannel_hourswithin(trim($partes[0]));
+                            $is_correct=validate_vhfchannel_hourswithin(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -478,7 +479,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_mvname(trim($partes[0]));
+                            $is_correct=validate_mvname(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -491,7 +492,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_charted_name(trim($partes[0]));
+                            $is_correct=validate_charted_name(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -506,7 +507,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_search_pattern(trim($partes[0]));
+                            $is_correct=validate_search_pattern(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -519,7 +520,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_datum(trim($partes[0]));
+                            $is_correct=validate_datum(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -534,7 +535,7 @@ if(!function_exists('validar_frase'))
                             if(mb_substr($partes[0], -1) == ',')
                                 $partes[0] = mb_substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_bearing_course(trim($partes[0]));
+                            $is_correct=validate_bearing_course(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -549,7 +550,7 @@ if(!function_exists('validar_frase'))
                             if(mb_substr($partes[0], -1) == ',')
                                 $partes[0] = mb_substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_bearing_course(trim($partes[0]));
+                            $is_correct=validate_bearing_course(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -562,7 +563,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[1], -1) == ',')
                                 $partes[1] = substr($partes[1], 0, -1); 
 
-                            $verdadero=validate_frequency(trim(substr($frasealumno,$cont, 10 )));
+                            $is_correct=validate_frequency(trim(substr($frasealumno,$cont, 10 )));
 
                             $cont = $cont + strlen(trim($partes[0])) + strlen(trim($partes[1])) +1;
                             break;
@@ -575,7 +576,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_distance(trim($partes[0]));
+                            $is_correct=validate_distance(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -588,7 +589,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_callsign(trim($partes[0]));
+                            $is_correct=validate_callsign(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -601,7 +602,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_namelightvessel(trim($partes[0]));
+                            $is_correct=validate_namelightvessel(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -614,7 +615,7 @@ if(!function_exists('validar_frase'))
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
 
-                            $verdadero=validate_waypoint(trim($partes[0]));
+                            $is_correct=validate_waypoint(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -633,8 +634,8 @@ if(!function_exists('validar_frase'))
                                     if(substr($parte, -1) == ',')
                                         $parte = substr($parte, 0, -1); 
 
-                                    $verdadero=validate_type(trim($parte));
-                                    if($verdadero)
+                                    $is_correct=validate_type(trim($parte));
+                                    if($is_correct)
                                     {   
                                         $result = TRUE;
                                         $cont = $cont + strlen(trim($parte));
@@ -650,7 +651,7 @@ if(!function_exists('validar_frase'))
                                 if(substr($result, -1) == ',')
                                     $result = substr($result, 0, -1); 
 
-                                $verdadero=validate_type(trim($result));
+                                $is_correct=validate_type(trim($result));
 
                                 $cont = $cont + strlen(trim($result));
                             }
@@ -664,7 +665,7 @@ if(!function_exists('validar_frase'))
                             if(substr($frase, -1) == ',')
                                 $frase = substr($frase, 0, -1); 
 
-                            $verdadero=validate_fromport(trim($frase));
+                            $is_correct=validate_fromport(trim($frase));
 
                             $cont = $cont + strlen(trim($frase));
                             break;
@@ -683,8 +684,8 @@ if(!function_exists('validar_frase'))
                                     if(substr($parte, -1) == ',')
                                         $parte = substr($parte, 0, -1); 
 
-                                    $verdadero=validate_object(trim($parte));
-                                    if($verdadero)
+                                    $is_correct=validate_object(trim($parte));
+                                    if($is_correct)
                                     {   
                                         $result = TRUE;
                                         $cont = $cont + strlen(trim($parte));
@@ -701,7 +702,7 @@ if(!function_exists('validar_frase'))
                                 if(substr($result, -1) == ',')
                                     $result = substr($result, 0, -1); 
 
-                                $verdadero=validate_object(trim($result));
+                                $is_correct=validate_object(trim($result));
 
                                 $cont = $cont + strlen(trim($result));
                             }
@@ -722,8 +723,8 @@ if(!function_exists('validar_frase'))
                                     if(substr($parte, -1) == ',')
                                         $parte = substr($parte, 0, -1); 
 
-                                    $verdadero=validate_locationaboard(trim($parte));
-                                    if($verdadero)
+                                    $is_correct=validate_locationaboard(trim($parte));
+                                    if($is_correct)
                                     {   
                                         $aux = TRUE;
                                         $cont = $cont + strlen(trim($parte));
@@ -740,9 +741,9 @@ if(!function_exists('validar_frase'))
                                 if(substr($result, -1) == ',')
                                     $result = substr($result, 0, -1); 
 
-                                $verdadero=validate_locationaboard(trim($result));
+                                $is_correct=validate_locationaboard(trim($result));
 
-                                if($verdadero)
+                                if($is_correct)
                                     {   
                                         $aux = TRUE;
                                         $cont = $cont + strlen(trim($result));
@@ -758,7 +759,7 @@ if(!function_exists('validar_frase'))
                                 if(substr($result, -1) == ',')
                                     $result = substr($result, 0, -1); 
 
-                                $verdadero=validate_locationaboard(trim($result));
+                                $is_correct=validate_locationaboard(trim($result));
 
                                 $cont = $cont + strlen(trim($result));
                             }
@@ -774,7 +775,7 @@ if(!function_exists('validar_frase'))
             }
         }
 
-        return $verdadero;
+        return $is_correct;
     }
 }
 

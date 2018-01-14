@@ -6,12 +6,14 @@ if(!function_exists('validate_at_position'))
 {
     /**
      * Funcion para validar at position. Distingue mayusculas y minusculas.
-     * Please use  "Cape Paloma",  "Cape Trafalgar".
-     * Devuelve TRUE|FALSE
+     * Las dos opciones son: Cape Paloma y Cape Trafalgar.
+     *
+     * @return boolean true si la variable es correcta
+     *
+     * @param string $atposition con la variable dada por el alumno
      */
     function validate_at_position($atposition)
     {
-        echo $atposition;
         $ci =& get_instance();
 
         $data= array();
@@ -37,6 +39,26 @@ if(!function_exists('validate_at_position'))
     }
 }
 
+//si no existe la función validate_beaufort la creamos
+if(!function_exists('validate_beaufort'))
+{
+    /**
+     * Funcion para validar el force beaufort
+     * Numerico 0-12
+     * @return boolean true si force beaufort es correcto
+     *
+     * @param string $beaufort con la variable dada por el alumno
+     */
+    function validate_beaufort($beaufort)
+    {
+        if($beaufort < 0 || $beaufort >12)
+            return FALSE;
+        else 
+            return TRUE;
+    }
+
+}
+
 //si no existe la función validate_hours la creamos
 if(!function_exists('validate_time'))
 {
@@ -56,22 +78,7 @@ if(!function_exists('validate_time'))
     }
 }
 
-if(!function_exists('validate_beaufort'))
-{
-    /**
-     * Funcion para validar el force beaufort
-     * Numerico 0-12
-     * @return boolean true si force beaufort es correcto
-     */
-    function validate_beaufort($beaufort)
-    {
-        if($beaufort < 0 || $beaufort >12)
-            return FALSE;
-        else 
-            return TRUE;
-    }
 
-}
 
 
 
