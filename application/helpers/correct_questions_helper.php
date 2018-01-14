@@ -476,7 +476,7 @@ if(!function_exists('validar_frase'))
 
                         case "location aboard":
 
-                            $partes = explode(" ", trim(substr($frasealumno,$cont, 17 )));
+                            $partes = explode(" ", trim(substr($frasealumno, $cont, 17 )));
 
                             $aux = FALSE;
 
@@ -515,7 +515,7 @@ if(!function_exists('validar_frase'))
                                         $cont = $cont + strlen(trim($result));
                                     }
                             }
-                            
+
                             //se comprueba si son 3
                             if(!$aux) 
                             {
@@ -532,6 +532,67 @@ if(!function_exists('validar_frase'))
                             }
                             break;
 
+                        case "loran": //COMPROBAR
+
+                            $partes = explode(" ", trim(substr($frasealumno, $cont, 5)));
+
+                            //Si detras tiene una coma la quita 
+                            if(substr($partes[0], -1) == ',')
+                                $partes[0] = substr($partes[0], 0, -1); 
+
+                            $is_correct=validate_restricted($porciones[$i], trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
+
+                        case "mark type": //COMPROBAR
+
+                            $partes = explode(" ", trim(substr($frasealumno, $cont, 16)));
+
+                            //Si detras tiene una coma la quita 
+                            if(substr($partes[0], -1) == ',')
+                                $partes[0] = substr($partes[0], 0, -1); 
+
+                            $is_correct=validate_restricted($porciones[$i], trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
+
+                        case "meteorological area": //COMPROBAR
+
+                            $partes = explode(" ", trim(substr($frasealumno, $cont, 5)));
+
+                            //Si detras tiene una coma la quita 
+                            if(substr($partes[0], -1) == ',')
+                                $partes[0] = substr($partes[0], 0, -1); 
+
+                            $is_correct=validate_restricted($porciones[$i], trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
+
+                        case "mmsi": //COMPROBAR
+
+                            //Es 9 porque el numero de caracteres para el mmsi es siepre de 9
+                            $partes = explode(" ", substr($frasealumno, $cont, 9 ));
+
+                            $is_correct=validate_mmsi(trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
+
+                        case "mv name": //COMPROBAR
+
+                            $partes = explode(" ", trim(substr($frasealumno,$cont, 8 )));
+
+                            //Si detras tiene una coma la quita 
+                            if(substr($partes[0], -1) == ',')
+                                $partes[0] = substr($partes[0], 0, -1); 
+
+                            $is_correct=validate_restricted($porciones[$i], trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
 
 
                         case "time":
@@ -563,15 +624,7 @@ if(!function_exists('validar_frase'))
                         
                         
 
-                        case "mmsi":
-
-                            //Es 8 porque el numero de caracteres para el mmsi es siepre de 8
-                            $partes = explode(" ", substr($frasealumno,$cont, 8 ));
-
-                            $is_correct=validate_MMSI(trim($partes[0]));
-
-                            $cont = $cont + strlen(trim($partes[0]));
-                            break;
+                        
 
                         
 
@@ -615,18 +668,7 @@ if(!function_exists('validar_frase'))
                             break;
 
                 
-                        case "mvname":
-
-                            $partes = explode(" ", trim(substr($frasealumno,$cont, 8 )));
-
-                            //Si detras tiene una coma la quita 
-                            if(substr($partes[0], -1) == ',')
-                                $partes[0] = substr($partes[0], 0, -1); 
-
-                            $is_correct=validate_mvname(trim($partes[0]));
-
-                            $cont = $cont + strlen(trim($partes[0]));
-                            break;
+                        
 
                         case "search pattern":
 

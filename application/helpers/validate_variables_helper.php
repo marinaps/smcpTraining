@@ -223,7 +223,26 @@ if(!function_exists('validate_degrees'))
     }
 }
 
-
+//si no existe la función validate_mmsi la creamos
+if(!function_exists('validate_mmsi'))
+{
+    /**
+     * Funcion para validar el MMSI
+     * Numerico: 8 numeros siempre
+     * 
+     * @return boolean true si mmsi es correcto
+     *
+     * @param string $mmsi con la variable dada por el alumno
+     */
+    function validate_mmsi($mmsi)
+    {
+        if (ctype_digit($mmsi) && strlen($mmsi) == 9)
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
+}
 
 
 
@@ -249,25 +268,7 @@ if(!function_exists('validate_time'))
 
 
 
-if(!function_exists('validate_MMSI'))
-{
-    /**
-     * Funcion para validar el MMSI
-     * Numerico: 8 numeros siempre
-     * Devuelve TRUE|FALSE
-     */
-    function validate_MMSI($mmsi)
-    {
-        if (ctype_digit($mmsi) && strlen($mmsi) == 8)
-        {
-            echo"is numeric: ".strlen($mmsi);
-            echo $mmsi;
-            return TRUE;
-        }
-        return FALSE;
-    }
 
-}
 
 
 
@@ -329,42 +330,6 @@ if(!function_exists('validate_vhfchannel'))
         return FALSE;
     }
 }
-
-if(!function_exists('validate_mvname'))
-{
-    /**
-     * Funcion para validar el mvnombre. Distingue minusculas y mayusculas. Hay que ponerlo tal cual para que 
-     * este correcto.
-     * Please use "Casey", “Babieca", Draco",  "Fairfax", "Payton" , "Xanadu", "Castor", "Pollux", "Berenice".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_mvname($name)
-    {
-        echo 'el nombre es'.$name;
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'mvname');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $name); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-
-    }
-}
-
-
-
 
 
 
