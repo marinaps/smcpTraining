@@ -20,15 +20,16 @@ if(!function_exists('correct_disordered'))
         //se obtiene la respuesta correcta
         $correct_answer = $ci->chat->correct_disordered($id);
         //comprueba si la respuesta dada es igual a la correcta
+
         if(strcasecmp(strtolower($post), strtolower($correct_answer->ordered)) == 0 )
         {
-            $es_correcta = TRUE;
+            $is_correct = TRUE;
             $entry = array(
                 'answer' => $post,
                 'correct' => TRUE
                 );
         }else{
-            $es_correcta = FALSE;
+            $is_correct = FALSE;
             $entry = array(
                 'answer' => $post,
                 'correct' => FALSE
@@ -37,7 +38,7 @@ if(!function_exists('correct_disordered'))
         //actualiza un entry con la respuesta y si es correcta o no
         $ci->chat->create_entry($id_exam, $id, $entry, 2);
 
-        return $es_correcta;
+        return $is_correct;
     }
 }
 
@@ -64,13 +65,13 @@ if(!function_exists('correct_truefalse'))
         //comprueba si la respuesta dada es igual a la correcta
         if(strcasecmp(strtolower($post), strtolower($correct_answer->true_statement)) == 0 )
         {
-            $es_correcta = TRUE;
+            $is_correct = TRUE;
             $entry = array(
                 'answer' => $post,
                 'correct' => TRUE
                 );
         }else{
-            $es_correcta = FALSE;
+            $is_correct = FALSE;
             $entry = array(
                 'answer' => $post,
                 'correct' => FALSE
@@ -80,7 +81,7 @@ if(!function_exists('correct_truefalse'))
         //actualiza un entry con la respuesta y si es correcta o no
         $ci->chat->create_entry($id_exam, $id, $entry, 3);
 
-        return $es_correcta;
+        return $is_correct;
     }
 }
 
@@ -103,18 +104,18 @@ if(!function_exists('correct_audioquestions'))
         $ci =& get_instance();
 
         //se obtiene la respuesta correcta
-        $correct_answerr = $ci->chat->correct_audio_write($id); 
+        $correct_answer = $ci->chat->correct_audio_write($id); 
 
         //comprueba si la respuesta dada es igual a la correcta
-        if(strcasecmp(strtolower($post), strtolower($correct_answerr->statement)) == 0 )
+        if(strcasecmp(strtolower($post), strtolower($correct_answer->statement)) == 0 )
         {
-            $es_correcta = TRUE;
+            $is_correct = TRUE;
             $entry = array(
                 'answer' => $post,
                 'correct' => TRUE
                 );
         }else{
-            $es_correcta = FALSE;
+            $is_correct = FALSE;
             $entry = array(
                 'answer' => $post,
                 'correct' => FALSE
@@ -124,7 +125,7 @@ if(!function_exists('correct_audioquestions'))
         //crea la entry con la respuesta y si es o no correcta
         $ci->chat->create_entry($id_exam, $id, $entry, 4); 
 
-        return $es_correcta;
+        return $is_correct;
     }
 }
 
@@ -194,27 +195,27 @@ if(!function_exists('correct_variablequestions'))
         /*----------------------------------------------------------------------------*/
         
         //se inicializa a FALSE
-        $es_correcta=FALSE;
+        $is_correct=FALSE;
 
         //va iterando por cada respuesta correcta que tiene la pregunta
         foreach ($correct_answers as $row)
         {   
-            if( ! $es_correcta)
+            if( ! $is_correct)
             {
                 //se comprueba si la respuesta es correcta llamando a la funcion validar_frase
-                $es_correcta = validar_frase($respuesta_dada, $row['answer']);
+                $is_correct = validar_frase($respuesta_dada, $row['answer']);
             }
         }
 
         $entry = array(
                 'answer' => $respuesta_dada,
-                'correct' => $es_correcta
+                'correct' => $is_correct
                 );
 
         //crea la entry con la respuesta y si es o no correcta
         $ci->chat->create_entry($id_exam, $id, $entry, 1);
 
-        return $es_correcta;
+        return $is_correct;
     }
 }
 
@@ -312,6 +313,30 @@ if(!function_exists('validar_frase'))
                     //la porcion contendra el nombre de la variables que se va a evaluar, por lo tanto se hace un switch para ver de que variable se trata.
                     switch ($porciones[$i]) 
                     {
+                        case "atposition": 
+
+                            //cogemos la parte del string de la frase del alumno que corresponde con un limite de 14 caracteres, ya que de las respuestas posibles el maximo numero de caracteres es de 14.
+
+                            //trim —> Elimina espacio en blanco (u otro tipo de caracteres) del inicio y el final de la cadena
+
+                            //se divide el string por cada espacio en blanco que encuentre. 
+
+                            /*En el caso de que sea cape paloma(11 caracteres), como cogemos 14 caracteres explode nos lo dividiria en 3, pero solo nos quedariamos con las dos primeras, las que corresponden a cape y paloma.*/
+                            $partes = explode(" ", trim(substr($frasealumno, $cont, 14 )));
+
+                            //si al final tiene una coma la quita 
+                            if(substr($partes[1], -1) == ',')
+                                $partes[1] = substr($partes[1], 0, -1); 
+
+                            //concatena las dos partes con un espacio entre medio
+                            $result = $partes[0]." ".$partes[1];
+
+                            //Se envia a la funcion de validar y esta nos devuelve TRUE o FALSE dependiendo de si es correcta o no.
+                            $verdadero=validate_at_position(trim($result));
+
+                            $cont = $cont + strlen(trim($result));
+                            break;
+
                         case "time":
                             //Es un 4 porque la hora siempre son 4 caracteres.
 
@@ -471,21 +496,7 @@ if(!function_exists('validar_frase'))
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
-                        case "atposition": 
-
-                            $partes = explode(" ", trim(substr($frasealumno,$cont, 14 )));
-
-                            //Si detras tiene una coma la quita 
-                            if(substr($partes[1], -1) == ',')
-                                $partes[1] = substr($partes[1], 0, -1); 
-
-                            //Concatena las dos partes con un espacio entre medio
-                            $result = $partes[0]." ".$partes[1];
-
-                            $verdadero=validate_at_position(trim($result));
-
-                            $cont = $cont + strlen(trim($result));
-                            break;
+                        
 
                         case "search pattern":
 

@@ -1,5 +1,42 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
+//si no existe la función validate_at_position la creamos
+if(!function_exists('validate_at_position'))
+{
+    /**
+     * Funcion para validar at position. Distingue mayusculas y minusculas.
+     * Please use  "Cape Paloma",  "Cape Trafalgar".
+     * Devuelve TRUE|FALSE
+     */
+    function validate_at_position($atposition)
+    {
+        echo $atposition;
+        $ci =& get_instance();
+
+        $data= array();
+
+        //primero se obtiene el id de la variable atposition
+        $ci->db->select('id');
+        $ci->db->from('type_variable');
+        $ci->db->where('variable', 'atposition');
+        $query = $ci->db->get();
+        $data=$query->row()->id; 
+
+        //y luego se busca si existe la variable $atposition en la tabla variable y cuyo id corresponta con la variable atposition
+        $ci->db->select('*');
+        $ci->db->from('variable');
+        $ci->db->where('name like BINARY', $atposition); //binary lo que hace es que distinga las mayusculas y minusculas
+        $ci->db->where('id_type_variable', $data);
+        $result = $ci->db->get();
+
+        if($result->num_rows() != 0)
+            return TRUE;
+        else
+            return FALSE;
+    }
+}
+
 //si no existe la función validate_hours la creamos
 if(!function_exists('validate_time'))
 {
@@ -296,37 +333,7 @@ if(!function_exists('validate_charted_name'))
     }
 }
 
-if(!function_exists('validate_at_position'))
-{
-    /**
-     * Funcion para validar at position. Distingue mayusculas y minusculas.
-     * Please use  "Cape Paloma",  "Cape Trafalgar".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_at_position($atposition)
-    {
-        echo 'posicion at '.$atposition;
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'atposition');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
 
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $atposition); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-
-    }
-}
 
 
 if(!function_exists('validate_search_pattern'))
