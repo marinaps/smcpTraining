@@ -56,7 +56,28 @@ if(!function_exists('validate_beaufort'))
         else 
             return TRUE;
     }
+}
 
+//si no existe la función validate_callsign la creamos
+if(!function_exists('validate_callsign'))
+{
+    /**
+     * Funcion para validar el distintivo de llamada
+     * Alphanumeric (e.g EDBA5)
+     * Rango mínimo 4 caracteres, rango máximo 6 caracteres.
+     *
+     * @return boolean true si call sign es correcto
+     *
+     * @param string $callsign con la variable dada por el alumno
+     */
+    function validate_callsign($callsign)
+    {
+        // ctype_alnum devuelve TRUE si cada caracter de texto es o bien uno letra o un dígito, FALSE de lo contrario.
+        if (ctype_alnum($callsign) && strlen($callsign) >=4 && strlen($callsign) <=6) 
+            return TRUE;
+        else
+            return FALSE;
+    }
 }
 
 //si no existe la función validate_hours la creamos
@@ -507,25 +528,7 @@ if(!function_exists('validate_distance'))
     }
 }
 
-if(!function_exists('validate_callsign'))
-{
-    /**
-     * Funcion para validar el distintivo de llamada
-     * Alphanumeric (e.g EDBA5)
-     * Rango mínimo 4 caracteres.
-     * Rango máximo 6 caracteres.
-     * Devuelve TRUE|FALSE
-     */
-    function validate_callsign($callsign)
-    {
 
-        // ctype_alnum Devuelve TRUE si cada caracter de texto es o bien uno letra o un dígito, FALSE de lo contrario.
-        if (ctype_alnum($callsign) && strlen($callsign) >=4 && strlen($callsign) <=6) 
-            return TRUE;
-        else
-            return FALSE;
-    }
-}
 
 if(!function_exists('validate_namelightvessel'))
 {
