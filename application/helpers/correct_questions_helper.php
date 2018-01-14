@@ -420,6 +420,20 @@ if(!function_exists('validar_frase'))
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
+                        case "decimal":
+
+                            $partes = explode(" ", trim(substr($frasealumno,$cont, 6 )));
+
+                            //Si detras tiene una coma la quita 
+                            if(substr($partes[0], -1) == ',')
+                                $partes[0] = substr($partes[0], 0, -1); 
+                            
+                            $is_correct=validate_decimal(trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
+
+
 
                         case "time":
                             //Es un 4 porque la hora siempre son 4 caracteres.
@@ -585,19 +599,7 @@ if(!function_exists('validar_frase'))
                             $cont = $cont + strlen(trim($partes[0])) + strlen(trim($partes[1])) +1;
                             break;
 
-                        case "distance":
-
-                            $partes = explode(" ", trim(substr($frasealumno,$cont, 6 )));
-
-                            //Si detras tiene una coma la quita 
-                            if(substr($partes[0], -1) == ',')
-                                $partes[0] = substr($partes[0], 0, -1); 
-
-                            $is_correct=validate_distance(trim($partes[0]));
-
-                            $cont = $cont + strlen(trim($partes[0]));
-                            break;
-
+                      
                         
 
                         case "name lightvessel":

@@ -257,6 +257,28 @@ if(!function_exists('validate_datum'))
     }
 }
 
+//si no existe la función validate_decimal la creamos
+if(!function_exists('validate_decimal'))
+{
+    /**
+     * Funcion para validar los numeros decimales
+     * Numeric (e.g. 1213,5 )
+     * Rango mínimo 1 dígito y máximo 5 dígitos (6 caracteres)
+     * 
+     * @return boolean true si decimal es correcto
+     *
+     * @param string $decimal con la variable dada por el alumno
+     */
+    function validate_decimal($decimal)
+    {
+        if($decimal > 0 && $decimal < 9999 && strlen($decimal) <=6 && !strpos($decimal, '.'))
+            return TRUE;
+        else
+            return FALSE;
+    }
+}
+
+
 
 
 //si no existe la función validate_hours la creamos
@@ -514,24 +536,6 @@ if(!function_exists('validate_frequency'))
     }
 }
 
-if(!function_exists('validate_distance'))
-{
-    /**
-     * Funcion para validar la distancia y los metros.
-     * Numeric (e.g. 1213,5 )
-     * Rango mínimo 1 dígito.
-     * Rango máximo 5 dígitos (6 caracteres)
-     * Devuelve TRUE|FALSE
-     */
-    function validate_distance($distance)
-    {
-
-        if($distance > 0 && $distance < 9999 && strlen($distance) <=6 && !strpos($distance, '.'))
-            return TRUE;
-        else
-            return FALSE;
-    }
-}
 
 
 
