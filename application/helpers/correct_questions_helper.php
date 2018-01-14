@@ -360,8 +360,21 @@ if(!function_exists('validar_frase'))
                             //Si detras tiene una coma la quita 
                             if(substr($partes[0], -1) == ',')
                                 $partes[0] = substr($partes[0], 0, -1); 
-                            
+
                             $is_correct=validate_callsign(trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
+
+                        case "cardinal point": 
+
+                            $partes = explode(" ", trim(substr($frasealumno, $cont, 3)));
+
+                            //Si detras tiene una coma la quita 
+                            if(substr($partes[0], -1) == ',')
+                                $partes[0] = substr($partes[0], 0, -1); 
+    
+                            $is_correct=validate_cardinalpoint(trim($partes[0]));
 
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
@@ -393,19 +406,7 @@ if(!function_exists('validar_frase'))
 
                       
                         
-                        case "cardinalpoint": //HAY QUE HACERLO
-
-                            $partes = explode(" ", trim(substr($frasealumno, $cont, 3)));
-
-                            //Si detras tiene una coma la quita 
-                            if(substr($partes[0], -1) == ',')
-                                $partes[0] = substr($partes[0], 0, -1); 
-    
-
-                            $is_correct=validate_cardinalpoint(trim($partes[0]));
-
-                            $cont = $cont + strlen(trim($partes[0]));
-                            break;
+                        
 
                         case "mmsi":
 

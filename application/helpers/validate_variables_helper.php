@@ -80,6 +80,42 @@ if(!function_exists('validate_callsign'))
     }
 }
 
+//si no existe la función validate_cardinalpoint la creamos
+if(!function_exists('validate_cardinalpoint'))
+{
+    /**
+     * Funcion para validar el cardinal point
+     * Correctos: N, E, S , W, NE, NW, SE, SW, NNE, ENE, ESE, SSE, SSW, WSW, WNW, NNW
+     *
+     * @return boolean true si cardinal point es correcto
+     *
+     * @param string $cardinalpoint con la variable dada por el alumno
+     */
+    function validate_cardinalpoint($cardinalpoint)
+    {
+        //obtiene el id de la variable cardinal point
+        $ci =& get_instance();
+        $data= array();
+        $ci->db->select('id');
+        $ci->db->from('type_variable');
+        $ci->db->where('variable', 'cardinal point');
+        $query = $ci->db->get();
+        $data=$query->row()->id;
+
+        //se busca si existe la variable $cardinalpoint en la tabla variable y cuyo id corresponta con la variable cardinal point
+        $ci->db->select('*');
+        $ci->db->from('variable');
+        $ci->db->where('name like BINARY', $cardinalpoint); //binary lo que hace es que distinga las mayusculas y minusculas
+        $ci->db->where('id_type_variable', $data);
+        $result = $ci->db->get();
+
+        if($result->num_rows() != 0)
+            return TRUE;
+        else
+            return FALSE;
+    }
+}
+
 //si no existe la función validate_hours la creamos
 if(!function_exists('validate_time'))
 {
@@ -99,50 +135,6 @@ if(!function_exists('validate_time'))
     }
 }
 
-
-
-
-
-if(!function_exists('validate_cardinalpoint'))
-{
-    
-    /**
-     * Funcion para validar el cardinal point
-     * North/South/East/West/north-east/north-west/south-east/south-west
-     * Devuelve TRUE|FALSE
-     */
-    function validate_cardinalpoint($cardinalpoint)
-    {
-        //$correct = array("north", "south", "east", "west", "north-east", "north-west", "south-east", "south-west");
-
-        echo "Dentro de validar direction: ".$direction;
-        //if (in_array(strtolower($direction), $correct))
-        //{
-           // return TRUE;
-        //}
-        //return FALSE;
-
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'cardinalpoint');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $cardinalpoint); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-
-}
 
 
 
