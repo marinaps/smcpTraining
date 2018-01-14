@@ -392,6 +392,21 @@ if(!function_exists('validar_frase'))
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
+                        case "date":
+
+                            //trim —> Elimina espacio en blanco (u otro tipo de caracteres) del inicio y el final de la cadena
+                            /* la fecha mas larga tiene un maximo de 14 caracteres(mes september junto con un numero de dos cifras y el th: september 16th)*/
+                            $partes = explode(" ", trim(substr($frasealumno, $cont, 14 )));
+
+                            //Si la ultima parte(la del mes) tiene detras una coma la quita 
+                            if(substr($partes[1], -1) == ',')
+                                $partes[1] = substr($partes[1], 0, -1); 
+
+                            $is_correct=validate_date(trim(substr($frasealumno,$cont, 14 )));
+
+                            $cont = $cont + strlen(trim($partes[0])) + strlen(trim($partes[1])) + 1;
+                            break;
+
                         case "time":
                             //Es un 4 porque la hora siempre son 4 caracteres.
 
@@ -431,20 +446,7 @@ if(!function_exists('validar_frase'))
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
-                        case "date":
-
-                            //trim — Elimina espacio en blanco (u otro tipo de caracteres) del inicio y el final de la cadena
-
-                            $partes = explode(" ", trim(substr($frasealumno,$cont, 14 )));
-
-                            //Si la ultima parte(la del mes) tiene detras una coma la quita 
-                            if(substr($partes[1], -1) == ',')
-                                $partes[1] = substr($partes[1], 0, -1); 
-
-                            $is_correct=validate_date(trim(substr($frasealumno,$cont, 14 )));
-
-                            $cont = $cont + strlen(trim($partes[0])) + strlen(trim($partes[1])) + 1;
-                            break;
+                        
 
                           case "number":
 

@@ -154,6 +154,75 @@ if(!function_exists('validate_charted_name'))
     }
 }
 
+//si no existe la función validate_date la creamos
+if(!function_exists('validate_date'))
+{
+    /**
+     * Funcion para validar la fecha. Ex: april 18th.
+     * Num caracteres max 14(cuando tiene dos cifras el num) y 13(cuando tiene una cifra)
+     *
+     * @return boolean true si date es correcto
+     *
+     * @param string $date con la variable dada por el alumno
+     */
+    function validate_date($date)
+    {
+        $parts = explode(" ", $date);     
+
+        /* 
+            $parts[0] contiene el mes
+            $parts[1] contiene el numero
+        */ 
+        
+        //comprueba si al final la fecha tiene una coma(ej october 12th,).
+        if(substr($parts[1], -1) == ',')
+            $parts[1] = substr($parts[1], 0, -1); //en el caso de que tenga una coma se le quita
+
+
+        //esto separa el numero ($parts[1]) de la terminacion(st, nd, rd, th)
+        if(strlen($parts[1]) == 4)
+        {
+            //si la cadena tiene 4 caracteres entonces nos quedamos con los dos primeros
+            $number = substr($parts[1], 0, 2); 
+        }else
+        {
+            //Si la cadena tiene 3 caracteres entonces nos quedamos con el primero
+            $number = substr($parts[1], 0, 1);
+        }
+
+        //Array con todos los posibles numeros
+        $array_nums = array("1st", "2nd", "3rd", "4th", "5th", "6th", "7th" , "8th", "9th", "10th", "11th",
+            "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd",
+            "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31st");
+
+        //Array con todos los posibles meses y cuantos dias tiene cada uno
+        $array_months = array("January" => 31, "February" => 29, "March" => 31, "April" =>30, "May" => 31,
+                    "June" => 30, "July" => 31, "August" => 31, "September" => 30, "October" => 31,
+                    "November" => 30, "December" => 31);
+
+        //si la parte del numero no esta en el array de numeros devuelve FALSE
+        if ( ! in_array($parts[1], $array_nums)) {
+            echo "en el primero";
+            return FALSE;
+
+        }elseif( ! array_key_exists($parts[0], $array_months)) { 
+            //si la parte del mes no esta en el array de los meses devuelve FALSE
+           //array_key_exists() devuelve TRUE si la key dada existe en el array
+            echo "en el segundo";
+            return FALSE;
+
+        }elseif ( $number > $array_months[$parts[0]]  ) {
+            //si el numero que hemos separado antes de las terminaciones es mayor que el maximo numero de dias que tiene ese mes devuelve FALSE
+            echo "en el tercero";
+            return FALSE;
+        }
+
+        //si no cumple nada de lo anterior entonces devuelve TRUE
+        return TRUE;
+    }
+}
+
+
 //si no existe la función validate_hours la creamos
 if(!function_exists('validate_time'))
 {
@@ -196,75 +265,6 @@ if(!function_exists('validate_MMSI'))
 
 }
 
-if(!function_exists('validate_date'))
-{
-    /**
-     * Funcion para validar la fecha
-     * Num caracteres max 17(cuando tiene dos cifras el num) y 16(cuando tiene una cifra)
-     * Devuelve TRUE|FALSE
-     */
-    function validate_date($date)
-    {
-        $parts = explode(" ", $date);     
-
-        echo "LAS TRES PARTES SON: ";
-        echo "<br>";
-        echo $parts[0]; //contiene el mes
-        echo "<br>";
-        echo $parts[1]; //contiene el numero
-        echo "<br>";
-        //echo $parts[2];
-        //echo "<br>";
-        
-        //Esto comprueba si al final la fecha tiene una coma(ej october 12th,).
-        if(substr($parts[1], -1) == ',')
-            $parts[1] = substr($parts[1], 0, -1); //En el caso de que tenga una coma se le quita
-
-
-        //Esto separa el numero de la terminacion(st, nd, rd, th)
-        if(strlen($parts[1]) == 4)
-        {
-            //Si la cadena tiene 4 caracteres entonces nos quedamos con los dos primeros
-            $number = substr($parts[1], 0, 2); 
-        }else
-        {
-            //Si la cadena tiene 3 caracteres entonces nos quedamos con el primero
-            $number = substr($parts[1], 0, 1);
-        }
-
-
-        //Array con todos los posibles numeros
-        $array_nums = array("1st", "2nd", "3rd", "4th", "5th", "6th", "7th" , "8th", "9th", "10th", "11th",
-            "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd",
-            "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31st");
-
-        //Array con todos los posibles meses y cuantos dias tiene cada uno
-        $array_months = array("January" => 31, "February" => 29, "March" => 31, "April" =>30, "May" => 31,
-                    "June" => 30, "July" => 31, "August" => 31, "September" => 30, "October" => 31,
-                    "November" => 30, "December" => 31);
-
-
-        //Si la parte del numero no esta en el array de numeros devuelve FALSE
-        if ( ! in_array($parts[1], $array_nums)) {
-            echo "en el primero";
-            return FALSE;
-
-        }elseif( ! array_key_exists($parts[0], $array_months)) { 
-            //Si la parte del mes no esta en el array de los meses devuelve FALSE
-           //array_key_exists() devuelve TRUE si la key dada existe en el array
-            echo "en el segundo";
-            return FALSE;
-
-        }elseif ( $number > $array_months[$parts[0]]  ) {
-            //Si el numero que hemos separado antes de las terminaciones es mayor que el maximo numero de dias que tiene ese mes devuelve FALSE
-            echo "en el tercero";
-            return FALSE;
-        }
-        //Si no cumple nada de lo anterior entonces devuelve TRUE
-        return TRUE;
-    }
-
-}
 
 
 if(!function_exists('validate_number'))
