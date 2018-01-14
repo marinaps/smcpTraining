@@ -222,6 +222,42 @@ if(!function_exists('validate_date'))
     }
 }
 
+//si no existe la función validate_datum la creamos
+if(!function_exists('validate_datum'))
+{
+    /**
+     * Funcion para validar datum. Distingue mayusculas y minusculas.
+     * Please use "SEA2", "SEA5".
+     * 
+     * @return boolean true si datum es correcto
+     *
+     * @param string $datum con la variable dada por el alumno
+     */
+    function validate_datum($datum)
+    {
+        //obtiene el id de la variable datum
+        $ci =& get_instance();
+        $data= array();
+        $ci->db->select('id');
+        $ci->db->from('type_variable');
+        $ci->db->where('variable', 'datum');
+        $query = $ci->db->get();
+        $data=$query->row()->id; 
+
+        $ci->db->select('*');
+        $ci->db->from('variable');
+        $ci->db->where('name like BINARY', $datum); //binary lo que hace es que distinga las mayusculas y minusculas
+        $ci->db->where('id_type_variable', $data);
+        $result = $ci->db->get();
+
+        if($result->num_rows() != 0)
+            return TRUE;
+        else
+            return FALSE;
+    }
+}
+
+
 
 //si no existe la función validate_hours la creamos
 if(!function_exists('validate_time'))
@@ -396,37 +432,6 @@ if(!function_exists('validate_search_pattern'))
     }
 }
 
-if(!function_exists('validate_datum'))
-{
-    /**
-     * Funcion para validar datum. Distingue mayusculas y minusculas.
-     * Please use "SEA2", "SEA5".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_datum($datum)
-    {
-        
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'datum');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $datum); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-
-    }
-}
 
 if(!function_exists('validate_bearing_course'))
 {
