@@ -266,6 +266,27 @@ if(!function_exists('validate_number'))
 
 }
 
+//si no existe la función validate_pressure la creamos
+if(!function_exists('validate_pressure'))
+{
+    /**
+     * Funcion para validar pressure
+     * Numerico: maximo 4 caracteres. Desde 0 1300
+     * 
+     * @return boolean true si pressure es correcto
+     *
+     * @param string $pressure con la variable dada por el alumno
+     */
+    function validate_pressure($pressure)
+    {
+        if ($pressure >= 0 && $pressure <= 1300 && ctype_digit($pressure))
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
+}
+
 //si no existe la función validate_speed la creamos
 if(!function_exists('validate_speed'))
 {

@@ -696,6 +696,19 @@ if(!function_exists('validar_frase'))
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
+                        case "pressure": 
+
+                            $partes = explode(" ", trim(substr($frasealumno,$cont, 4 )));
+
+                            //Si detras tiene una coma la quita 
+                            if(substr($partes[0], -1) == ',')
+                                $partes[0] = substr($partes[0], 0, -1); 
+
+                            $is_correct = validate_pressure(trim($partes[0]));
+
+                            $cont = $cont + strlen(trim($partes[0]));
+                            break;
+
                         case "search pattern":
 
                             $partes = explode(" ", trim(substr($frasealumno, $cont, 6)));
@@ -793,7 +806,7 @@ if(!function_exists('validar_frase'))
         }
 
         return $is_correct;
-        
+
     }
 }
 
