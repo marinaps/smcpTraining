@@ -244,40 +244,16 @@ if(!function_exists('validate_mmsi'))
     }
 }
 
-
-
-//si no existe la función validate_hours la creamos
-if(!function_exists('validate_time'))
-{
-    /**
-     * Funcion para validar una hora en formato: hhmm. Desde 0000 hours hasta 2359 
-     *  
-     * @return boolean true si la hora es correcta
-     */
-    function validate_time($hours)
-    {
-        $pattern="/^([0-1][0-9]|[2][0-3])([0-5][0-9])$/";
-
-        //preg_match() devuelve 1 si pattern coincide con el subject dado(en este caso con time), 0 si no, o FALSE si ocurrió un error.
-        if(preg_match($pattern,$hours))
-            return TRUE;
-        return FALSE;
-    }
-}
-
-
-
-
-
-
-
-
+//si no existe la función validate_number la creamos
 if(!function_exists('validate_number'))
 {
     /**
-     * Funcion para validar un number
-     * Numerico: maximo 3 caracteres
-     * Devuelve TRUE|FALSE
+     * Funcion para validar un numero entero
+     * Numerico: maximo 4 caracteres
+     * 
+     * @return boolean true si number es correcto
+     *
+     * @param string $number con la variable dada por el alumno
      */
     function validate_number($number)
     {
@@ -290,14 +266,16 @@ if(!function_exists('validate_number'))
 
 }
 
-
-
+//si no existe la función validate_speed la creamos
 if(!function_exists('validate_speed'))
 {
     /**
      * Funcion para validar la velocidad
      * Numerico: maximo 4 caracteres. Máximo : 35-40 nudos. 
-     * Devuelve TRUE|FALSE
+     * 
+     * @return boolean true si speed es correcto
+     *
+     * @param string $speed con la variable dada por el alumno
      */
     function validate_speed($speed)
     {
@@ -308,255 +286,49 @@ if(!function_exists('validate_speed'))
         }
         return TRUE;
     }
-
 }
 
+//si no existe la función validate_hours la creamos
+if(!function_exists('validate_time'))
+{
+    /**
+     * Funcion para validar una hora en formato: hhmm. Desde 0000 hours hasta 2359 
+     *  
+     * @return boolean true si la hora es correcta
+     *
+     * @param string $hours con la variable dada por el alumno
+     */
+    function validate_time($hours)
+    {
+        $pattern="/^([0-1][0-9]|[2][0-3])([0-5][0-9])$/";
 
+        //preg_match() devuelve 1 si pattern coincide con el subject dado(en este caso con time), 0 si no, o FALSE si ocurrió un error.
+        if(preg_match($pattern,$hours))
+            return TRUE;
+        return FALSE;
+    }
+}
 
+//si no existe la función validate_vhfchannel la creamos
 if(!function_exists('validate_vhfchannel'))
 {
     /**
      * Funcion para validar el vhf channel
-     * Numerico: maximo 2 caracteres
-     * Devuelve TRUE|FALSE
+     * Numerico: maximo 2 caracteres. Desde 1 a 99
+     *  
+     * @return boolean true si la hora es correcta
+     *
+     * @param string $hours con la variable dada por el alumno
      */
-    function validate_vhfchanne($vhfchannel)
+    function validate_vhfchannel($vhfchannel)
     {
         if (is_numeric($vhfchannel) && strlen($vhfchannel) <= 2 && $vhfchannel != 0)
         {
-            echo"is numeric: ".strlen($vhfchannel);
             return TRUE;
         }
         return FALSE;
     }
 }
-
-
-
-if(!function_exists('validate_search_pattern'))
-{
-    /**
-     * Funcion para validar el search pattern. Distingue mayusculas y minusculas.
-     * Please use "DELTA2",  "DELTA5".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_search_pattern($searchpattern)
-    {
-        
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'search pattern');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $searchpattern); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-
-    }
-}
-
-
-
-
-if(!function_exists('validate_frequency'))
-{
-    /**
-     * Funcion para validar la frecuencia. Distingue mayusculas y minusculas.
-     * Alphanumeric (e.g. 1213,5 MHz)
-     * Rango mínimo 1 dígito.
-     * Rango máximo 5 dígitos (6 caracteres)
-     * Devuelve TRUE|FALSE
-     */
-    function validate_frequency($frequency)
-    {
-        $parts = explode(" ", $frequency);
-
-        echo "LAS TRES PARTES SON: ";
-        echo "<br>";
-        echo $parts[0];
-        echo "<br>";
-        echo $parts[1];
-        echo "<br>";
-
-
-        if(substr($parts[1], -1) == ',')
-            $parts[1] = substr($parts[1], -1); 
-
-        if($parts[0] > 0 && $parts[0] < 9999 && strlen($parts[0]) <=6 && !strcmp($parts[1], "MHz") && !strpos($frequency, '.'))
-            return TRUE;
-        else
-            return FALSE;
-    }
-}
-
-
-
-
-if(!function_exists('validate_namelightvessel'))
-{
-    /**
-     * Funcion para validar el name light vessel. Distingue mayusculas y minusculas.
-     * Please use "TRACY5".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_namelightvessel($name)
-    {
-
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'name lightvessel');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $name); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-}
-
-if(!function_exists('validate_waypoint'))
-{
-    /**
-     * Funcion para validar el name light vessel. Distingue mayusculas y minusculas.
-     * Please use "TRACY5".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_waypoint($waypoint)
-    {
-
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'waypoint');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $waypoint); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-}
-
-if(!function_exists('validate_type'))
-{
-    /**
-     * Funcion para validar el name light vessel. Distingue mayusculas y minusculas.
-     * Please use "TRACY5".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_type($type)
-    {
-
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'type');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $type); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-}
-
-if(!function_exists('validate_fromport'))
-{
-    /**
-     * Funcion para validar el name light vessel. Distingue mayusculas y minusculas.
-     * Please use "TRACY5".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_fromport($fromport)
-    {
-
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'fromport');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $fromport); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-}
-
-if(!function_exists('validate_object'))
-{
-    /**
-     * Funcion para validar el name light vessel. Distingue mayusculas y minusculas.
-     * Please use "TRACY5".
-     * Devuelve TRUE|FALSE
-     */
-    function validate_object($object)
-    {
-
-        $ci =& get_instance();
-        $data= array();
-        $ci->db->select('id');
-        $ci->db->from('type_variable');
-        $ci->db->where('variable', 'object');
-        $query = $ci->db->get();
-        $data=$query->row()->id; //Obtiene el id de la variable name
-
-        $ci->db->select('*');
-        $ci->db->from('variable');
-        $ci->db->where('name like BINARY', $object); //binary lo que hace es que distinga las mayusculas y minusculas
-        $ci->db->where('id_type_variable', $data);
-        $result = $ci->db->get();
-
-        if($result->num_rows() != 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-}
-
 
 
 //end application/helpers/ayuda_helper.php
