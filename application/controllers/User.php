@@ -61,7 +61,6 @@ class User extends CI_Controller {
 			       if ($val['id'] == $group_by_data[$i]['id']) 
 			       {
 			       		array_push($result, $all_data[$key]);
-
 			    	}
 			    }
 			}	
@@ -74,9 +73,7 @@ class User extends CI_Controller {
 			           return $key;
 			    	}
 				}*/
-			}
-
-			
+			}	
 	}
 	for ($i = 0; $i < sizeof($result); $i++)
 			{
@@ -90,8 +87,6 @@ class User extends CI_Controller {
 			// [fecha, nota] para que pueda ser luego representado en la grafica
 			$final[] = [$timestamp, $grade]; 
 			}	
-
-
 		//$final_data = $this->user->prueba($data);
 		/*
 		//Preparamos el array con los datos en un cierto formato: [fecha, nota]
@@ -131,11 +126,18 @@ class User extends CI_Controller {
 			$row[] = $this->user->get_role($user->role)->role;
 			$row[] = $user->status;
 
+			if($this->session->userdata['id'] != $user->id)
+			{
 			//add html for action
 			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_user('."'".$user->id."'".')"><i class="glyphicon glyphicon-pencil"></i> </a>
 				  <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="delete" onclick="delete_user('."'".$user->id."'".')"><i class="glyphicon glyphicon-trash"></i> </a>';
 
 				  //<a class="btn btn-sm btn-success" href="javascript:void(0)" title="graph" onclick="graph('."'".$user->id."'".')"> Graph</a>';
+			}
+			else
+			{
+				$row[] ='';
+			}
 		
 			$data[] = $row;
 		}
@@ -204,6 +206,7 @@ class User extends CI_Controller {
 				'status' => $this->input->post('status'),
 			);
 		$this->user->update(array('id' => $this->input->post('id')), $data);
+
 		echo json_encode(array("status" => TRUE));
 	}
 

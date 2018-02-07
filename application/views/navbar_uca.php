@@ -6,7 +6,9 @@
             <div class="navbar-header">
                  
             
-                  <img src="<?php echo base_url(); ?>assets/img/logouca_big.png" alt="Logo UCA">
+                 <!--  <img src="<?php echo base_url(); ?>assets/img/logouca_big.png" alt="Logo UCA">-->
+                  <img width="70%" height="70%" alt="Logo UCA" src="<?php echo base_url(); ?>assets/img/logouca_big.png">
+
             </div><!-- /.navbar-header -->
         
             <div class="collapse navbar-collapse">

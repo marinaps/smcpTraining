@@ -1,5 +1,6 @@
 
   <div class="container">
+    <div class="containermenu">
 
       <ol class="breadcrumb">
           <li><a href="<?php echo site_url();?>main/login">Login</a></li>
@@ -7,7 +8,7 @@
       </ol>
 
 
-      <div class="col-lg-4 col-lg-offset-4">
+      <div class="col-lg-6 col-lg-offset-3">
           <h2>Forgot Password</h2>
           <p>Please enter your email address and we'll send you instructions on how to reset your password</p>
           
@@ -28,6 +29,7 @@
           <?php echo form_close(); ?>    
       </div>
   </div>
+</div>
 
 </body>
 </html>

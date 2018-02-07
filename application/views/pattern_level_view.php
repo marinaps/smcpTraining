@@ -44,11 +44,12 @@ function nobackbutton(){
         <input type="button" id="login" value="Start" class="btn btn-primary btn-lg"" />
       </div>
    
-      <div class="half-width instruction-section" style="margin:30px 0px;background:#f0f0f0;border-radius:5px;">
+      <div class="half-width instruction-section" style="margin:20px 0px;background:#f0f0f0;border-radius:5px;">
        
         <div style="font-size: 20px;font-weight:bold;margin-bottom: 10px;text-decoration:underline;">Instructions</div>
         <div id="testMeta" class="left">Number of questions : <?php echo $num_preguntas?></div>
-        <div id="instruction" class="left alert">Do not refresh the page or press the backwards button in order not to lose the results achieved</div>
+        <div id="instruction" class="alert alert-danger">Do not refresh the page or press the backwards button in order to not lose the results.</div>
+        <div id="instruction" class="alert alert-danger">Character size is programme sensitive.</div>
 
       </div>
 
@@ -131,7 +132,7 @@ function nobackbutton(){
           <input type="hidden" value="<?= $category_id ?>" name="category_id">
           <input type="hidden" value="<?=$num_preguntas?>" name="cantidad">
           <br><br>
-          <input type="submit" value="Finish" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Finish and correct">
+          <input type="submit" value="Finish" class="btn btn-primary" data-container="body" data-toggle="tooltip" data-placement="top" title="Finish and correct">
           <input style="margin:15px;" value="Exit" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Exit without saving" onclick="location.href='<?php echo site_url('main/');?>'">
 
         </form>

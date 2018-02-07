@@ -696,6 +696,23 @@ if(!function_exists('validar_frase'))
                             $cont = $cont + strlen(trim($partes[0]));
                             break;
 
+                        case "position":
+
+                            //El maximo numero de caracteres para una posicion es de 32. 
+                            //La posicion se divide en dos partes: latitud y longitud, asi que separamos el string por espacios y nos quedamos con las dos primeras partes(parte[0] y parte[1]).
+                            $partes = explode(" ", trim(substr($frasealumno,$cont, 39 )));
+                            
+                            //Si la parte 2, la longitud, detras tiene una coma la quita 
+                            if(substr($partes[1], -1) == ',')
+                                $partes[1] = substr($partes[1], 0, -1); 
+
+                            $is_correct = validate_position(trim($partes[0]), trim($partes[1]));
+
+                            //concatena las dos partes con un espacio entre medio
+                            $result = $partes[0]." ".$partes[1];
+                            $cont = $cont + strlen(trim($result));
+                            break;
+
                         case "pressure": 
 
                             $partes = explode(" ", trim(substr($frasealumno,$cont, 4 )));

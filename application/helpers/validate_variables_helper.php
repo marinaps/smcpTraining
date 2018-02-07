@@ -263,7 +263,127 @@ if(!function_exists('validate_number'))
         }
         return FALSE;
     }
+}
 
+//si no existe la función validate_position la creamos
+if(!function_exists('validate_position'))
+{
+    /**
+     * Funcion para validar la posicion
+     * 2 dígitos º + 4 dígitos ’ + 4 dígitos ’’ N + 3 dígitos º + 4 dígitos’+ 4 dígitos’’ W 
+     * 
+     * @return boolean true si position es correcto
+     *
+     * @param string $position con la variable dada por el alumno
+     */
+    function validate_position($latitud, $longitud)
+    {
+        //guarda el punto cardinal del final(en este caso N o S)
+        $cardinal_latitud = substr($latitud, -1); 
+        //quita al string $latitud el punto cardinal y las dos comillas de los segundos
+        $latitud_sincomillas = substr($latitud, 0, -3); 
+
+        //separamos por º para obtener los grados
+        //ahora $grados_lat[0] contendra los grados y $grados_lat[1] contendra el resto del string
+        $grados_lat = explode("º", $latitud);
+
+        //separamos por ' para obtener los minutos
+        //el if esta para diferenciar los diferentes tipos de comas
+        if (strpos($grados_lat[1], "'") === false) 
+            $minutos_lat = explode("’", $grados_lat[1]);
+        else
+            $minutos_lat = explode("'", $grados_lat[1]);
+
+        //obtenemos los segundos
+        $segundos_lat = $minutos_lat[1];
+
+        //comprueba que el punto cardinal sea N o S, de lo contrario devolvera FALSE
+        if(strcmp($cardinal_latitud, "N") !== 0 && strcmp($cardinal_latitud, "S") !== 0)   
+        {
+            return FALSE;
+        }  
+
+        if( $grados_lat[0] < 0 || $grados_lat[0] > 90)
+        {
+            return FALSE;
+        }
+
+        if( $minutos_lat[0] < 0 || $minutos_lat[0] > 60)
+        {
+            return FALSE;
+        }
+
+        if( $segundos_lat < 0 || $segundos_lat > 60)
+        {
+            return FALSE;
+        }
+
+        //guarda el punto cardinal del final 
+        $cardinal_longitud = substr($longitud, -1); 
+
+        //quita al string $latitud el punto cardinal y las dos comillas de los segundos
+        $longitud_sincomillas = substr($longitud, 0, -3); 
+
+        //separamos por º para obtener los grados
+        $grados_lon = explode("º", $longitud);
+
+        //separamos por ' para obtener los minutos
+        //el if esta para diferenciar los diferentes tipos de comas
+        if (strpos($grados_lon[1], "'") === false) 
+            $minutos_lon = explode("’", $grados_lon[1]);
+        else
+            $minutos_lon = explode("'", $grados_lon[1]);
+
+        //obtenemos los segundos
+        $segundos_lon = $minutos_lon[1];
+
+        if(strcmp($cardinal_longitud, "E") !== 0 && strcmp($cardinal_longitud, "W") !== 0) 
+        {
+             return FALSE;
+        }  
+        
+        //comprueba que los grados esten entre 0 y 360
+        //ademas que tenga 3 cifras(ej: 005º)
+        //y que no contenga decimales(que no tenga ninguna coma ",")
+        if( $grados_lon[0] < 0 || $grados_lon[0] > 360 || strlen($grados_lon[0]) != 3 || strpos($grados_lon[0], ","))
+        {
+            return FALSE;
+        }
+
+        if( $minutos_lon[0] < 0 || $minutos_lon[0] > 60)
+        {
+            return FALSE;
+        }
+
+        if( $segundos_lon < 0 || $segundos_lon > 60)
+        {
+            return FALSE;
+        }
+
+        //si no cumple ninguna de las sentencias anteriores entonces la posicion sera correcta y se devolvera TRUE
+        return TRUE;
+    }
+}
+
+//si no existe la función validate_pressure la creamos
+if(!function_exists('validate_pressure'))
+{
+    /**
+     * Funcion para validar pressure
+     * Numerico: maximo 4 caracteres. Desde 0 1300
+     * 
+     * @return boolean true si pressure es correcto
+     *
+     * @param string $pressure con la variable dada por el alumno
+     */
+    function validate_pressure($pressure)
+    {
+        if ($pressure >= 0 && $pressure <= 1300 && ctype_digit($pressure))
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
 }
 
 //si no existe la función validate_pressure la creamos

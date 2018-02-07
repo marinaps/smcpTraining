@@ -24,6 +24,7 @@
                     <th>Type of variable</th>
                     <th>Variables</th>
                     <th>Variables</th>
+                    <th>Restricted</th>
                     <th style="width:125px;">Action</th>
                 </tr>
             </thead>
@@ -36,6 +37,7 @@
                 <th>Type of variable</th>
                 <th>Variables</th>
                 <th>Variables</th>
+                <th>Restricted</th>
                 <th>Action</th>
             </tr>
             </tfoot>
@@ -116,15 +118,19 @@ $(document).ready(function()
         "columns": [
             {
                 "orderable": true,
-                "width": 200,
+                "width": 130,
             }, 
             {
                 "orderable": false,
                 
             }, 
             {
+                "orderable": false, 
+                "width": 90,  
+            }, 
+            {
                 "orderable": false,
-                "width": 100,
+                "width": 20,
             },
             {
                 "orderable": false,

@@ -55,10 +55,9 @@ class Variable_model extends CI_Model {
 	private function _get_datatables_query_help()
 	{
 		//Selecciona todas las variables que tienen ejemplos de nombres concretos
-		$names = array('atposition', 'charted name', 'datum', 'fromport', 'location aboard', 'mvname', 'name lightvessel', 'object', 'search pattern', 'station name', 'type', 'waypoint');
 
 		$this->db->from('type_variable');
-		$this->db->where_in('variable', $names);
+		$this->db->where_in('restricted', "1");
 
 
 		$i = 0;
@@ -132,10 +131,8 @@ class Variable_model extends CI_Model {
 		else
 		{	
 			//Selecciona todas las variables que tienen ejemplos de nombres concretos
-			$names = array('atposition', 'charted name', 'datum', 'fromport', 'location aboard', 'mvname', 'name lightvessel', 'object', 'search pattern', 'station name', 'type', 'waypoint');
-
 			$this->db->from('type_variable');
-			$this->db->where_in('variable', $names);
+			$this->db->where_in('restricted', "1");
 		}
 
 		

@@ -63,6 +63,12 @@ class Variable extends CI_Controller {
 
 			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="view_variables('."'".$variable->id."'".')"><i class="glyphicon glyphicon-eye-open"></i> View variables</a>';
 
+			if($variable->restricted)
+				$row[] =  "restricted";
+			else
+				$row[] =  "non-restricted";
+
+
 			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_variable('."'".$variable->id."'".')"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
 				  <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_type_variable('."'".$variable->id."'".')"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
 		

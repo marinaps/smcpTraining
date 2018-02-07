@@ -1,7 +1,6 @@
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-
    <div class="section">
       <div class="containermenu">
 
@@ -66,7 +65,7 @@
             "responsive": true,
             "processing": true, //Feature control the processing indicator.
             "serverSide": true, //Feature control DataTables' server-side processing mode.
-            "order": [], //Initial no order.
+            "order": [[ 4, "desc" ]],
 
            "columns": [ //Hace que las columnas se puedan o no ordenar
                 {
@@ -82,7 +81,7 @@
                     "orderable": false,
                 },
                 {
-                    "orderable": false,
+                    "orderable": true,
                 },
                 {
                     "orderable": false,
@@ -225,7 +224,7 @@
                 
           
                 $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
-                $('.modal-title').text('Edit User'); // Set title to Bootstrap modal title
+                //$('.modal-title').text('Edit User'); // Set title to Bootstrap modal title
 
             },
             error: function (jqXHR, textStatus, errorThrown)
@@ -265,6 +264,11 @@
                 {
                     $('#modal_form').modal('hide');
                     reload_table();
+                    //alert('The user has been updated correctly');
+                    $('#modal_confirmation').modal('show'); 
+                    //$('.modal-title').text('Edit User'); // Set title to Bootstrap modal title
+
+
                 }
                 else
                 {
@@ -276,6 +280,7 @@
                 }
                 $('#btnSave').text('save'); //change button text
                 $('#btnSave').attr('disabled',false); //set button enable 
+
 
 
             },
@@ -327,7 +332,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Person Form</h3>
+                <h3 class="modal-title">Edit user</h3>
             </div>
             <div class="modal-body form">
                 <form action="#" id="form" class="form-horizontal">
@@ -382,6 +387,23 @@
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
 
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- End Bootstrap modal -->
+
+<!-- Bootstrap modal para la grafica de los resutados-->
+<div class="modal fade" id="modal_confirmation">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body form">
+                <div class="alert alert-success" role="alert">
+                  The user has been updated correctly
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">x</button>
+            </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

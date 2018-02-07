@@ -10,8 +10,6 @@
     <li class="active">Test Association Review</li>
   </ol>
 
-<?php echo var_dump($marina)?>
-
   <div class="dq-test-outer-wrapper">
   
     <div class="dq-test-title">Results Association Level: <?php if(isset($category)) echo $category['number']?> <?php echo $category['description'];?></div>

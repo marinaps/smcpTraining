@@ -49,12 +49,13 @@
         </div>
 
         <div class="form-group col-md-10 col-md-offset-1">
-            <?php echo form_submit(array('value'=>'Let me in!', 'class'=>'btn btn-primary btn-large')); ?>
+            <?php echo form_submit(array('value'=>'Login', 'class'=>'btn btn-primary btn-large')); ?>
             <?php echo form_close(); ?>
              <div class="text-danger"> <?php echo $this->session->flashdata('flash_message'); ?></div>
              <div class="text-success"> <?php echo $this->session->flashdata('correct'); ?></div>
             
             <p><br/>Click <a class="text-danger" href="<?php echo site_url();?>main/forgot">here</a> if you forgot your password.</p>
+            <p>Don't Have an Account? <a class="text-alert" href="<?php echo site_url();?>main/register">Register here</a></p>
         </div>
       </div> <!-- /.col-md-6 -->
     </div> <!-- /.row -->

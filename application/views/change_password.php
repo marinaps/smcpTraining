@@ -1,6 +1,7 @@
 
 
  <div class="container">
+  <div class="containermenu">
 
       <ol class="breadcrumb">
           <li><a href="<?php echo site_url();?>main">Menu</a></li>
@@ -8,9 +9,9 @@
           <li class="active">Change password</li>
       </ol>
 
-      <div class="col-lg-4 col-lg-offset-4">
-          <h2>Change your password</h2>
-          <h5>Hello <strong><?php echo $firstName; ?></strong>, Please enter your new password below</h5>      
+      <div class="col-lg-6 col-lg-offset-3">
+          <h3>Change your password</h3>
+          <h5>Hello <a class="text-alert" ><?php echo $firstName; ?></a>, Please enter your new password below</h5>      
           <?php 
           $fattr = array('class' => 'form-signin');
           echo form_open(site_url().'main/change_password/'); ?> 
@@ -32,6 +33,7 @@
           <div class="text-danger"> <?php echo $this->session->flashdata('flash_message'); ?></div>
           
       </div><!-- /.col-lg-4 col-lg-offset-4-->
+  </div><!-- /.containermenu-->
 </div><!-- /.container-->
 
 

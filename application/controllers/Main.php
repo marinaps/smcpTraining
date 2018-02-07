@@ -26,11 +26,11 @@ class Main extends CI_Controller {
         {
             redirect(site_url().'main/login/');
         }
-
+        $data['titulo'] = "SMCP Training Home"; 
         //Si es un administrador entonces le muestra la vista del profesor
         if($this->session->userdata['role'] == "1")
         {
-            $data['titulo'] = "SMCP Training Home";            
+                       
             /*front page*/ 
             $this->load->view('header', $data);  
             $this->load->view('navbar');          
@@ -38,7 +38,6 @@ class Main extends CI_Controller {
         }
         else //Si no muestra la vista del alumno
         {
-            $data['titulo'] = "SMCP Training Home";            
             /*front page*/ 
             $this->load->view('header', $data);  
             $this->load->view('navbar');          
@@ -83,6 +82,20 @@ class Main extends CI_Controller {
             }
             redirect(site_url().'main/');
         }  
+    }
+
+    /**
+     * Metodo de registro
+     *
+     * Muestra el formulario de registro
+     *
+    */    
+    public function register()
+    {
+        $data['titulo'] = "SMCP Training Register";  
+        $this->load->view('header', $data);  
+        $this->load->view('navbar');          
+        $this->load->view('register_form');
     }
 
     /**
@@ -327,6 +340,7 @@ class Main extends CI_Controller {
         {   
             $title['titulo'] = "Modify password";  
             $this->load->view('header', $title);
+            $this->load->view('navbar');
             $this->load->view('change_password', $data);
           
         }else
