@@ -228,8 +228,6 @@ class User extends CI_Controller {
 		{
 			echo json_encode(array("status" => FALSE));
 		}
-
-		
 	}
 
 
@@ -285,7 +283,6 @@ class User extends CI_Controller {
 					$data['status'] = FALSE;
 				}
 			}
-
 		}
 		
 		if($data['status'] === FALSE)

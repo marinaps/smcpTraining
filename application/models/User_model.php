@@ -4,9 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class User_model extends CI_Model {
 
 	var $table = 'users';
-	var $column_order = array('first_name','last_name','email','status',null); //set column field database for datatable orderable
+	var $column_order = array('first_name','last_name','email',null,'status',null); //set column field database for datatable orderable
 	var $column_search = array('first_name','last_name','email'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-	var $order = array('id' => 'desc'); // default order 
+	var $order = array('status' => 'desc'); // default order 
 
 	public function __construct()
 	{

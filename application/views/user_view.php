@@ -65,7 +65,7 @@
             "responsive": true,
             "processing": true, //Feature control the processing indicator.
             "serverSide": true, //Feature control DataTables' server-side processing mode.
-            "order": [[ 4, "desc" ]],
+            "order": [],
 
            "columns": [ //Hace que las columnas se puedan o no ordenar
                 {
@@ -87,6 +87,15 @@
                     "orderable": false,
                 }
             ],
+            //Esta funcion cambia el color de las filas que tienen el valor de pending
+             "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                    if ( aData[4] == "pending" )
+                    {
+                        $('td', nRow).css('background-color', 'Silver ');
+                    }
+                   
+                },
+
             // Load data for the table's content from an Ajax source
             "ajax": {
                 "url": "<?php echo site_url('user/ajax_list')?>",
@@ -102,6 +111,7 @@
             ],
 
         });
+
 
         //set input/textarea/select event when change value, remove class error and remove text help block 
         $("input").change(function(){
@@ -267,8 +277,6 @@
                     //alert('The user has been updated correctly');
                     $('#modal_confirmation').modal('show'); 
                     //$('.modal-title').text('Edit User'); // Set title to Bootstrap modal title
-
-
                 }
                 else
                 {
@@ -392,7 +400,8 @@
 </div><!-- /.modal -->
 <!-- End Bootstrap modal -->
 
-<!-- Bootstrap modal para la grafica de los resutados-->
+
+<!-- Bootstrap modal para el mensaje de confirmacion-->
 <div class="modal fade" id="modal_confirmation">
     <div class="modal-dialog">
         <div class="modal-content">

@@ -55,7 +55,7 @@
              <div class="text-success"> <?php echo $this->session->flashdata('correct'); ?></div>
             
             <p><br/>Click <a class="text-danger" href="<?php echo site_url();?>main/forgot">here</a> if you forgot your password.</p>
-            <p>Don't Have an Account? <a class="text-alert" href="<?php echo site_url();?>main/register">Register here</a></p>
+            <p>Don't Have an Account? <a class="text-alert" href="<?php echo site_url();?>main/register">Sign up here</a></p>
         </div>
       </div> <!-- /.col-md-6 -->
     </div> <!-- /.row -->

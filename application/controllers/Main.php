@@ -85,18 +85,68 @@ class Main extends CI_Controller {
     }
 
     /**
-     * Metodo de registro
+     * Metodo de registro 
      *
      * Muestra el formulario de registro
      *
-    */    
+    */   
     public function register()
     {
         $data['titulo'] = "SMCP Training Register";  
         $this->load->view('header', $data);  
-        $this->load->view('navbar');          
+        $this->load->view('navbar_uca');          
         $this->load->view('register_form');
     }
+
+    public function new_user()
+    {
+        $this->load->library('email');
+
+        if(isset($_POST['record']) and $_POST['record'] == 'yes')
+        {
+            //SI EXISTE EL CAMPO OCULTO LLAMADO GRABAR CREAMOS LAS VALIDACIONES
+            $this->form_validation->set_rules('first_name','First Name','required|trim|xss_clean');
+            $this->form_validation->set_rules('last_name','Last Name','required|trim|xss_clean');
+            $this->form_validation->set_rules('email','Email','required|valid_email|trim|xss_clean');
+            $this->form_validation->set_rules('password','Password','min_length[4]|required|trim|xss_clean');
+             
+            //SI HAY ALGÚNA REGLA DE LAS ANTERIORES QUE NO SE CUMPLE MOSTRAMOS EL MENSAJE
+            //EL COMODÍN %s SUSTITUYE LOS NOMBRES QUE LE HEMOS DADO ANTERIORMENTE, EJEMPLO, 
+            //SI EL NOMBRE ESTÁ VACÍO NOS DIRÍA, EL NOMBRE ES REQUERIDO, EL COMODÍN %s 
+            //SERÁ SUSTITUIDO POR EL NOMBRE DEL CAMPO
+          
+         
+            //SI ALGO NO HA IDO BIEN NOS DEVOLVERÁ AL INDEX MOSTRANDO LOS ERRORES
+            if($this->form_validation->run() == FALSE) 
+            {
+                $data['titulo'] = "SMCP Training Register";  
+                $this->load->view('header', $data);  
+                $this->load->view('navbar_uca');          
+                $this->load->view('register_form');
+
+            }else
+            {  
+                $this->email->from("agathaxagathax@gmail.com", 'Meu E-mail');
+                $this->email->subject("Assunto do e-mail");
+                $this->email->to("m.pinasalva@gmail.com"); 
+                $this->email->message("Aqui vai a mensagem ao seu destinatário");
+               
+
+                if($this->email->send(FALSE))
+                {
+                    echo "enviado<br/>";
+                    echo $this->email->print_debugger(array('headers'));
+                }
+                else 
+                {
+                     echo "fallo <br/>";
+                     echo "error: ".$this->email->print_debugger(array('headers'));
+                }     
+            }
+        }
+    }
+
+    
 
     /**
      * Metodo de logout
