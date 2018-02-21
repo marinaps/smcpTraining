@@ -19,7 +19,7 @@
       <div class="col-md-5">
         <div class="form-group col-md-10 col-md-offset-1">
          
-          <h2 style="text-align:center; margin-bottom: 50px; margin-top: 50px;">Welcome! Please login</h2>
+          <h2 style="text-align:center; margin-bottom: 40px; margin-top: 50px;">Welcome! Please login</h2>
 
           
           <?php $fattr = array('class' => 'form-signin');
@@ -52,10 +52,12 @@
             <?php echo form_submit(array('value'=>'Login', 'class'=>'btn btn-primary btn-large')); ?>
             <?php echo form_close(); ?>
              <div class="text-danger"> <?php echo $this->session->flashdata('flash_message'); ?></div>
-             <div class="text-success"> <?php echo $this->session->flashdata('correct'); ?></div>
-            
+             <h4 class="text-success"> <?php echo $this->session->flashdata('correct'); ?></h4>
+             
             <p><br/>Click <a class="text-danger" href="<?php echo site_url();?>main/forgot">here</a> if you forgot your password.</p>
             <p>Don't Have an Account? <a class="text-alert" href="<?php echo site_url();?>main/register">Sign up here</a></p>
+            <p>Ejemplo <a class="text-alert" href="<?php echo site_url();?>main/ejemplo">Sign up here</a></p>
+        
         </div>
       </div> <!-- /.col-md-6 -->
     </div> <!-- /.row -->
@@ -63,15 +65,15 @@
 
   <script>
 
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-90305206-1', 'auto');
-  ga('send', 'pageview');
+    ga('create', 'UA-90305206-1', 'auto');
+    ga('send', 'pageview');
 
-</script>
+  </script>
 
   </body>
 </html>

@@ -9,7 +9,8 @@ class Main extends CI_Controller {
     function __construct(){
         parent::__construct();
         $this->load->model('main_model', 'main_model', TRUE);
-        $this->load->library('form_validation');    
+        $this->load->library('form_validation');  
+        $this->load->library('email');     
         $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
         $this->status = $this->config->item('status'); 
         $this->roles = $this->config->item('roles');
@@ -126,11 +127,12 @@ class Main extends CI_Controller {
 
             }else
             {  
+                $mensaje = $this->load->view('login', TRUE);
                 $this->email->from("agathaxagathax@gmail.com", 'Meu E-mail');
                 $this->email->subject("Assunto do e-mail");
                 $this->email->to("m.pinasalva@gmail.com"); 
-                $this->email->message("Aqui vai a mensagem ao seu destinatário");
-               
+                $this->email->message('Hello, We are <strong>Example Inc.</strong>');
+                $this->email->set_mailtype('html');
 
                 if($this->email->send(FALSE))
                 {
@@ -146,6 +148,41 @@ class Main extends CI_Controller {
         }
     }
 
+    public function ejemplo()
+    {
+        $this->load->view('template2');
+    }
+/*
+    public function send()
+    {
+       
+        //$this->load->view('template2');
+           
+        $data = array(
+                'userName'=> 'Anil Kumar Panigrahi'
+            );
+
+        $this->load->library('email');
+        $mensaje = $this->load->view('template2',$data, TRUE);
+
+        $this->email->from("agathaxagathax@gmail.com", 'Meu E-mail');
+        $this->email->subject("Assunto do e-mail");
+        $this->email->to("m.pinasalva@gmail.com"); 
+        $this->email->message($mensaje);
+        $this->email->set_mailtype('html');
+
+        if($this->email->send(FALSE))
+        {
+            echo "enviado<br/>";
+            echo $this->email->print_debugger(array('headers'));
+        }
+        else 
+        {
+             echo "fallo <br/>";
+             echo "error: ".$this->email->print_debugger(array('headers'));
+        }   
+    }
+    */
     
 
     /**
@@ -166,7 +203,7 @@ class Main extends CI_Controller {
      * Comprueba si el email dado corresponde a algun usuario, en tal caso
      * crea una url para que el usuario pueda recuperar la contraseña.
      *
-    */   
+    */
     public function forgot()
     {
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email'); 
@@ -201,13 +238,36 @@ class Main extends CI_Controller {
             $token = $this->main_model->insertToken($userInfo->id);                    
             $qstring = base64_encode($token);                    
             $url = site_url() . 'main/reset_password/token/' . $qstring;
-            $link = '<a href="' . $url . '">' . $url . '</a>'; 
-            
-            $message = '';                     
-            $message .= '<strong>A password reset has been requested for this email account</strong><br>';
-            $message .= '<strong>Please click:</strong> ' . $link;             
+            $data['link'] = $url; 
 
-            echo $message; //send this through mail
+            $this->load->library('email');
+
+            $mensaje = $this->load->view('template2',$data, TRUE);
+
+            $this->email->from("agathaxagathax@gmail.com", 'Meu E-mail');
+            $this->email->subject("You have requested to change your password");
+            $this->email->to("m.pinasalva@gmail.com"); 
+            $this->email->message($mensaje);
+            $this->email->set_mailtype('html');
+
+            if($this->email->send(FALSE))
+            {
+                
+                $this->session->set_flashdata('correct', 'The instructions have been sent to your email address. Do not forget to check your SPAM folder.');
+                redirect(site_url().'/main/login'); 
+
+            }
+            else 
+            {
+                $this->session->set_flashdata('flash_message', 'There was a problem, try it later.');
+                redirect(site_url().'/main/profile');
+
+                //echo "error: ".$this->email->print_debugger(array('headers'));
+            }  
+
+
+
+
             exit;   
         }  
     }

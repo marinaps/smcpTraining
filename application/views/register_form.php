@@ -65,9 +65,10 @@
 
               <br/><button type="submit" class="btn btn-primary">Create an account</button>
           <?php echo form_close() ?>
+          <p>Don't Have an Account? <a class="text-alert" href="<?php echo site_url();?>main/send">Sign up here</a></p>
            <!-- 
            <a href="<?php echo site_url();?>main/create_user" class="btn btn-lg btn-primary btn-block">Create an account</a>-->
-
+      
       </div> <!-- /.form-group-->
     </div> <!-- /.col-lg-4 col-lg-offset-4-->
   </div>  <!-- /.containermenu-->
