@@ -272,8 +272,11 @@ class Result extends CI_Controller {
 
         $data['correct'] = $info_exam->right;
         $data['num_questions'] = $info_exam->num_questions;
-        $data['category'] = $this->result->get_category_name($info_exam->category);
-
+        
+        if(isset($info_exam->category))
+        {
+        	$data['category'] = $this->result->get_category_name($info_exam->category);
+		}
 
         $data['results_disordered'] = $this->result->get_disordered_results($id_exam); //obtiene todas las entries
         $data['results_truefalse'] = $this->result->get_truefalse_results($id_exam); //obtiene todas las entries
@@ -311,8 +314,11 @@ class Result extends CI_Controller {
         $info_exam = $this->result->get_exam_info($id_exam); //obtiene el examen
         $data['correct'] = $info_exam->right;
         $data['num_questions'] = $info_exam->num_questions;
-        $data['category'] = $this->result->get_category_name($info_exam->category);
-		$data['marina'] = $this->result->get_category_name($info_exam->category);
+
+        if(isset($info_exam->category))
+        {
+        	$data['category'] = $this->result->get_category_name($info_exam->category);
+		}
 
         $data['results_questions'] = $this->result->get_q_a_results($id_exam); //obtiene todas las entries
         //$data['results_truefalse'] = $this->result->get_truefalse_results($id_exam); //obtiene todas las entries

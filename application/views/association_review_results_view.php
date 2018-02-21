@@ -12,7 +12,15 @@
 
   <div class="dq-test-outer-wrapper">
   
-    <div class="dq-test-title">Results Association Level: <?php if(isset($category)) echo $category['number']?> <?php echo $category['description'];?></div>
+    <div class="dq-test-title">Results Association Level: 
+      <?php 
+          if(isset($category)) 
+          {
+            echo $category['number']; 
+            echo $category['description'];
+          }
+        ?>
+    </div>
     <div id="testContent">
 
       <div class="question-section">

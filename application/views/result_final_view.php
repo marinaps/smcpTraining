@@ -56,12 +56,10 @@
         //datatables
         table = $('#table').DataTable({ 
              
-             dom: 'Bfrtip',
-    buttons: [
-        
-        
-        'print'
-    ],
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ],
 
             "processing": true, //Feature control the processing indicator.
             "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -85,8 +83,7 @@
                 },
                 {
                     "orderable": false,
-                    "width": "20%"
-
+                    "width": "25%"
                 }
             ],
             // Load data for the table's content from an Ajax source
@@ -94,14 +91,6 @@
                 "url": "<?php echo site_url('result/ajax_list_final')?>",
                 "type": "POST"
             },
-
-            //Set column definition initialisation properties.
-            "columnDefs": [
-            { 
-                "targets": [ -1 ], //last column
-                "orderable": false, //set not orderable
-            },
-            ],
 
         });
 
