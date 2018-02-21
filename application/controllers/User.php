@@ -218,8 +218,6 @@ class User extends CI_Controller {
             echo json_encode(array("status" => FALSE));
             //echo "error: ".$this->email->print_debugger(array('headers'));
         }       
-
-		
 	}
 
 
@@ -326,6 +324,21 @@ class User extends CI_Controller {
 	}
 
 
+	public function email_unique($email)
+    {
+        
+        if($this->user->isDuplicate($this->input->post('email')))
+		{
+        	$this->form_validation->set_message('email_unique', 'Email already exists. Choose another one please.');
+        	return FALSE;
+        }
+        else
+        {
+             return TRUE;
+        }
+    }
+
+
 	/**
      * Registro de un nuevo usuario
      *
@@ -341,7 +354,7 @@ class User extends CI_Controller {
             //Si existe el campo oculto llamado grabar creamos las validaciones
             $this->form_validation->set_rules('first_name','First Name','required|trim|xss_clean');
             $this->form_validation->set_rules('last_name','Last Name','required|trim|xss_clean');
-            $this->form_validation->set_rules('email','Email','required|valid_email|trim|xss_clean');
+            $this->form_validation->set_rules('email','Email','callback_email_unique|required|valid_email|trim|xss_clean');
             $this->form_validation->set_rules('password','Password','min_length[4]|required|trim|xss_clean');
 
             //Si hay alguna regla de las anteriores que no se cumple mostramos el mensaje
