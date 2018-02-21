@@ -46,6 +46,22 @@ class Main_model extends CI_Model {
         $this->db->where('token', $token);
         $this->db->delete('tokens');
     }
+
+
+    /**
+     * Elimina el token antiguo del usuario indicado
+     *
+     * Cuando se crea un nuevo token de un usuario se borra(si lo hay) el token antiguo
+     *
+     * @param string $user_id id del usuario del que se quiere borrar el token
+    */  
+    public function deleteOldToken($user_id)
+    {   
+        
+        $this->db->from('tokens');
+        $this->db->where('user_id', $user_id);
+        $this->db->delete('tokens');
+    }
     
 
     /**

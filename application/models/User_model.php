@@ -224,4 +224,36 @@ class User_model extends CI_Model {
 		return  $query->result_array();
 	}
 
+	/**
+     * Devuelve el id de un usuario dado su email
+     *
+     * @return id del usuairo
+     * @param string $email email del usuario
+    */ 
+	public function get_id_by_email($email)
+	{
+		$this->db->select("id");
+		$this->db->from($this->table);
+		$this->db->where('email',$email);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
+	/**
+     * Devuelve el id de un usuario dado su email
+     *
+     * @return id del usuairo
+     * @param string $email email del usuario
+    */ 
+	public function get_email_by_id($id)
+	{
+		$this->db->select("email");
+		$this->db->from($this->table);
+		$this->db->where('id',$id);
+		$query = $this->db->get();
+
+		return $query->row()->email;
+	}
+
 }

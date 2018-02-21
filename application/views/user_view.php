@@ -12,6 +12,8 @@
 
         <h2><center>Students Data</center></h2>
         <br/>
+        <h5 class="text-success"> <center><?php echo $this->session->flashdata('correct'); ?></center></h5>
+
 
         <button class="btn btn-success" onclick="add_user()"><i class="glyphicon glyphicon-plus"></i> Add User</button>
         <button class="btn btn-default" onclick="reload_table()"><i class="glyphicon glyphicon-refresh"></i> Reload</button>

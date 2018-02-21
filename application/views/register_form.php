@@ -16,9 +16,9 @@
           <div class="text-danger"> <?php echo $this->session->flashdata('flash_message'); ?></div>
           <div class="text-success"> <?php echo $this->session->flashdata('correct'); ?></div>
 
-          <?php echo form_open(site_url().'main/new_user/') ?>
+          <?php echo form_open(site_url().'user/newUser/') ?>
 
-              
+              <input type="hidden" name="record" value="yes" />
                 <label>First name</label>
                 <div <?php echo (form_error('first_name') == '') ? '' : ' class="form-group has-error"'; ?>>
                 <input type="text" class="form-control" id="first_name" name="first_name" 
@@ -28,7 +28,7 @@
 
               </div>
 
-              <input type="hidden" name="record" value="yes" />
+              
 
              
                 <label>Last name</label>
@@ -65,9 +65,6 @@
 
               <br/><button type="submit" class="btn btn-primary">Create an account</button>
           <?php echo form_close() ?>
-          <p>Don't Have an Account? <a class="text-alert" href="<?php echo site_url();?>main/send">Sign up here</a></p>
-           <!-- 
-           <a href="<?php echo site_url();?>main/create_user" class="btn btn-lg btn-primary btn-block">Create an account</a>-->
       
       </div> <!-- /.form-group-->
     </div> <!-- /.col-lg-4 col-lg-offset-4-->

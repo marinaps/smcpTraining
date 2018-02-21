@@ -88,7 +88,7 @@ class Main extends CI_Controller {
     /**
      * Metodo de registro 
      *
-     * Muestra el formulario de registro
+     * Muestra el formulario de registro de un nuevo usuarios
      *
     */   
     public function register()
@@ -99,58 +99,10 @@ class Main extends CI_Controller {
         $this->load->view('register_form');
     }
 
-    public function new_user()
-    {
-        $this->load->library('email');
-
-        if(isset($_POST['record']) and $_POST['record'] == 'yes')
-        {
-            //SI EXISTE EL CAMPO OCULTO LLAMADO GRABAR CREAMOS LAS VALIDACIONES
-            $this->form_validation->set_rules('first_name','First Name','required|trim|xss_clean');
-            $this->form_validation->set_rules('last_name','Last Name','required|trim|xss_clean');
-            $this->form_validation->set_rules('email','Email','required|valid_email|trim|xss_clean');
-            $this->form_validation->set_rules('password','Password','min_length[4]|required|trim|xss_clean');
-             
-            //SI HAY ALGÚNA REGLA DE LAS ANTERIORES QUE NO SE CUMPLE MOSTRAMOS EL MENSAJE
-            //EL COMODÍN %s SUSTITUYE LOS NOMBRES QUE LE HEMOS DADO ANTERIORMENTE, EJEMPLO, 
-            //SI EL NOMBRE ESTÁ VACÍO NOS DIRÍA, EL NOMBRE ES REQUERIDO, EL COMODÍN %s 
-            //SERÁ SUSTITUIDO POR EL NOMBRE DEL CAMPO
-          
-         
-            //SI ALGO NO HA IDO BIEN NOS DEVOLVERÁ AL INDEX MOSTRANDO LOS ERRORES
-            if($this->form_validation->run() == FALSE) 
-            {
-                $data['titulo'] = "SMCP Training Register";  
-                $this->load->view('header', $data);  
-                $this->load->view('navbar_uca');          
-                $this->load->view('register_form');
-
-            }else
-            {  
-                $mensaje = $this->load->view('login', TRUE);
-                $this->email->from("agathaxagathax@gmail.com", 'Meu E-mail');
-                $this->email->subject("Assunto do e-mail");
-                $this->email->to("m.pinasalva@gmail.com"); 
-                $this->email->message('Hello, We are <strong>Example Inc.</strong>');
-                $this->email->set_mailtype('html');
-
-                if($this->email->send(FALSE))
-                {
-                    echo "enviado<br/>";
-                    echo $this->email->print_debugger(array('headers'));
-                }
-                else 
-                {
-                     echo "fallo <br/>";
-                     echo "error: ".$this->email->print_debugger(array('headers'));
-                }     
-            }
-        }
-    }
-
+    
     public function ejemplo()
     {
-        $this->load->view('template2');
+        $this->load->view('email_template_new_user');
     }
 /*
     public function send()
@@ -201,7 +153,7 @@ class Main extends CI_Controller {
      * Metodo para recuperar la contraseña si se ha olvidado (Página de login)
      *
      * Comprueba si el email dado corresponde a algun usuario, en tal caso
-     * crea una url para que el usuario pueda recuperar la contraseña.
+     * crea una url y la manda por mail para que el usuario pueda recuperar la contraseña.
      *
     */
     public function forgot()
@@ -224,51 +176,49 @@ class Main extends CI_Controller {
             
             if(!$userInfo)
             {
+                //Si el email no esta en la bd
                 $this->session->set_flashdata('flash_message', 'We cant find your email address');
                 redirect(site_url().'main/forgot');
             }   
             
-            if($userInfo->status != $this->status[1]) //if status is not approved
+            if($userInfo->status != $this->status[1])
             { 
+                //Si el estado del usuario no esta aprobado por el admin
                 $this->session->set_flashdata('flash_message', 'Your account is not in approved status');
                 redirect(site_url().'main/forgot');
             }
             
+            $this->main_model->deleteOldToken($userInfo->id);
+
             //build token 
             $token = $this->main_model->insertToken($userInfo->id);                    
             $qstring = base64_encode($token);                    
             $url = site_url() . 'main/reset_password/token/' . $qstring;
             $data['link'] = $url; 
 
-            $this->load->library('email');
+            //Para cargar la vista que se va a enviar por correo
+            $message = $this->load->view('email_template_forgot_password',$data, TRUE);
 
-            $mensaje = $this->load->view('template2',$data, TRUE);
-
-            $this->email->from("agathaxagathax@gmail.com", 'Meu E-mail');
+            //Configuracion del email
+            $this->email->from("smcptraining@gmail.com", 'SMCP-Training');
             $this->email->subject("You have requested to change your password");
             $this->email->to("m.pinasalva@gmail.com"); 
-            $this->email->message($mensaje);
-            $this->email->set_mailtype('html');
+            $this->email->message($message);
 
-            if($this->email->send(FALSE))
+            if($this->email->send())
             {
-                
+                //Si se envia correctamente se redirecciona a la pagina de login con el siguiente mensaje
                 $this->session->set_flashdata('correct', 'The instructions have been sent to your email address. Do not forget to check your SPAM folder.');
                 redirect(site_url().'/main/login'); 
-
             }
             else 
             {
+                //Si no, se redirecciona a la pagina de login con el siguiente mensaje
                 $this->session->set_flashdata('flash_message', 'There was a problem, try it later.');
-                redirect(site_url().'/main/profile');
+                redirect(site_url().'/main/login');
 
                 //echo "error: ".$this->email->print_debugger(array('headers'));
-            }  
-
-
-
-
-            exit;   
+            }   
         }  
     }
         
@@ -289,7 +239,7 @@ class Main extends CI_Controller {
         
         if(!$user_info)
         {
-            $this->session->set_flashdata('flash_message', 'Token is invalid or expired');
+            $this->session->set_flashdata('flash_message', 'Reset password link expired, please click reset password again to receive new reset link.');
             redirect(site_url().'main/login');
         }   
 
