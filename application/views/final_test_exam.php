@@ -1,27 +1,35 @@
-
 <script>
 
-$(document).ready(function()
-{
-  $('[data-toggle="tooltip"]').tooltip(); 
+  $(document).ready(function()
+  {
+    $('[data-toggle="tooltip"]').tooltip(); 
 
-  document.getElementById("myForm").reset();
-  $("#login").click(function(){
-    $(".login-section,.instruction-section").remove();
-    $(".question-section").css("display","inline-block");
-   
-        }
-  );
-}); 
+    document.getElementById("myForm").reset();
+    $("#login").click(function()
+    {
+      $(".login-section,.instruction-section").remove();
+      $(".question-section").css("display","inline-block");
+    });
+  }); 
 
-//Con esta funcion evitamos que el alumno pueda darle al boton de atras 
-function nobackbutton(){
-   window.location.hash="no-back-button";
-   window.location.hash="Again-No-back-button" //chrome
-   window.onhashchange=function(){window.location.hash="no-back-button";}
-}
+  //Con esta funcion evitamos que el alumno pueda darle al boton de atras 
+  function nobackbutton()
+  {
+     window.location.hash="no-back-button";
+     window.location.hash="Again-No-back-button" //chrome
+     window.onhashchange=function(){window.location.hash="no-back-button";}
+  }
+
+  function exit()
+  {
+    if (confirm('if you press accept the exam data will not be saved')) 
+    {
+        window.location.href='<?php echo site_url('main/');?>';
+    }
+  }
 
 </script>
+
 <body onload="nobackbutton();">
 
 <div class="containermenu" >
@@ -178,7 +186,7 @@ function nobackbutton(){
           <input type="hidden" value="<?=$num_preguntas?>" name="cantidad">
           <br><br>
           <input type="submit" value="Finish" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Finish and correct">
-          <input style="margin: 15px;" value="Exit" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Exit without saving" onclick="location.href='<?php echo site_url('main/');?>'">
+          <input onclick = "exit()" style="margin: 15px;" value="Exit" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Exit without saving">
 
         </form>
 

@@ -699,9 +699,22 @@ if(!function_exists('validar_frase'))
                         case "position":
 
                             //El maximo numero de caracteres para una posicion es de 32. 
-                            //La posicion se divide en dos partes: latitud y longitud, asi que separamos el string por espacios y nos quedamos con las dos primeras partes(parte[0] y parte[1]).
-                            $partes = explode(" ", trim(substr($frasealumno,$cont, 39 )));
+                            //Primero separamos el string por espacios para asegurarnos que no hay caracteres de la siguiente palabra de la frase.
                             
+                            $aux = explode(" ", trim(substr($frasealumno,$cont, 39 )));
+
+                            //Una vez hecho esto ya tendremos la cadena con la posicion.
+                            //La posicion se divide en dos partes: latitud y longitud, que estan seguidas, asi que para obtener cada parte separamos el string o bien por la N o por la S(norte o sur) que es lo que separa una parte de otra, y nos quedamos con las dos primeras partes(parte[0] y parte[1]).
+                            
+                            if(strpos($aux[0], 'N'))
+                            {
+                                $partes = explode("N", $aux[0]);
+                            }
+                            else
+                            {
+                                $partes = explode("S", $aux[0]);
+                            }
+                           
                             //Si la parte 2, la longitud, detras tiene una coma la quita 
                             if(substr($partes[1], -1) == ',')
                                 $partes[1] = substr($partes[1], 0, -1); 

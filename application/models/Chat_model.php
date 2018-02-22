@@ -324,7 +324,7 @@ class Chat_model extends CI_Model {
                 'id_user' => $this->session->userdata['id'],
                 'final_test' => false,
                 'level' => '1',
-                'category' => $id_category
+                'id_category' => $id_category
 
             );
 
@@ -348,8 +348,7 @@ class Chat_model extends CI_Model {
                 'id_user' => $this->session->userdata['id'],
                 'final_test' => false,
                 'level' => '2',
-                'category' => $id_category
-
+                'id_category' => $id_category
             );
 
         $this->db->insert('exam', $data); //Crea e inserta el examen en la BD

@@ -278,10 +278,8 @@ if(!function_exists('validate_position'))
      */
     function validate_position($latitud, $longitud)
     {
-        //guarda el punto cardinal del final(en este caso N o S)
-        $cardinal_latitud = substr($latitud, -1); 
-        //quita al string $latitud el punto cardinal y las dos comillas de los segundos
-        $latitud_sincomillas = substr($latitud, 0, -3); 
+        //La latitud ya ser recibe sin el punto cardinal, por lo que no hace falta hacerle nada.
+        //guarda el punto cardinal del final(en este caso N o S)        
 
         //separamos por º para obtener los grados
         //ahora $grados_lat[0] contendra los grados y $grados_lat[1] contendra el resto del string
@@ -296,12 +294,6 @@ if(!function_exists('validate_position'))
 
         //obtenemos los segundos
         $segundos_lat = $minutos_lat[1];
-
-        //comprueba que el punto cardinal sea N o S, de lo contrario devolvera FALSE
-        if(strcmp($cardinal_latitud, "N") !== 0 && strcmp($cardinal_latitud, "S") !== 0)   
-        {
-            return FALSE;
-        }  
 
         if( $grados_lat[0] < 0 || $grados_lat[0] > 90)
         {
