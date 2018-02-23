@@ -76,7 +76,7 @@ class Category_model extends CI_Model {
 
 
 	/**
-     * Devuelve un array con todas los datos de una respuesta 
+     * Devuelve un array con todas los datos de una categoria 
      *
      * @return array con los datos de la categoria
      * @param string $id id de la categoria

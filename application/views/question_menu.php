@@ -58,7 +58,7 @@
 
     <div class="col-md-4 text-center margincolum" >
 
-            <div class="menuprincipal" onclick="location.href='<?php echo site_url();?>asdf'"> 
+            <div class="menuprincipal" onclick="location.href='<?php echo site_url();?>configuration'"> 
                 <img class="margenimg" src="<?php echo base_url(); ?>assets/img/configuration.svg" alt="Variables icon">
                 <h3>Configuration</h3>
             </div>  <!-- /menuprincipal -->

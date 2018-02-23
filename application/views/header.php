@@ -37,6 +37,9 @@
         <script src="<?php echo base_url('assets/datatables/js/dataTables.bootstrap.js')?>"></script>
         <script src="<?php echo base_url('assets/js/jasny-bootstrap.min.js')?>"></script>
 
+        <!-- Libreria para hacer los checkbox anidados(configuracion -> categorias)  -->
+        <script src="<?php echo base_url('assets/js/jquery.deepcheckbox.js')?>"></script>
+
         <!-- DataTables responsive -->
         <script src="<?php echo base_url('assets/datatables/js/dataTables.responsive.min.js')?>"></script>
         <link href="<?php echo base_url(); ?>assets/datatables/css/dataTables.responsive.css" rel="stylesheet">

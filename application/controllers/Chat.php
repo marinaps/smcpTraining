@@ -472,7 +472,7 @@ class Chat extends CI_Controller {
                                     //"6.2.1.3",
                                     //"6.2.1.4",
                                     //"6.2.1.5",
-                                        "1.1",
+                                        "2",
                                 ];
         $categorias_ids = array();
 
