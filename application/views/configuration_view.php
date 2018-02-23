@@ -2,8 +2,9 @@
 <div class="containermenu">
 
   <ol class="breadcrumb">
-       <li><a href="<?php echo site_url();?>main/">Menu</a></li>
-       <li class="active">Categories</li>
+    <li><a href="<?php echo site_url();?>main">Menu</a></li>
+    <li> <a href="<?php echo site_url();?>question">Question Menu</a></li>
+    <li class="active">Configuration</li>
   </ol>
 
   <?php
