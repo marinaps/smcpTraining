@@ -93,7 +93,6 @@ if(!function_exists('get_categories_with_questions_pattern'))
         $query = $ci->db->get();
         $disordered_questions=$query->result_array(); //Obtiene los ids de las categorias que tienen preguntas desordenadas
 
-
         $resultado = array_merge($audio_questions, $tf_questions, $disordered_questions);
 
         $datos = array();
@@ -207,6 +206,7 @@ if(!function_exists('get_children_ids'))
     }
 }
 
+
 if(!function_exists('get_children_ids_pattern'))
 {
     /**
@@ -281,7 +281,6 @@ if(!function_exists('get_children_rec'))
 }
 
 
-
 if(!function_exists('get_cat_by_id'))
 {
     function get_cat_by_id($id)
@@ -298,6 +297,7 @@ if(!function_exists('get_cat_by_id'))
     }
 }
 
+
 if(!function_exists('select_tree_cat_id'))
 {
     function select_tree_cat_id($id,$level)
@@ -312,19 +312,6 @@ if(!function_exists('select_tree_cat_id'))
     }
 }
 
-if(!function_exists('select_tree_cat_id_config'))
-{
-    function select_tree_cat_id_config($id,$level)
-    {
-        $subs = get_cats_by_cat_id($id);
-        if(count($subs)>0){
-            foreach($subs as $s){
-                echo "<option value=\"$s[id]\" > ".str_repeat('&nbsp;', $level)."$s[number]".""." $s[description] </option>";
-                select_tree_cat_id($s["id"],$level+3);
-            }
-        }
-    }
-}
 
 if(!function_exists('get_cats_by_cat_id'))
 {
@@ -371,25 +358,6 @@ if(!function_exists('list_tree_cat_id'))
 }
 
 
-if(!function_exists('list_tree_cat_id_config'))
-{
-    function list_tree_cat_id_config($id)
-    {
-        $subs = get_cats_by_cat_id($id);
-        if(count($subs)>0){
-            echo "<ul>";
-            foreach($subs as $s)
-            {
-                echo "<li><input type='checkbox' data-id='item' data-name='Item' /> $s[number]"." "."$s[description]";
-
-                list_tree_cat_id_config($s["id"]);
-            }
-             echo "</li>";
-            echo "</ul>";
-        }
-    }
-}
-
 if(!function_exists('select_tree_cat_id_control'))
 {
     /**
@@ -417,32 +385,34 @@ if(!function_exists('select_tree_cat_id_control'))
     }
 }
 
-if(!function_exists('select_tree_cat_id_control_config'))
+
+
+
+/** --------------------------------------------------
+    Funciones para el controller de configuracion
+-----------------------------------------------------  */
+
+
+if(!function_exists('list_tree_cat_id_config'))
 {
-    /**
-     * Comprueba si las subcategorias tienen preguntas, en tal caso muestra la categoria en el select
-     *
-     * @param string $id_category id de la categoria 
-     * @param string $level numero de espacios que se repiten para la separacion al mostrarlas
-     * @param array $categorias con los ids de las categorias que tienen preguntas
-    */ 
-    function select_tree_cat_id_control_config($id_category,$level,$categorias)
+    function list_tree_cat_id_config($id)
     {
-        $subs = get_cats_by_cat_id($id_category);
-        if(count($subs)>0)
-        {
+        $subs = get_cats_by_cat_id($id);
+        if(count($subs)>0){
+            echo "<ul>";
             foreach($subs as $s)
-            {   
-                //Si la categoria esta en el array significa que la categoria tiene preguntas, y por tanto la muestra como opcion
-                if(array_search($s['id'], $categorias) !== false) 
-                {
-                    echo "<option value=\"$s[id]\" > ".str_repeat('&nbsp;', $level)."$s[number]".""." $s[description] </option>";
-                    select_tree_cat_id_control($s["id"], $level+3, $categorias);
-                }
+            {
+                echo "<li><input type='checkbox' data-id='item' name='category$s[id]'/> $s[number]"." "."$s[description]";
+                echo "<input type='hidden' value='$s[id]' name='category$s[id]'>";
+                list_tree_cat_id_config($s["id"]);
             }
+             echo "</li>";
+            echo "</ul>";
         }
     }
 }
+
+
 
 
 //end application/helpers/ayuda_helper.php

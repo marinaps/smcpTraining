@@ -51,7 +51,6 @@ class Question extends CI_Controller {
         $titulo['titulo'] = "Questions"; 
         $datos['error'] = "";
         /*front page*/
-        $data = $this->session->userdata; 
         $this->load->view('header', $titulo);
         $this->load->view('navbar');
         $this->load->view('question_view', $datos);
@@ -452,10 +451,10 @@ class Question extends CI_Controller {
 
 		$name = $this->question->get_question_name($id);
 
-		$variable = array( 'variable1' => $data, 
-                       'variable2' => $num,
-                       'variable3' => $id,
-                       'variable4' =>  $name
+		$variable = array( 'answers' => $data, 
+                       'num_answers' => $num,
+                       'id_question' => $id,
+                       'question_name' =>  $name
                        );
 		echo json_encode($variable);
 	}

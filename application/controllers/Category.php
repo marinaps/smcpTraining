@@ -46,7 +46,6 @@ class Category extends CI_Controller {
     */  
     public function delete_category($id)
     {
-
         $result= $this->category->delete($id);
         if($result)
             echo json_encode(array("status" => TRUE));

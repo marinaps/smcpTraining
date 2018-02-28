@@ -245,27 +245,27 @@ function view_answers(id)
         dataType: "JSON",
         success: function(data)
         {
-            $num_answers = data['variable2'];
+            $num_answers = data['num_answers'];
 
             if($num_answers)
             {
                 for (i = 0; i < $num_answers; i++) 
                 {
-                    if(data['variable1'][i]['answer'].length > 80) //si la respuesta es larga se pone un texarea
+                    if(data['answers'][i]['answer'].length > 80) //si la respuesta es larga se pone un texarea
                     {
-                         campo = '<li> <label class="control-label">Answer '+(i+1)+'</label><div class="input-group col-md-11"><textarea class="form-control" id="campo' + i + '" name="nombree[' + i + ']"></textarea> <span class="input-group-addon"> <input class="form-check-input" type="checkbox" name="false-answer'+i+'"> False answer</span>  <span class="input-group-addon input-group-btn"><button class="btn btn-danger btn-sm" type="button" onclick="delete_answer('+data['variable1'][i]['id']+')">Delete</button></span><input type="hidden" value="" name="id_answer'+i+'"/> </div></li>';
+                         campo = '<li> <label class="control-label">Answer '+(i+1)+'</label><div class="input-group col-md-11"><textarea class="form-control" id="campo' + i + '" name="nombree[' + i + ']"></textarea> <span class="input-group-addon"> <input class="form-check-input" type="checkbox" name="false-answer'+i+'"> False answer</span>  <span class="input-group-addon input-group-btn"><button class="btn btn-danger btn-sm" type="button" onclick="delete_answer('+data['answers'][i]['id']+')">Delete</button></span><input type="hidden" value="" name="id_answer'+i+'"/> </div></li>';
                     }
                     else
                     {
-                         campo = '<li><label class="control-label">Answer '+(i+1)+'</label> <div class="input-group col-md-11"> <textarea class="form-control" rows=1 id="campo' + i + '" name="nombree[' + i + ']"> </textarea>    <span class="input-group-addon"> <input class="form-check-input" type="checkbox" name="false-answer'+i+'"> False answer</span>   <span class=" input-group-btn"><button class="btn btn-danger btn-sm" type="button" onclick="delete_answer('+data['variable1'][i]['id']+')">Delete</button></span><input type="hidden" value="" name="id_answer'+i+'"/> </div></li>';
+                         campo = '<li><label class="control-label">Answer '+(i+1)+'</label> <div class="input-group col-md-11"> <textarea class="form-control" rows=1 id="campo' + i + '" name="nombree[' + i + ']"> </textarea>    <span class="input-group-addon"> <input class="form-check-input" type="checkbox" name="false-answer'+i+'"> False answer</span>   <span class=" input-group-btn"><button class="btn btn-danger btn-sm" type="button" onclick="delete_answer('+data['answers'][i]['id']+')">Delete</button></span><input type="hidden" value="" name="id_answer'+i+'"/> </div></li>';
                     }
 
                     $("#myList").append(campo);
-                    $('[name="nombree['+i+']"]').val(data['variable1'][i]['answer']);
-                    $('[name="id_answer'+i+'"]').val(data['variable1'][i]['id']);
+                    $('[name="nombree['+i+']"]').val(data['answers'][i]['answer']);
+                    $('[name="id_answer'+i+'"]').val(data['answers'][i]['id']);
 
 
-                    if(data['variable1'][i]['correct'] == 0) 
+                    if(data['answers'][i]['correct'] == 0) 
                     {
                         $('[name="false-answer'+i+'"]').prop("checked", true);
                         $('[name="false-answer'+i+'"]').val(true);
@@ -277,8 +277,8 @@ function view_answers(id)
             }
 
             
-            $(".modal-title-answers").html("Question: ".concat(data['variable4']['statement']));
-            $('[name="id_question"]').val(data['variable3']);
+            $(".modal-title-answers").html("Question: ".concat(data['question_name']['statement']));
+            $('[name="id_question"]').val(data['id_question']);
 
             $('#modal_answers').modal('show'); // show bootstrap modal when complete loaded
             $('.modal-title').text('Answers'); // Set title to Bootstrap modal title
