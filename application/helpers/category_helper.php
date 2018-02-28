@@ -402,8 +402,9 @@ if(!function_exists('list_tree_cat_id_config'))
             echo "<ul>";
             foreach($subs as $s)
             {
-                echo "<li><input type='checkbox' data-id='item' name='category$s[id]'/> $s[number]"." "."$s[description]";
-                echo "<input type='hidden' value='$s[id]' name='category$s[id]'>";
+                echo "<li><input type='checkbox' data-id='item' name='category[$s[id]]'/> $s[number]"." "."$s[description]";
+               echo "<input type='hidden' value='$s[id]' name='categories[]'/>";
+               
                 list_tree_cat_id_config($s["id"]);
             }
              echo "</li>";

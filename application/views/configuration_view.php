@@ -20,7 +20,6 @@
        }
 
   </style>
-
   <div class="col-lg-12">
     <div class="dq-category-outer-wrapper">
       <div class="dq-configuration-title">
@@ -29,14 +28,14 @@
       </div> <!-- dq-category-title -->
         <div id="testContent">
           <div class="category-section">
-            
+            <?php echo form_open(site_url().'configuration/update_categories_ft') ?>
             <div class="wrapper">
               <!--Si hay categorias en la BD las muestra con un foreach recursivamente-->
               <?php if(count($categories)>0):?>
                 <ul>
                   <?php foreach($categories as $cat):?>
-                  <li><input class="form-check-input" type="checkbox" data-id="item" name="category<?=$cat['id']?>"/> <?php echo $cat["number"]." ".$cat["description"];?>
-                      <!--<input class="form-check-input" type="hidden" value="<?=$cat['id']?>" name="category<?=$cat['id']?>">-->
+                    <li><input class="form-check-input" type="checkbox" data-id="item" value="<?=$cat['id']?>" name="category[<?=$cat['id']?>]"/> <?php echo $cat["number"]." ".$cat["description"];?>
+                    <input type="hidden" value="<?=$cat['id']?>" name="categories[]"/>
                     
                     <?php
                       list_tree_cat_id_config($cat["id"]);
@@ -46,10 +45,12 @@
               <?php else:?>
                 <p class="alert alert-danger">No hay categorias</p>
               <?php endif;?>
-
-            <button class="btn btn-success btn-lg" style="margin-left:50px;margin-top:20px;" onclick="update_categories()">Update categories</button>
       
             </div> <!-- wrapper -->
+            <!--<button class="btn btn-success btn-lg" style="margin-left:50px;margin-top:20px;" onclick="update_categories()">Update categories</button>-->
+            <button type="submit" class="btn btn-success btn-lg" style="margin-left:50px;margin-top:20px;">Update categories</button>
+            
+            <?php echo form_close() ?>
           </div> <!-- category-section -->
         </div> <!-- testContent -->
     </div> <!-- dq-category-outer-wrapper -->
@@ -74,58 +75,59 @@
   //Para los checkbox anidados
   $('.wrapper').deepcheckbox();
 
-$(document).ready(function() 
-{
-    //Utilizamos ajax para obtener las categorias que componen el final test actualmente
-    url = "<?php echo site_url('configuration/ajax_get_categories_FT')?>";
-    
-    //Ajax Load data from ajax
-    $.ajax({
-        url : url,
-        type: "GET",
-        data: $('#form').serialize(),
-        dataType: "JSON",
-        success: function(data)
-        {
-            for (i = 0; i < data['tam']; i++) 
-            {              
-              $('[name="category'+data['categories'][i]['id_category']+'"]').prop("checked", true);
-              $('[name="category'+data['categories'][i]['id_category']+'"]').val(true);   
-            }
-        },     
-       
-    });    
+  $(document).ready(function() 
+  {
+      //Utilizamos ajax para obtener las categorias que componen el final test actualmente
+      url = "<?php echo site_url('configuration/ajax_get_categories_ft')?>";
+      
+      //Ajax Load data from ajax
+      $.ajax({
+          url : url,
+          type: "GET",
+          data: $('#form').serialize(),
+          dataType: "JSON",
+          success: function(data)
+          {
+              for (i = 0; i < data['tam']; i++) 
+              {              
+                $('[name="category['+data['categories'][i]['id_category']+']"]').prop("checked", true);
+                $('[name="category['+data['categories'][i]['id_category']+']"]').val(true);   
+              }
+          },     
+         
+      });    
 
-});
-/*
-function update_categories()
-{
-    var url;
+  });
 
-    url = "<?php echo site_url('configuration/update_categories_FT')?>";
-    
-    // ajax adding data to database
-    $.ajax({
-        url : url,
-        type: "POST",
-        data: $('#form').serialize(),
-        dataType: "JSON",
-        success: function(data)
-        {
-            if(data.status) //if success close modal and reload ajax table
-            {
-                alert(data.marina);
-            }
-            
+  /* Esta funcion hace lo mismo que el formulario pero con ajax. Ahora no es necesaria.
+  function update_categories()
+  {
+      var url;
 
-        },     
-        error: function (jqXHR, textStatus, errorThrown)
-        {
-            alert('Error update answers');
+      url = "<?php echo site_url('configuration/update_categories_ft')?>";
+      
+      // ajax adding data to database
+      $.ajax({
+          url : url,
+          type: "POST",
+          data: $('#form').serialize(),
+          dataType: "JSON",
+          success: function(data)
+          {
+              if(data.status) //if success 
+              {
+                  alert(data.marina);
+              }
 
-        }
-    });    
-}*/
+          },     
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+              alert('Error update answers');
+
+          }
+      });    
+  }
+  */
 
 </script>
 

@@ -42,7 +42,7 @@ class Configuration extends CI_Controller {
      *
      * @return array con los las categorias 
     */  
-    public function ajax_get_categories_FT()
+    public function ajax_get_categories_ft()
     {
         $datos['final_test_categories'] = $this->configuration->get_final_test_categories();
         $datos['tam'] = count($datos['final_test_categories']);
@@ -60,36 +60,29 @@ class Configuration extends CI_Controller {
      *
      * @return array con los las categorias 
     */  
-    public function update_categories_FT()
+    public function update_categories_ft()
     {
-        if (isset($_POST['categoryy']))
+        //echo count($_POST['category']);
+        if (isset($_POST['categories']))
         {
-            $cat = $_POST['categoryy'];
-                   
-            $i = 0;
-            
-            foreach($cat as $c) 
-            {  
-               $category_check = $c[$i];
-               $id_answer = $this->input->post('category'.$i);
-            
-               if($category_check == TRUE)
-               {
-                    $data = array(
-                                'id_category' => $id_answer,
-                                );
-                    $this->db->insert('categories_final_test', $data);
-                    
-                echo $id_answer;
-                 
-               }
-               $i++;
-            }   
+            $cat = $_POST['categories'];
 
+            //se vacia la tabla categories_final_test
+            $this->db->empty_table('categories_final_test'); 
+            //se va iterando por cada una de las categorias (input type hidden)
+            foreach($cat as $c) 
+            {   //si la categoria tiene el checkbox a true, es decir si esta marcada entonces se almacena en la BD
+                if($this->input->post('category['.$c.']') )
+                {
+                    $data = array(
+                                'id_category' => $c,
+                                );
+                    $this->db->insert('categories_final_test', $data);                
+                } 
+            }   
         }
-            $ana = $this->input->post('anita');
-            $anaa = "ana";
-        echo json_encode(array("status" => TRUE, "marina" =>isset($ana)));  
+        //finalmente se redirecciona a la pagina de inicio del controlador configuration
+        redirect(site_url().'/configuration/');
     }
 
   
