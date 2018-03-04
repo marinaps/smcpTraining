@@ -7,7 +7,7 @@
                  
             
                  <!--  <img src="<?php echo base_url(); ?>assets/img/logouca_big.png" alt="Logo UCA">-->
-                  <img width="70%" height="70%" alt="Logo UCA" src="<?php echo base_url(); ?>assets/img/logouca_big.png">
+                  <a href="http://www.uca.es"><img width="70%" height="70%" alt="Logo UCA" src="<?php echo base_url(); ?>assets/img/logouca_big.png"></a>
 
             </div><!-- /.navbar-header -->
         

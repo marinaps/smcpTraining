@@ -6,7 +6,7 @@
 
                 <div class="menuprincipal" onclick="location.href='<?php echo site_url();?>/chat'">              
                             
-                    <img class="margenimg" src="<?php echo base_url(); ?>assets/img/start.svg">
+                    <img class="margenimg-alum" src="<?php echo base_url(); ?>assets/img/start.svg">
                     <h3>Start a game</h3>
 
                 </div>  <!-- /menuprincipal -->                                                             
@@ -18,7 +18,7 @@
                               
                 <div class="menuprincipal" onclick="location.href='<?php echo site_url();?>/result'">              
                             
-                    <img class="margenimg" src="<?php echo base_url(); ?>assets/img/results.svg">
+                    <img class="margenimg-alum" src="<?php echo base_url(); ?>assets/img/results.svg">
                     <h3>See results</h3>
 
                 </div>  <!-- /menuprincipal -->

@@ -46,6 +46,74 @@ class Chat_model extends CI_Model {
     }
 
     /**
+     * Devuelve 5 preguntas desordenadas para el training mode dada una categoria
+     *
+     * @return array of objects con las preguntas 
+     * @param string $idcategory id de la categoria de las preguntas
+    */ 
+    public function get_disordered_questions_by_category1($idcategories)
+    {
+        $this->db->select('*');
+        $this->db->from('answer');
+        //$this->db->where('id_category', $idcategories);
+        $this->db->where_in('correct', 1);
+        $this->db->order_by('rand()');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        $questions = $query->result(); 
+
+        foreach ($questions as $q) 
+        {
+            echo $q->answer;
+            echo "<br>";
+            $q->answer = $this->disorder_answer($q->answer);
+            //echo $q->answer;
+            
+        }
+
+        return $questions;
+    }
+
+
+    public function disorder_answer($answer)
+    {
+        //Si la respuesta tiene una variable se busca y se sustituye con un ejemplo
+        if(strpos($answer, '$'))
+        {
+            $porciones = explode("$", $answer);
+            $num = count($porciones); //tamaño del array porciones
+            
+            for ($j = 0; $j < $num; $j++) 
+            {   
+                if($j%2 != 0)
+                {   
+                    $id_type_variable = $this->chat->get_id_type_variable($porciones[$j]);
+                    $variable_example = $this->chat->get_variable_example($id_type_variable->id);
+                    $answer = str_replace("$".$porciones[$j]."$", $variable_example->name, $answer);                       
+               }
+            }
+            
+        }
+        //si no tiene ninguna variable no se hace nada
+        $answer_with_example = $answer;
+        //Se convierte la respuesta con ejemplo 
+        $array_answer = explode(" ", $answer_with_example);
+        //Ahora se desordena
+        $disordered_answer = shuffle($partes);
+        echo "<br>";
+        echo var_dump($partes);
+        echo "<br>";
+        $final = implode(" ", $partes);
+        echo "FINAL: ".$final;
+
+        return $disordered_answer;
+    }
+
+
+
+
+
+    /**
      * Devuelve 5 preguntas true/false para el training mode dada una categoria
      *
      * @return array of objects con las preguntas 

@@ -48,7 +48,7 @@ function nobackbutton(){
        
         <div style="font-size: 20px;font-weight:bold;margin-bottom: 10px;text-decoration:underline;">Instructions</div>
         <div id="testMeta" class="left">Number of questions : <?php echo $num_preguntas?></div>
-        <div id="instruction" class="alert alert-danger">Do not refresh the page or press the backwards button in order to not lose the results.</div>
+        <div id="instruction" style="margin-top:10px;" class="alert alert-danger">Do not refresh the page or press the backwards button in order to not lose the results.</div>
         <div id="instruction" class="alert alert-danger">Character size is programme sensitive.</div>
 
       </div>
@@ -69,13 +69,12 @@ function nobackbutton(){
               <h4><b><?=$num?>. <?=$enun_disordered?></b></h4> <!-- Muestra el numero y el enunciado de las preguntas desordenadas-->
 
               
-              <p class="option question-tbl"> <?=$row->disordered?></p> <!-- Muestra la frase desordenada-->
+              <p class="option question-tbl"> <?=$row->answer?></p> <!-- Muestra la frase desordenada-->
               
               <input autocomplete="off" class="col-xs-12" type="input" required name="quizid<?=$num?>"><br>
 
               <input type="hidden" value="<?=$row->id?>" name="id<?=$num?>">
               <input type="hidden" value="disordered" name="type<?=$num?>"> <!-- Sirve para indicar el tipo de pregunta cuando se va a corregir-->
-              <input type="hidden" value="<?=$row->id_category?>" name="categoria">
           <?php } ?>
           
 

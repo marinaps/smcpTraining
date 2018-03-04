@@ -98,7 +98,7 @@ function nobackbutton(){
        
         <div style="font-size: 20px;font-weight:bold;margin-bottom: 10px;text-decoration:underline;">Instructions</div>
         <div id="testMeta" class="left">Number of questions : <?php echo $num_preguntas?></div>
-        <div id="instruction" class="alert alert-danger">Do not refresh the page or press the backwards button in order to not lose the results.</div>
+        <div id="instruction" style="margin-top:10px;" class="alert alert-danger">Do not refresh the page or press the backwards button in order to not lose the results.</div>
         <div id="instruction" class="alert alert-danger">Character size is programme sensitive.</div>
 
       </div>

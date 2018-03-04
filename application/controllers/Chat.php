@@ -15,7 +15,6 @@ class Chat extends CI_Controller {
         $this->status = $this->config->item('status'); 
         $this->roles = $this->config->item('roles');
 
-
         //Enunciados de los ejericios
         $this->enun_disordered = "Arrange the words in the correct SMCP order: ";
         $this->enun_tf = "Select the correct SMCP phrase."; 
@@ -137,7 +136,16 @@ class Chat extends CI_Controller {
         $categories = get_children_ids_pattern($id_category);
 
         //Preguntas de cada ejercicio
-        $datos['disordered_questions'] = $this->chat->get_disordered_questions_by_category($categories);
+        $marina = $this->chat->get_disordered_questions_by_category1($categories);
+        //echo var_dump($marina);
+        //echo $marina[0]->answer;
+        //$marina[0]->answer="hola marina";
+        //echo $marina[0]->answer;
+        /*foreach ($marina as $key) 
+        {
+           echo var_dump($key);
+           echo "------------------------------";
+        }*/
         $datos['tf_questions'] = $this->chat->get_tf_questions_by_category($categories);
         $datos['audio_write_questions'] = $this->chat->get_audio_write_questions_by_category($categories);
         //Id y nombre de la categoria
