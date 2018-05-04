@@ -3,8 +3,6 @@
   $categories = get_base_categories();
   ?>
 
-
-
     <div class="containermenu">
         <ol class="breadcrumb">
           <li><a href="<?php echo site_url();?>main">Menu</a></li>
@@ -25,33 +23,25 @@
         <table id="table" class="table table-hover table-bordered colortablas" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    
                     <th>Ordered</th>
                     <th>Disordered</th>
-                    <th class="desktop">Category</th>
-                                     
+                    <th class="desktop">Category</th>             
                     
                     <th style="width:125px;">Action</th>
                 </tr>
             </thead>
-            <tbody>
-            </tbody>
 
             <tfoot>
             <tr>
-                
                     <th>Ordered</th>
                     <th>Disordered</th>
                     <th>Category</th>
-                    
-                    
-                   
+                                       
                 <th>Action</th>
             </tr>
             </tfoot>
         </table>
     </div>
-
 
 
 <script type="text/javascript">
@@ -72,19 +62,15 @@ $(document).ready(function()
         "columns": [  //Hace que las columnas se puedan o no ordenar
             {
                 "orderable": true,
-                
             }, 
             {
                 "orderable": true,
-                
             }, 
             {
                 "orderable": false,
-                
             },
             {
-                "orderable": false,
-                
+                "orderable": false,  
             }
         ],
 
@@ -103,7 +89,6 @@ $(document).ready(function()
         ],
 
     });
-
 
     //set input/textarea/select event when change value, remove class error and remove text help block 
     $("input").change(function(){

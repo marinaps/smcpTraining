@@ -16,14 +16,8 @@
                                                                                  
         </div><!-- /.col-md-4 col -->
 
-        <div class="col-md-4 text-center margincolum" >
 
-            <div class="menuprincipal" onclick="location.href='<?php echo site_url();?>disorderedquestion'"> 
-                <img class="margenimg" src="<?php echo base_url(); ?>assets/img/disordered_questions.svg" alt="Jumbled questions icon">
-                <h3>Jumbled phrases</h3>
-            </div>  <!-- /menuprincipal -->
-                                                                                 
-        </div><!-- /.col-md-4 col -->
+      
 
 
            <div class="col-md-4 text-center margincolum" >

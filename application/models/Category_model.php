@@ -9,11 +9,26 @@ class Category_model extends CI_Model {
 		$this->load->database();
 	}
 
+	/**
+     * Devuelve un array con todas los datos de una categoria 
+     *
+     * @return array con los datos de la categoria
+     * @param string $id id de la categoria
+    */ 
+	public function get_category_by_id($id)
+	{
+		$this->db->from('category');
+		$this->db->where('id',$id);
+		$query=$this->db->get();
+		$data=$query->result_array();
+
+		return $data;
+	}
 
 	/**
      * Devuelve un array con todas las categorias almacenadas en la BD
      *
-     * @return array con las categorias
+     * @return array con todas las categorias categorias
     */ 
 	function get_categories()
 	{
@@ -25,17 +40,15 @@ class Category_model extends CI_Model {
 	    }
 	}
 
-
 	/**
      * Elimina una categoria dado el id
      *
      * @param string $id id de la categoria
     */ 
-	function delete($id)
+	function delete_category_by_id($id)
 	{
 		$this->db->delete('category', array('id' => $id));  //DELETE FROM category WHERE id = $id
 	}
-
 
 	/**
      * Devuelve la respuesta cuyo id conincide con dado
@@ -58,7 +71,6 @@ class Category_model extends CI_Model {
 
 		$this->db->insert('category', $data);
 	}
-	
 
 	/**
      * Realiza el update de una categoria
@@ -66,30 +78,12 @@ class Category_model extends CI_Model {
      * @param string $where id de la categoria que se quiere actualizar
      * @param array $data con los datos a actualizar de la categoria
     */ 
-	public function update($where, $data)
+	public function update_category($where, $data)
 	{
 		$this->db->set('number', $data['number']);
 		$this->db->set('description', $data['description']);
 		$this->db->where('id', $where['id']);
 		$this->db->update('category');
-	}
-
-
-	/**
-     * Devuelve un array con todas los datos de una categoria 
-     *
-     * @return array con los datos de la categoria
-     * @param string $id id de la categoria
-    */ 
-	public function get_category($id)
-	{
-
-		$this->db->from('category');
-		$this->db->where('id',$id);
-		$query=$this->db->get();
-		$data=$query->result_array();
-
-		return $data;
 	}
 
 }

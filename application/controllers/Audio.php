@@ -34,8 +34,6 @@ class Audio extends CI_Controller {
             redirect(site_url().'/main/login/');
         } 
 
-      
-
         $datos['alumno'] = $this->input->post('frase');
         $datos['frase'] = 'piña y tengo $name$ años';
 
@@ -70,8 +68,6 @@ class Audio extends CI_Controller {
         $valor = validate_name('Pastor');
         echo "el resultado es: ".$valor;
         echo var_dump($valor);
-
-
 
         $this->load->view('header', $titulo);
         $this->load->view('navbar');

@@ -19,14 +19,10 @@
                 <tr>
                     <th>Answer</th>
                     <th>Question</th>
-                   
-                    
-                    
+        
                     <th style="width:125px;">Action</th>
                 </tr>
             </thead>
-            <tbody>
-            </tbody>
 
             <tfoot>
             <tr>
@@ -40,11 +36,6 @@
     </div>
 
    
-
- 
-
-
-
 <script type="text/javascript">
 
 var save_method; //for save method string
@@ -75,7 +66,6 @@ $(document).ready(function()
 
     });
 
-
     //set input/textarea/select event when change value, remove class error and remove text help block 
     $("input").change(function(){
         $(this).parent().parent().removeClass('has-error');
@@ -92,10 +82,6 @@ $(document).ready(function()
 
 });
 
-
-
-
-
 function edit_answer(id)
 {
     save_method = 'update';
@@ -103,7 +89,7 @@ function edit_answer(id)
     $('.form-group').removeClass('has-error'); // clear error class
     $('.help-block').empty(); // clear error string
 
- //Ajax Load data from ajax
+        //Ajax Load data from ajax
         $.ajax({
             url : "<?php echo site_url('answer/ajax_edit/')?>/" + id,
             type: "GET",
@@ -230,9 +216,7 @@ function delete_answer(id)
                                 <span class="help-block"></span>
                             </div>
                         </div>
- 
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer">
@@ -243,5 +227,6 @@ function delete_answer(id)
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- End Bootstrap modal -->
+
 </body>
 </html>

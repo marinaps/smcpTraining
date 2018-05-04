@@ -59,7 +59,6 @@ function nobackbutton(){
 
           <?php $num = 0;?>
 
-
           <!--///////////////////////////////  DISORDERED  ///////////////////////////////////-->
 
           <?php foreach($disordered_questions as $row) { ?> <!-- Muestra todas las preguntas del tipo desordenadas-->
@@ -67,7 +66,6 @@ function nobackbutton(){
               <?php $num = $num +1; ?> <!-- Esto es para que se muestre el numero empezando en 1 y no en 0 -->
 
               <h4><b><?=$num?>. <?=$enun_disordered?></b></h4> <!-- Muestra el numero y el enunciado de las preguntas desordenadas-->
-
               
               <p class="option question-tbl"> <?=$row->answer?></p> <!-- Muestra la frase desordenada-->
               
@@ -91,7 +89,6 @@ function nobackbutton(){
             <?php $num = $num +1; ?> <!-- Esto es para que se muestre el numero empezando en 1 y no en 0 -->
 
             <h4><b><?=$num?>. <?=$enun_tf?></b></h4> <!-- Muestra el numero y el enunciado de las preguntas true/false-->
-            
             
             <!-- Muestra los dos inputs de tipo radio con la frase correcta e incorrecta-->
             <input  type="radio" name="quizid<?=$num?>" value="<?=htmlspecialchars($ans_array[0], ENT_QUOTES)?>" required>  <?=$ans_array[0]?><br>

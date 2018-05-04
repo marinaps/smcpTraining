@@ -12,7 +12,6 @@
 
         <h3><center>Training Results: Pattern level</center></h3>
       
-
         <button class="btn btn-default" onclick="reload_table()"><i class="glyphicon glyphicon-refresh"></i> Reload</button>
 
         <br/>

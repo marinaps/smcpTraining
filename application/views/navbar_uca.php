@@ -1,5 +1,4 @@
 
-    
       <nav class="navbar navbar-default navbar-fixed-top" id="demo-navbar">
         <div class="container">
 

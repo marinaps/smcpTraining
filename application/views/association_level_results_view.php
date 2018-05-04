@@ -11,7 +11,6 @@
         </ol>
 
         <h3><center>Training Results: Association level</center></h3>
-      
 
         <button class="btn btn-default" onclick="reload_table()"><i class="glyphicon glyphicon-refresh"></i> Reload</button>
 
@@ -29,8 +28,6 @@
                         <th>See Test</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
 
                 <tfoot>
                 <tr>
@@ -45,8 +42,6 @@
             </table>
         </div> <!-- end containermenu -->
     </div> <!-- end section-->
-
-
 
 
 <script type="text/javascript">
@@ -117,7 +112,6 @@
     });
 
 
-
     function reload_table()
     {
         table.ajax.reload(null,false); //reload datatable ajax 
@@ -125,7 +119,6 @@
 
     function see_results(id)
     {
-
        window.location.href = "<?php echo site_url();?>result/display_association_results/"+id;
     }
 

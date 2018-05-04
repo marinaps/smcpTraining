@@ -1,16 +1,17 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 class Chat_model extends CI_Model {
 
     public $status; 
     public $roles;
     
-    function __construct(){
-        //Call the Model constructor
+    function __construct()
+    {
         parent::__construct();        
         $this->status = $this->config->item('status');
         $this->roles = $this->config->item('roles');
     }    
-    
 
     /**
      * Devuelve un array con todas las categorias almacenadas en la BD
@@ -19,13 +20,11 @@ class Chat_model extends CI_Model {
     */ 
     public function get_categories()
     {
-
         $query = $this->db->get('category');
         return $query->result_array();
     }
 
-
-    /**
+    /**  REVISAR FUNCION
      * Devuelve 5 preguntas desordenadas para el training mode dada una categoria
      *
      * @return array of objects con las preguntas 
@@ -35,7 +34,6 @@ class Chat_model extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('disordered_statement');
-        //$this->db->where('id_category', $idcategories);
         $this->db->where_in('id_category', $idcategories);
         $this->db->order_by('rand()');
         $this->db->limit(5);
@@ -45,7 +43,7 @@ class Chat_model extends CI_Model {
         return $questions;
     }
 
-    /**
+    /** REVISAR FUNCION
      * Devuelve 5 preguntas desordenadas para el training mode dada una categoria
      *
      * @return array of objects con las preguntas 
@@ -55,31 +53,38 @@ class Chat_model extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('answer');
-        //$this->db->where('id_category', $idcategories);
         $this->db->where_in('correct', 1);
         $this->db->order_by('rand()');
-        $this->db->limit(1);
+        $this->db->limit(5);
         $query = $this->db->get();
         $questions = $query->result(); 
 
         foreach ($questions as $q) 
         {
-            echo $q->answer;
+            //echo $q->answer;
             echo "<br>";
             $q->answer = $this->disorder_answer($q->answer);
-            //echo $q->answer;
-            
+            echo $q->answer;
         }
-
+        echo var_dump($questions);
         return $questions;
     }
 
-
+    
+    /** 
+     * Recibe una respuesta y la devuelve desordenada
+     * Si la respuesta tiene una variable, la sustituye por un ejemplo de variable
+     *
+     *
+     * @return array of objects con las preguntas 
+     * @param string $idcategory id de la categoria de las preguntas
+    */ 
     public function disorder_answer($answer)
     {
         //Si la respuesta tiene una variable se busca y se sustituye con un ejemplo
-        if(strpos($answer, '$'))
-        {
+        // Es necesario poner !== ya que si no, cuando $ este en el primer caracter no se reconocerá
+        if(strpos($answer, '$') !== FALSE)
+        { 
             $porciones = explode("$", $answer);
             $num = count($porciones); //tamaño del array porciones
             
@@ -89,29 +94,22 @@ class Chat_model extends CI_Model {
                 {   
                     $id_type_variable = $this->chat->get_id_type_variable($porciones[$j]);
                     $variable_example = $this->chat->get_variable_example($id_type_variable->id);
-                    $answer = str_replace("$".$porciones[$j]."$", $variable_example->name, $answer);                       
+                    $answer = str_replace("$".$porciones[$j]."$", $variable_example->name, $answer);                   
                }
-            }
-            
+            }  
         }
         //si no tiene ninguna variable no se hace nada
         $answer_with_example = $answer;
         //Se convierte la respuesta con ejemplo 
         $array_answer = explode(" ", $answer_with_example);
         //Ahora se desordena
-        $disordered_answer = shuffle($partes);
-        echo "<br>";
-        echo var_dump($partes);
-        echo "<br>";
-        $final = implode(" ", $partes);
-        echo "FINAL: ".$final;
+        $disordered_answer = shuffle($array_answer);
+        //y se fuelve a unir todas las partes desordenadas
+        $final = implode(" ", $array_answer);
+        //echo "FINAL: ".$final;
 
-        return $disordered_answer;
+        return $final;
     }
-
-
-
-
 
     /**
      * Devuelve 5 preguntas true/false para el training mode dada una categoria
@@ -220,9 +218,6 @@ class Chat_model extends CI_Model {
             return $questions;
         }
     }
-
-
-   
 
     /** FINAL TEST
      * Devuelve 5 preguntas true/false para el final test mode
@@ -503,6 +498,23 @@ class Chat_model extends CI_Model {
         return $answer;
     }
 
+     /**
+     * Devuelve la respuesta correcta dado el id de una pregunta
+     *
+     * @return object con la respuesta correcta
+     * @param string $id id de la pregunta
+    */
+    public function correct_disordered_new($id)
+    {
+        $this->db->select('answer');
+        $this->db->from('answer');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        $answer = $query->row(); 
+
+        return $answer;
+    }
+
     /**
      * Devuelve la respuesta correcta dado el id de una pregunta
      *
@@ -551,6 +563,23 @@ class Chat_model extends CI_Model {
         $this->db->where('correct', '1');
         $query = $this->db->get();
         $answer = $query->result_array();
+
+        return $answer;
+    }
+
+    /**
+     * Devuelve una respuesta correcta al azar de una pregunta segun su id
+     *
+     * @return object con la respuesta correcta
+     * @param string $idquestion id de la pregunta
+    */
+    public function get_answer($idanswer)
+    {
+        $this->db->select('answer');
+        $this->db->from('answer');
+        $this->db->where('id', $idanswer);
+        $query = $this->db->get();
+        $answer = $query->row_array();
 
         return $answer;
     }
@@ -680,7 +709,7 @@ class Chat_model extends CI_Model {
     public function get_disordered_byid($id)
     {
         $this->db->select('*');
-        $this->db->from('disordered_statement');
+        $this->db->from('answer');
         $this->db->where('id', $id);
        
         $query = $this->db->get();

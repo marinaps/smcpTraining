@@ -45,7 +45,6 @@ class Main extends CI_Controller {
             $this->load->view('student_menu');
         }  
     }
-
     
     /**
      * Metodo de login
@@ -86,7 +85,7 @@ class Main extends CI_Controller {
     }
 
     /**
-     * Metodo de registro 
+     * Metodo de registro (pagina de login)
      *
      * Muestra el formulario de registro de un nuevo usuarios
      *
@@ -98,44 +97,6 @@ class Main extends CI_Controller {
         $this->load->view('navbar_uca');          
         $this->load->view('register_form');
     }
-
-    
-    public function ejemplo()
-    {
-        $this->load->view('email_template_new_user');
-    }
-/*
-    public function send()
-    {
-       
-        //$this->load->view('template2');
-           
-        $data = array(
-                'userName'=> 'Anil Kumar Panigrahi'
-            );
-
-        $this->load->library('email');
-        $mensaje = $this->load->view('template2',$data, TRUE);
-
-        $this->email->from("agathaxagathax@gmail.com", 'Meu E-mail');
-        $this->email->subject("Assunto do e-mail");
-        $this->email->to("m.pinasalva@gmail.com"); 
-        $this->email->message($mensaje);
-        $this->email->set_mailtype('html');
-
-        if($this->email->send(FALSE))
-        {
-            echo "enviado<br/>";
-            echo $this->email->print_debugger(array('headers'));
-        }
-        else 
-        {
-             echo "fallo <br/>";
-             echo "error: ".$this->email->print_debugger(array('headers'));
-        }   
-    }
-    */
-    
 
     /**
      * Metodo de logout
@@ -394,7 +355,7 @@ class Main extends CI_Controller {
         );
 
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[5]');
-        $this->form_validation->set_rules('passconf', 'Password Confirmation', 'required|matches[password]');              
+        $this->form_validation->set_rules('passconf', 'Password Confirmation', 'required|matches[password]');          
         
         if($this->form_validation->run() == FALSE) 
         {   

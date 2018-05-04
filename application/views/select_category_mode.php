@@ -91,20 +91,14 @@ function select(id)
                     $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
                 }
             }
-         
-
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert('Error adding / update data');
-           
-
         }
     });
 }
 </script>
-
-
 
 
 

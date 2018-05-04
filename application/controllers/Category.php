@@ -37,7 +37,6 @@ class Category extends CI_Controller {
         $this->load->view('categories_view', $datos);
 	}
 
-
     /**
      * Elimina una categoria dado el id
      *
@@ -46,7 +45,7 @@ class Category extends CI_Controller {
     */  
     public function delete_category($id)
     {
-        $result= $this->category->delete($id);
+        $result= $this->category->delete_category_by_id($id);
         if($result)
             echo json_encode(array("status" => TRUE));
         else 
@@ -71,7 +70,6 @@ class Category extends CI_Controller {
         echo json_encode(array("status" => TRUE));
     }
 
-
     /**
      * Recibe el id de una categoria y devuelve sus datos
      *
@@ -80,11 +78,10 @@ class Category extends CI_Controller {
     */  
     public function ajax_edit($id)
     {
-        $data = $this->category->get_category($id);
+        $data = $this->category->get_category_by_id($id);
         
         echo json_encode($data);
     }
-
 
     /**
      * Realiza el update de una categoria
@@ -101,7 +98,7 @@ class Category extends CI_Controller {
                 'id_parent_category' => $this->input->post('category_id')
                     
             );
-        $this->category->update(array('id' => $this->input->post('id')), $data);
+        $this->category->update_category(array('id' => $this->input->post('id')), $data);
         echo json_encode(array("status" => TRUE));
     }
 

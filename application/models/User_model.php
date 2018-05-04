@@ -4,75 +4,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class User_model extends CI_Model {
 
 	var $table = 'users';
+
+	//Datatables configuration 
 	var $column_order = array('first_name','last_name','email',null,'status',null); //set column field database for datatable orderable
 	var $column_search = array('first_name','last_name','email'); //set column field database for datatable searchable just firstname , lastname , address are searchable
 	var $order = array('status' => 'desc'); // default order 
+
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->database();
-	}
-
-	private function _get_datatables_query()
-	{
-		
-		$this->db->from($this->table);
-
-		$i = 0;
-	
-		foreach ($this->column_search as $item) // loop column 
-		{
-			if($_POST['search']['value']) // if datatable send POST for search
-			{
-				
-				if($i===0) // first loop
-				{
-					$this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
-					$this->db->like($item, $_POST['search']['value']);
-				}
-				else
-				{
-					$this->db->or_like($item, $_POST['search']['value']);
-				}
-
-				if(count($this->column_search) - 1 == $i) //last loop
-					$this->db->group_end(); //close bracket
-			}
-			$i++;
-		}
-		
-		if(isset($_POST['order'])) // here order processing
-		{
-			$this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-		} 
-		else if(isset($this->order))
-		{
-			$order = $this->order;
-			$this->db->order_by(key($order), $order[key($order)]);
-		}
-	}
-
-	function get_datatables()
-	{
-		$this->_get_datatables_query();
-		if($_POST['length'] != -1)
-		$this->db->limit($_POST['length'], $_POST['start']);
-		$query = $this->db->get();
-		return $query->result();
-	}
-
-	function count_filtered()
-	{
-		$this->_get_datatables_query();
-		$query = $this->db->get();
-		return $query->num_rows();
-	}
-
-	public function count_all()
-	{
-		$this->db->from($this->table);
-		return $this->db->count_all_results();
 	}
 
 	/**
@@ -99,9 +41,9 @@ class User_model extends CI_Model {
 	public function save($data)
 	{
 		$this->db->insert($this->table, $data);
+
 		return $this->db->insert_id();
 	}
-
 
 	/**
      * Realiza el update de un usuario
@@ -113,9 +55,9 @@ class User_model extends CI_Model {
 	public function update($where, $data)
 	{
 		$this->db->update($this->table, $data, $where);
+
 		return $this->db->affected_rows();
 	}
-
 
 	/**
      * Elimina un usuario dado un id
@@ -129,7 +71,8 @@ class User_model extends CI_Model {
 	}
 
 	/**
-     * Comprueba si se puede eliminar un usuario dado su id
+     * Comprueba si se puede eliminar un usuario dado su id.
+     * Si se trata de un administrador, este no podrá ser eliminado.
      *
      * @return boolean true si se puede eliminar
      * @param string $id id del usuario
@@ -147,7 +90,6 @@ class User_model extends CI_Model {
 			return TRUE;
 	}
 
-
 	/**
      * Devuelve el role del usuario dado su id
      *
@@ -164,18 +106,6 @@ class User_model extends CI_Model {
 		return $query->row();
 	}
 
-	/* No se utiliza
-	public function get_status($id)
-	{
-		$this->db->from('status');
-		$this->db->where('id',$id);
-		$query = $this->db->get();
-
-		return $query->row();
-	}
-	*/
-
-	
 	/**
      * Comprueba si un email esta ya almacenado en la BD
      *
@@ -185,44 +115,9 @@ class User_model extends CI_Model {
 	public function isDuplicate($email)
     {     
         $this->db->get_where('users', array('email' => $email), 1);
+        
         return $this->db->affected_rows() > 0 ? TRUE : FALSE;         
     }
-    
-
-
-    /**
-     * Devuelve todas las fechas de los examenes que ha hecho un usuario dado su id
-     *
-     * @return array con todas las fechas
-     * @param string $id con el id de usuario
-    */ 
-    public function get_graph_data($id)
-	{
-		$this->db->from('exam');
-		$this->db->where('id_user',$id);
-		$this->db->order_by('date', 'ASC');
-		$query = $this->db->get();
-		return $query->result_array();
-	}
-
-
-    /**
-     * Devuelve todas las fechas de los examenes que ha hecho un usuario dado su id
-     *
-     * @return array con todas las fechas
-     * @param string $id con el id de usuario
-    */ 
-    public function prueba($id)
-	{
-		$this->db->select('LEFT(date, 10) as sub_id, COUNT(*) as total, id', FALSE);
-		$this->db->from('exam');
-		$this->db->where('id_user',$id);
-		$this->db->group_by('sub_id');
-		$query = $this->db->get();
-
-		//return $query->result_array();
-		return  $query->result_array();
-	}
 
 	/**
      * Devuelve el id de un usuario dado su email
@@ -255,5 +150,108 @@ class User_model extends CI_Model {
 
 		return $query->row()->email;
 	}
+
+
+	/**************** FUNCIONES PARA FUTURAS FUNCIONALIDADES ******************/
+
+	/**
+     * Devuelve todas las fechas de los examenes que ha hecho un usuario dado su id
+     *
+     * @return array con todas las fechas
+     * @param string $id con el id de usuario
+    */ 
+    public function get_graph_data($id)
+	{
+		$this->db->from('exam');
+		$this->db->where('id_user',$id);
+		$this->db->order_by('date', 'ASC');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+    /**
+     * Devuelve todas las fechas de los examenes que ha hecho un usuario dado su id
+     *
+     * @return array con todas las fechas
+     * @param string $id con el id de usuario
+    */ 
+    public function prueba($id)
+	{
+		$this->db->select('LEFT(date, 10) as sub_id, COUNT(*) as total, id', FALSE);
+		$this->db->from('exam');
+		$this->db->where('id_user',$id);
+		$this->db->group_by('sub_id');
+		$query = $this->db->get();
+
+		//return $query->result_array();
+		return  $query->result_array();
+	}
+
+		/*************************** DATATABLES FUNCTIONS *****************************/
+
+	private function _get_datatables_query()
+	{
+		$this->db->from($this->table);
+
+		$i = 0;
+	
+		foreach ($this->column_search as $item) // loop column 
+		{
+			if($_POST['search']['value']) // if datatable send POST for search
+			{
+				if($i===0) // first loop
+				{
+					$this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+					$this->db->like($item, $_POST['search']['value']);
+				}
+				else
+				{
+					$this->db->or_like($item, $_POST['search']['value']);
+				}
+
+				if(count($this->column_search) - 1 == $i) //last loop
+					$this->db->group_end(); //close bracket
+			}
+
+			$i++;
+		}
+		
+		if(isset($_POST['order'])) // here order processing
+		{
+			$this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+		} 
+		else if(isset($this->order))
+		{
+			$order = $this->order;
+			$this->db->order_by(key($order), $order[key($order)]);
+		}
+	}
+
+	public function get_datatables()
+	{
+		$this->_get_datatables_query();
+		if($_POST['length'] != -1)
+		$this->db->limit($_POST['length'], $_POST['start']);
+		$query = $this->db->get();
+
+		return $query->result();
+	}
+
+	public function count_filtered()
+	{
+		$this->_get_datatables_query();
+		$query = $this->db->get();
+
+		return $query->num_rows();
+	}
+
+	public function count_all()
+	{
+		$this->db->from($this->table);
+
+		return $this->db->count_all_results();
+	}
+
+	/*************************** END DATATABLES FUNCTIONS *****************************/
 
 }

@@ -295,9 +295,7 @@ function delete_question(id)
                                 <span class="help-block"></span>
                             </div>
                         </div>
- 
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer">

@@ -1,4 +1,5 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php 
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 //si no existe la función invierte_date_time la creamos
 if(!function_exists('get_base_categories'))
@@ -63,7 +64,7 @@ if(!function_exists('get_categories_with_questions'))
 if(!function_exists('get_categories_with_questions_pattern'))
 {
     /**
-     * Devuelve un array con todos los ids de las categorias que tienen preguntas
+     * Devuelve un array con todos los ids de las categorias que tienen preguntas para el nivel pattern
      *
      * @return array con todos los ids de las categorias que contienen preguntas
     */ 

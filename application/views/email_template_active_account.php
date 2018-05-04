@@ -272,7 +272,6 @@
                       </table>
                       <p>Thanks!
                       <!-- Sub copy -->
-                    
                     </td>
                   </tr>
                 </table>

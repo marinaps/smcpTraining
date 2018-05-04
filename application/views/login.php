@@ -1,17 +1,11 @@
       
-
   <div class="container">
     <div class="row">
      
       <div class="col-md-7">
         <div class="jumbotron">
           <img  src="<?php echo base_url(); ?>assets/img/smcp_small.png" class="center-block img-responsive" alt="Logo SMCP">
-          
-          <!--
-          <p>
-           Application of computer technologies in the evaluation and learning of the Standard Marine Communication Phrases
-          </p>
-          -->
+
           <h4>Computer-based Tool for the Standard Marine Communication Phrases Training and Assessment</h4>
         </div> <!-- /.jumbotron -->
       </div> <!-- /.col-md-6 -->
@@ -21,7 +15,6 @@
          
           <h2 style="text-align:center; margin-bottom: 40px; margin-top: 50px;">Welcome! Please login</h2>
 
-          
           <?php $fattr = array('class' => 'form-signin');
               echo form_open(site_url().'main/login/', $fattr); ?>
           

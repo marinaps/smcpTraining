@@ -47,13 +47,12 @@ function nobackbutton(){
             <?php $num++; ?>
 
             <?php if(! $respuestas[$x]->correct){ ?> <!-- Si la respuesta no es correcta muestra la respuesta dada y la correcta -->
-
                 
-                <p><?=$disordered_questions[$x][0]->disordered?></p> <!-- Muestra la frase desordenada-->
+                <p><?=$disordered_questions[$x][0]->answer?></p> <!-- Muestra la frase desordenada-->
 
               
                 <p>&nbsp;&nbsp;<span class="alert alert-danger" style="padding: 0%;">Your answer: <?=$respuestas[$x]->answer?></span></p>
-                <p>&nbsp;&nbsp;<span class="alert alert-info" style="padding: 0%;">Correct answer: <?=$disordered_questions[$x][0]->ordered?></span></p>
+                <p>&nbsp;&nbsp;<span class="alert alert-info" style="padding: 0%;">Correct answer: <?=$examples_answers[$x]?></span></p>
                
             <?php } else { ?> <!-- Si la respuesta es correcta se muestra la respuesta dada -->
               

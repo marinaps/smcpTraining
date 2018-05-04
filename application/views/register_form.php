@@ -7,7 +7,6 @@
         <li class="active">Register</li>
     </ol>
 
-    
     <div class="col-lg-6 col-lg-offset-3">
       <div class="form-group">
 
@@ -27,9 +26,6 @@
                 <div class="text-danger"> <?php echo form_error('first_name') ?></div>
 
               </div>
-
-              
-
              
                 <label>Last name</label>
                 <div <?php echo (form_error('last_name') == '') ? '' : ' class="form-group has-error"'; ?>>
@@ -60,8 +56,7 @@
                        placeholder="Introduce your password">
                 <div class="text-danger"> <?php echo form_error('password') ?></div>
 
-              </div>
-              
+              </div>      
 
               <br/><button type="submit" class="btn btn-primary">Create an account</button>
           <?php echo form_close() ?>

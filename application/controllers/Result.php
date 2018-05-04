@@ -23,7 +23,6 @@ class Result extends CI_Controller {
         $this->enun_q_a = "Write the right answer:";
 	}
 
-
 	/**
      * Metodo index que muestra el menu de los resultados de los alumnos(training mode y final test mode)
      *

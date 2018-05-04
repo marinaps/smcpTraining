@@ -72,7 +72,6 @@ class Variable extends CI_Controller {
 			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_variable('."'".$variable->id."'".')"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
 				  <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_type_variable('."'".$variable->id."'".')"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
 		
-		
 			$data[] = $row;
 		}
 
@@ -88,7 +87,7 @@ class Variable extends CI_Controller {
 	}
 
 	/**
-     * Metodo que muestra la tabla con los tipos de variables
+     * Metodo que muestra la tabla de ayuda en los examenes con los tipos de variables
      *
     */  
 	public function ajax_list_help()
@@ -164,9 +163,9 @@ class Variable extends CI_Controller {
 		       }
 		       $i++;
 		    }
-	}
+		}
 
-	if($datos['error'] != '')
+		if($datos['error'] != '')
         {	
 	        
 			echo json_encode(array("status" => 'error', "error" =>$datos['error']));
@@ -177,10 +176,8 @@ class Variable extends CI_Controller {
 
 	}
 
-
-
 	/**
-     * Añade un nuevo tipo de variable con sus variables
+     * Añade un nuevo tipo de variable con sus variables de ejemplo
      *
      * @return boolean true si el add se ha realizado correctamente
     */  
@@ -201,7 +198,6 @@ class Variable extends CI_Controller {
 			);
 		$this->db->insert('variable', $variable);
 
-
 		if (isset($_POST['nombre']))
 		{
 			$nombre = $_POST['nombre'];
@@ -213,21 +209,17 @@ class Variable extends CI_Controller {
 		       $name = $nombre[$i];
 		       if($name != '')
 		       {
-	       		
 	      	 		$data = array(
 	       							'name' => $name,
 	       							'id_type_variable' => $id_type_variable,
 	       							);
 	       			$this->variable->insert_variable($data);
-		       	
 		       }
 		       $i++;
 		    }		   
 		}
-
 		echo json_encode(array("status" => TRUE ));
 	}
-
 
 	/**
      * Elimina un tipo de variable con todas sus variables dado el id 
@@ -235,15 +227,14 @@ class Variable extends CI_Controller {
      * @return boolean true si el delete se ha realizado correctamente
      * @param string $id id del tipo de variable
     */  
-	public function ajax_delete_type_variable($id) //-------------------------
+	public function ajax_delete_type_variable($id) 
 	{
 		$this->variable->delete_type_variable_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
 
-
 	/**
-     * Elimina una variables dado su id
+     * Elimina una variable ejemplo dado su id
      *
      * @return boolean true si el delete se ha realizado correctamente
      * @param string $id id de la variable
@@ -254,14 +245,12 @@ class Variable extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 
-
-
 	/**
      * Realiza el update de las variables
      *
      * @return boolean true si el update se ha realizado correctamente
     */  
-	public function ajax_update_variables()  //-------------------------
+	public function ajax_update_variables()  
 	{
 		if (isset($_POST['nombree']))
 		{
@@ -287,14 +276,13 @@ class Variable extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 
-
 	/**
      * Recibe el id de un tipo de variable y devuelve todas sus variables
      *
      * @return array con los las variables 
      * @param string $id id del tipo de variable
     */  
-	public function ajax_view_variables($id)   //-------------------------
+	public function ajax_view_variables($id)   
 	{
 		$data = $this->variable->get_variables($id);
 		$num = count($data);
@@ -309,7 +297,6 @@ class Variable extends CI_Controller {
 		echo json_encode($variable);
 	}
 
-
 	/**
      * Recibe el id de un tipo de variable y devuelve sus datos
      *
@@ -322,10 +309,9 @@ class Variable extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	
-
 	/**
-     * Valida los campos del input y devuelve los errores cuando se añade un campo
+     * Valida los campos del input y devuelve los errores cuando se añade un campo en el formulario
+     * de añadir una nueva variable
      *
      * @return array con los datos del error
     */ 
@@ -360,7 +346,7 @@ class Variable extends CI_Controller {
 	}
 
 	/**
-     * Valida los campos del input y devuelve los errores cuando se edita un campo
+     * Valida los campos del input y devuelve los errores cuando se edita un campo en el update
      *
      * @return array con los datos del error
     */ 

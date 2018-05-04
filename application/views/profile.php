@@ -1,12 +1,10 @@
 
-
   <div class="containermenu">
     <ol class="breadcrumb">
         <li><a href="<?php echo site_url();?>main">Menu</a></li>
         <li class="active">Profile</li>
     </ol>
   </div>
-
 
   <div class="container">    
     <div class="col-lg-4 col-lg-offset-4">

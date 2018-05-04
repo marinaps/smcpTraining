@@ -37,8 +37,6 @@
         <?php endif;?>
         </div>
       </div>
-
-
     </div>
   </div>
 </div>
@@ -92,8 +90,6 @@
                           <?php if(count($categories)>0):?>
                             <?php foreach($categories as $cat):?>
                               <option value="<?php echo $cat["id"];?>" ><?php echo $cat["number"]." ".$cat["description"];?>
-                                 
-
                               </option>
                               <?php select_tree_cat_id($cat["id"],1); ?>
                             <?php endforeach;?>
@@ -228,6 +224,7 @@
           });
       }
   }
+  
 </script>
 
 </body>

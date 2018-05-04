@@ -25,7 +25,6 @@ class Chat extends CI_Controller {
         $this->enun_q_a = "Write the right answer:";
     }      
 
-
     /**
      * Metodo index que muestra el menu de selccion del modo de juego (training o final test)
      *
@@ -43,7 +42,6 @@ class Chat extends CI_Controller {
         $this->load->view('navbar');
         $this->load->view('mode_menu'); //Menu de seleccion del modo de juego
     }
-
 
     /**
      * Muestra el menu de seleccion del nivel (dentro del training mode)
@@ -136,7 +134,7 @@ class Chat extends CI_Controller {
         $categories = get_children_ids_pattern($id_category);
 
         //Preguntas de cada ejercicio
-        $marina = $this->chat->get_disordered_questions_by_category1($categories);
+        $datos['disordered_questions'] = $this->chat->get_disordered_questions_by_category1($categories);
         //echo var_dump($marina);
         //echo $marina[0]->answer;
         //$marina[0]->answer="hola marina";
@@ -226,15 +224,14 @@ class Chat extends CI_Controller {
 
         $id_exam =$this->chat->createexam_pattern($id_category);
 
-        if($_SESSION['contador'] == 1)
-        {
+        //if($_SESSION['contador'] == 1)
+        //{
         //Enunciados de cada ejercicio
         $this->data['enun_disordered'] = $this->enun_disordered;
         $this->data['enun_tf'] = $this->enun_tf;
         $this->data['enun_audio_write'] = $this->enun_audio_write;
 
         $this->data['category_name'] = $this->chat->get_category_name($id_category);
-
 
         $correctas = 0;
         $incorrectas = 0;
@@ -259,7 +256,7 @@ class Chat extends CI_Controller {
 
                 array_push($this->data['disordered_questions'], $this->chat->get_disordered_byid($id)); //Busca en la BD la pregunta por el id y almacena todos los campos de esta pregunta en el array
             
-                if(correct_disordered($id, $post, $id_exam))
+                if(correct_disordered($id, $id_exam, $post))
                 {
                     $correctas++;
                 }
@@ -328,7 +325,7 @@ class Chat extends CI_Controller {
         $this->load->view('header', $titulo);
         $this->load->view('navbar');
         $this->load->view('result_display_pattern', $this->data);
-        }
+        //}
                
     }
 
@@ -448,12 +445,10 @@ class Chat extends CI_Controller {
         
         $this->load->view('header', $titulo);
         $this->load->view('navbar');
-        $this->load->view('result_display_association', $this->data);
-               
+        $this->load->view('result_display_association', $this->data);               
     }
 
 
-    
 
     //Esta función obtiene las preguntas y las muestra del test final
     public function final_test()

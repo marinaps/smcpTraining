@@ -50,14 +50,7 @@ class Answer extends CI_Controller {
 			$row = array();
 			
 			$row[] = $answer->answer;
-			//$row[] = $answer->id_question;
-
-			$row[] = $this->answer->get_question($answer->id_question)->statement;
-			//$row[] = $this->answer->get_category($this->$answer->get_idcategory($answer->id_question)->id_category)->description;
-			//$row[] = $this->$answer->get_idcategory($answer->id_question)->id_category;
-			//$row[] = $this->answer->get_description($question->id_category)->description;
-			//$respuestas = $this->question->get_answer_by_id($question)->id;
-			//$row[] = $this->question->get_answer_by_id($question->id)->answer;
+			$row[] = $this->answer->get_question_by_id($answer->id_question)->statement;
 
 			//Añade html para los botones de editar y borrar
 			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_answer('."'".$answer->id."'".')"><i class="glyphicon glyphicon-pencil"></i> </a>
@@ -85,7 +78,7 @@ class Answer extends CI_Controller {
     */  
 	public function ajax_edit($id)
 	{
-		$data = $this->answer->get_by_id($id);
+		$data = $this->answer->get_answer_by_id($id);
 
 		echo json_encode($data);
 	}
@@ -115,7 +108,5 @@ class Answer extends CI_Controller {
 		$this->answer->delete_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
-
-
 
 }

@@ -26,7 +26,6 @@
         </div><!-- /.col-md-4 col -->
 
 
-
     <footer class="footer-demo section-dark">
         <div class="container">
             <nav class="pull-left">

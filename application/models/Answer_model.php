@@ -3,16 +3,74 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Answer_model extends CI_Model {
 
-	
+	//Datatables configuration
 	var $column_order = array('answer','id',null); //set column field database for datatable orderable
 	var $column_search = array('answer'); //set column field database for datatable searchable just firstname , lastname , address are searchable
 	var $order = array('id' => 'desc'); // default order 
+
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->database();
 	}
+
+	/**
+     * Devuelve la respuesta cuyo id conincide con el dado
+     *
+     * @return object con la respuesta
+     * @param string $id id de la respuesta
+    */ 
+	public function get_answer_by_id($id)
+	{
+		$this->db->from('answer');
+		$this->db->where('id',$id);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
+	/**
+     * Realiza el update de una respuesta
+     *
+     * @return number con el numero de 
+     * @param string $where id de la respuesta
+     * @param string $data nueva respuesta
+    */ 
+	public function update($where, $data)
+	{
+		$this->db->update('answer', $data, $where);
+	}
+
+	/**
+     * Elimina una respuesta dado un id
+     *
+     * @param string $id id de la respuesta
+    */ 
+	public function delete_by_id($id)
+	{
+		$this->db->where('id', $id);
+		$this->db->delete('answer');
+	}
+
+	/**
+     * Devuelve la pregunta cuyo id conincide con el dado
+     *
+     * @return object con la pregunta
+     * @param string $id id de la pregunta
+    */ 
+	public function get_question_by_id($id)
+	{
+		$this->db->select('statement');
+		$this->db->from('question');
+		$this->db->where('id',$id);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
+
+	/*************************** DATATABLES FUNCTIONS *****************************/
 
 	private function _get_datatables_query()
 	{
@@ -75,89 +133,6 @@ class Answer_model extends CI_Model {
 		return $this->db->count_all_results();
 	}
 
-
-	/**
-     * Devuelve la respuesta cuyo id conincide con dado
-     *
-     * @return object con la respuesta
-     * @param string $id id de la respuesta
-    */ 
-	public function get_by_id($id)
-	{
-		$this->db->from('answer');
-		$this->db->where('id',$id);
-		$query = $this->db->get();
-
-		return $query->row();
-	}
-
-	/**
-     * Realiza el update de una respuesta
-     *
-     * @return number con el numero de 
-     * @param string $where id de la respuesta
-     * @param string $data nueva respuesta
-    */ 
-	public function update($where, $data)
-	{
-		$this->db->update('answer', $data, $where);
-	}
-
-
-	/**
-     * Elimina una respuesta dado un id
-     *
-     * @param string $id id de la respuesta
-    */ 
-	public function delete_by_id($id)
-	{
-		$this->db->where('id', $id);
-		$this->db->delete('answer');
-	}
-
-
-	/**
-     * Devuelve la respuesta cuyo id conincide con
-     *
-     * @return object con la respuesta
-     * @param string $id id de la respuesta
-    */ 
-	public function get_question($id)
-	{
-
-		$this->db->select('statement');
-		$this->db->from('question');
-		$this->db->where('id',$id);
-		$query = $this->db->get();
-
-		return $query->row();
-	}
-
-	/* No se utiliza
-	public function get_category($id)
-	{
-
-		$this->db->select('*');
-		$this->db->from('category');
-		$this->db->where('id',$id);
-		$query = $this->db->get();
-
-		return $query->row();
-	}
-	*/
-
-	/* No se utiliza
-	public function get_idcategory($id)
-	{
-
-		$this->db->select('*');
-		$this->db->from('question');
-		$this->db->where('id',$id);
-		$query = $this->db->get();
-
-		return $query->result();
-	}
-	*/
-
+	/*************************** END DATATABLES FUNCTIONS *****************************/
 
 }

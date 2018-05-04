@@ -116,8 +116,6 @@
 
     });
 
-
-
     function reload_table()
     {
         table.ajax.reload(null,false); //reload datatable ajax 

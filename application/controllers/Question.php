@@ -38,7 +38,7 @@ class Question extends CI_Controller {
 	}
 
 	/**
-     * Metodo que muestra la vista de las preguntas(las que no son ni desordenadas ni de v/f)
+     * Metodo que muestra la vista de las preguntas(las que no son v/f)
      * 
     */  
 	public function questions()
@@ -58,7 +58,7 @@ class Question extends CI_Controller {
 
 	
 	/**
-     * Metodo que muestra la tabla con las preguntas(las que no son ni desordenadas ni de v/f)
+     * Metodo que muestra la tabla con las preguntas(las que no son v/f)
      *
     */  
 	public function ajax_list()
@@ -80,10 +80,8 @@ class Question extends CI_Controller {
 			$no++;
 			$row = array();
 			
-			//$row[] = $question->id_category;
 			$row[] = $question->statement; //Muestra la pregunta
-
-			$row[] = $this->question->get_number($question->id_category)->number." ".$this->question->get_description($question->id_category)->description; //Muestra el numero y el nombre de la categoria
+			$row[] = $this->question->get_category_number($question->id_category)->number." ".$this->question->get_category_by_id($question->id_category)->description; //Muestra el numero y el nombre de la categoria
 
 
 			if(count($this->question->get_audio_name($question->id))) //Comprueba si tiene un fichero de audio
@@ -102,7 +100,7 @@ class Question extends CI_Controller {
 			}
 
 			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="view_answers('."'".$question->id."'".')"><i class="glyphicon glyphicon-eye-open"></i> View answers</a>';
-			//add html for action
+
 			//Muestra los botones de accion
 			$row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_question('."'".$question->id."'".')"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
 				  <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_question('."'".$question->id."'".')"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
@@ -116,7 +114,6 @@ class Question extends CI_Controller {
 						"recordsFiltered" => $this->question->count_filtered(),
 						"data" => $data,
 				);
-		//output to json format
 		echo json_encode($output);
 	}
 
@@ -124,8 +121,7 @@ class Question extends CI_Controller {
 	/**
      * Realiza el update de las respuestas
      *
-     * @return boolean true si el add se ha realizado correctamente
-     * @param string $idquestion id de la pregunta
+     * @return array true si el update se ha realizado correctamente
     */  
 	public function ajax_update_form() 
 	{	
@@ -139,9 +135,9 @@ class Question extends CI_Controller {
 
 		$datos['error'] = '';
 		$idquestion = $this->input->post('id_edit');
-		if(!empty($_FILES))
+
+		if(!empty($_FILES)) //Se inserta el audio, si lo hay
         {
-        	
         	if(count($this->question->get_audio_name($idquestion))) //Comprueba si la pregunta tiene un audio asociado
 			{
 				$path = $this->question->get_audio_name($idquestion); //Si lo tiene obtiene el nombre del audio
@@ -156,10 +152,10 @@ class Question extends CI_Controller {
 				$this->question->delete_audio_name($idquestion);
 			}
         	
+        	//Configuracion del audio
             $config['upload_path'] = './audio_uploads/';
             $config['allowed_types'] = 'mp3';
             $config['max_size'] = '4048576';
-
             $config['max_width']  = '1024';
             $config['max_height']  = '768';
             $titulo['titulo'] = "Upload audio"; 
@@ -167,7 +163,7 @@ class Question extends CI_Controller {
 
             $this->load->library('upload', $config);
 
-            if ($this->upload->do_upload("file_edit")) 
+            if($this->upload->do_upload("file_edit")) 
             {
             	$extension = $this->_get_extension($_FILES['file_edit']['name']);
             	$audio = array(
@@ -181,9 +177,8 @@ class Question extends CI_Controller {
             }  
         }
 
-		if (isset($_POST['nombre_edit']))
+		if(isset($_POST['nombre_edit'])) //Se insertan las respuestas
 		{
-
 			$nombre = $_POST['nombre_edit'];
 				   
 			$i = 0;
@@ -193,7 +188,7 @@ class Question extends CI_Controller {
 		       $name = $nombre[$i];
 		       if($name != '')
 		       {
-		       		if($this->input->post('false-answer_edit'.$i) == true)
+		       		if($this->input->post('false-answer_edit'.$i) == true) //Si es una respuesta falsa
 		       		{
 		       			$data = array(
 		       							'answer' => $name,
@@ -202,32 +197,26 @@ class Question extends CI_Controller {
 		       							);
 		       			$this->question->insert_answer($data);
 		       		}
-		       		else
+		       		else //Si es una pregunta verdadera
 		       		{
 		       			$data = array(
 		       							'answer' => $name,
 		       							'id_question' => $idquestion,
 		       							);
 		       			$this->question->insert_answer($data);
-		       			
-		       		}
-		      	 
+		       		}	      	 
 		       }
 		       $i++;
-		    }
-
-		
-	}
-
-	if($datos['error'] != '')
-        {	
-	        
-			echo json_encode(array("status" => 'error', "error" =>$datos['error']));
-		}else
-		{
-			echo json_encode(array("status" => TRUE));
+		    }	
 		}
 
+		if($datos['error'] != '') //Si hay algun error lo devuelve
+	    {	    
+			echo json_encode(array("status" => 'error', "error" =>$datos['error'])); 
+		}else
+		{
+			echo json_encode(array("status" => TRUE)); //Si no devuelve TRUE
+		}
 	}
 
 
@@ -244,18 +233,20 @@ class Question extends CI_Controller {
 				'id_category' => $this->input->post('id_category'),
 				'statement' => $this->input->post('statement'),	
 			);
-		
-		$this->db->insert('question', $data);
 
+		//Se inserta la nueva pregunta
+		$this->db->insert('question', $data);
+		//Obtenemos el id de la pregunta para poder luego almacenar las respuestas
 		$idquestion = $this->db->insert_id();
-		
+
+		//Se inserta la respuesta obligatoria
 		$answer = array(
 				'id_question' => $idquestion,
 				'answer' => $this->input->post('answer'),	
 			);
 		$this->db->insert('answer', $answer);
 
-
+		//Se insertan las demas respuestas, si las hay
 		if (isset($_POST['nombre']))
 		{
 			$nombre = $_POST['nombre'];
@@ -267,7 +258,7 @@ class Question extends CI_Controller {
 		       $name = $nombre[$i];
 		       if($name != '')
 		       {
-		       		if($this->input->post('false-answer'.$i) == true)
+		       		if($this->input->post('false-answer'.$i) == true) //Si la respuesta es falsa
 		       		{
 		      	 		$data = array(
 		       							'answer' => $name,
@@ -276,7 +267,7 @@ class Question extends CI_Controller {
 		       							);
 		       			$this->question->insert_answer($data);
 		       		}
-		       		else
+		       		else //si la respuesta es verdadera
 		       		{
 		       			$data = array(
 		       							'answer' => $name,
@@ -291,20 +282,20 @@ class Question extends CI_Controller {
 		}
 
       	$datos['error'] = '';
+
+      	//Se almacena el audio, si lo hay
         if(!empty($_FILES))
         {
-
+        	//Configuración del audio
             $config['upload_path'] = './audio_uploads/';
             $config['allowed_types'] = 'mp3';
             $config['max_size'] = '4048576';
-
-            
             $titulo['titulo'] = "Upload audio"; 
             $config['file_name'] = "questionid".$idquestion."_categoryid".$this->input->post('id_category');
 
             $this->load->library('upload', $config);
 
-            if ($this->upload->do_upload("file")) 
+            if($this->upload->do_upload("file")) 
             {
             	$extension = $this->_get_extension($_FILES['file']['name']);
             	$audio = array(
@@ -318,18 +309,15 @@ class Question extends CI_Controller {
             }  
         }
 
-        if($datos['error'] != '')
+        if($datos['error'] != '') //Si hay algun error lo devuelve
         {	
-	        
 			echo json_encode(array("status" => 'error', "error" =>$datos['error']));
 		}else
 		{
-			echo json_encode(array("status" => TRUE ));
+			echo json_encode(array("status" => TRUE )); //Si no devuelve TRUE
 
 		}
-
 	}
-
 	
 	/**
      * Elimina un audio dado el id de la pregunta
@@ -342,11 +330,11 @@ class Question extends CI_Controller {
 		$path = $this->question->get_audio_name($id); //Si lo tiene obtiene el nombre del audio
 		$url= "audio_uploads/".$path; //obtiene la ruta del archivo en el servidor
 		$do = unlink($url);  //elimina el archivo
-
 	 
-		if($do != true){
-		 echo "There was an error trying to delete the file<br />";
-		 }
+		if($do != true) //Si hay algun error
+		{
+		 	echo "There was an error trying to delete the file<br />";
+		}
 		$this->question->delete_audio_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
@@ -363,7 +351,6 @@ class Question extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 
-
 	/**
      * Elimina una pregunta dado el id y elimina el archivo de audio del servidor
      *
@@ -379,15 +366,14 @@ class Question extends CI_Controller {
 			$do = unlink($url);  //elimina el archivo
 
 		 
-			if($do != true){
+			if($do != true)
+			{
 			 echo "There was an error trying to delete the file<br />";
-			 }
+			}
 		}
 		$this->question->delete_by_id($id);
 		echo json_encode(array("status" => TRUE));
 	}
-
-
 
 	/**
      * Realiza el update de las respuestas
@@ -411,13 +397,11 @@ class Question extends CI_Controller {
 		       {
 		       		if($this->input->post('false-answer'.$i) == true)
 		       		{
-
 		       			$data = array(
 		       							'answer' => $name,
 		       							'correct' => 0,
 		       							);
 		       			$this->question->update_answer($id_answer, $data);
-
 		       		}
 		       		else
 		       		{
@@ -426,9 +410,7 @@ class Question extends CI_Controller {
 		       							'correct' => 1,
 		       							);
 		       			$this->question->update_answer($id_answer, $data);
-		    			
-		       		}
-		      	 
+		       		}	      	 
 		       }
 		       $i++;
 		    }		   
@@ -446,7 +428,7 @@ class Question extends CI_Controller {
     */  
 	public function ajax_view_answers($id)
 	{
-		$data = $this->question->get_answers($id);
+		$data = $this->question->get_answers_by_id($id);
 		$num = count($data);
 
 		$name = $this->question->get_question_name($id);
@@ -458,7 +440,6 @@ class Question extends CI_Controller {
                        );
 		echo json_encode($variable);
 	}
-
 
 	/**
      * Recibe el id de una pregunta y devuelve sus datos
@@ -577,5 +558,5 @@ class Question extends CI_Controller {
 			exit();
 		}
 	}
-
+	
 }

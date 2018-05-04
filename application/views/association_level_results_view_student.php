@@ -11,7 +11,6 @@
         </ol>
 
         <h3><center>Training Results: Association level</center></h3>
-      
 
         <button class="btn btn-default" onclick="reload_table()"><i class="glyphicon glyphicon-refresh"></i> Reload</button>
 
@@ -28,8 +27,6 @@
                         <th>See Test</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
 
                 <tfoot>
                 <tr>
@@ -43,8 +40,6 @@
             </table>
         </div> <!-- end containermenu -->
     </div> <!-- end section-->
-
-
 
 
 <script type="text/javascript">
@@ -108,9 +103,7 @@
             $(this).parent().parent().removeClass('has-error');
             $(this).next().empty();
         });
-
     });
-
 
 
     function reload_table()
@@ -123,7 +116,6 @@
 
        window.location.href = "<?php echo site_url();?>result/display_association_results/"+id;
     }
-
 
 </script>
 

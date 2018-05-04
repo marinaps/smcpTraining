@@ -107,10 +107,7 @@
             $(this).parent().parent().removeClass('has-error');
             $(this).next().empty();
         });
-
     });
-
-
 
     function reload_table()
     {

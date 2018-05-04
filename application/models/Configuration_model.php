@@ -24,7 +24,6 @@ class Configuration_model extends CI_Model {
 	    }
 	}
 
-
 	/**
      * Realiza el update de una respuesta
      *

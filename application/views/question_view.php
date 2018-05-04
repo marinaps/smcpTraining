@@ -105,9 +105,6 @@
     </script>
 
 
-  
-
-
 <script type="text/javascript">
 
 
@@ -771,8 +768,7 @@ function delete_question(id)
 
                 </form>
             </div>
-           
-            
+        
             <div class="modal-footer">
                 <button type="button" id="btnSave" onclick="update_answers()" class="btn btn-primary">Update</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -783,8 +779,6 @@ function delete_question(id)
 </div><!-- /.modal -->
 <!-- End Bootstrap modal -->
   
-
-
 
 </body>
 </html>

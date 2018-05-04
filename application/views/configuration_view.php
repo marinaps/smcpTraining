@@ -16,10 +16,11 @@
   <style type="text/css">
 
       .wrapper ul{
-       list-style:none;
+            list-style:none;
        }
 
   </style>
+
   <div class="col-lg-12">
     <div class="dq-category-outer-wrapper">
       <div class="dq-configuration-title">
@@ -118,7 +119,6 @@
               {
                   alert(data.marina);
               }
-
           },     
           error: function (jqXHR, textStatus, errorThrown)
           {

@@ -5,8 +5,6 @@
       $pattern = get_categories_with_questions_pattern();
   ?>
 
-
-
     <div class="containermenu">
 
         <ol class="breadcrumb">

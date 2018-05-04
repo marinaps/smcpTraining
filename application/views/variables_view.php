@@ -100,9 +100,6 @@
     </script>
 
 
-  
-
-
 <script type="text/javascript">
 
 var save_method; //for save method string
@@ -159,7 +156,6 @@ $(document).ready(function()
         ],
 
     });
-
 
     //set input/textarea/select event when change value, remove class error and remove text help block 
     $("input").change(function(){
@@ -273,7 +269,6 @@ function view_variables(id)
             {
                  document.getElementById("mostar_error").style.display= "inline";
             }
-
             
             $(".modal-title-variables").html("Type of variable: ".concat(data['variable4']['variable']));
             $('[name="id_type_variable"]').val(data['variable3']);
@@ -293,77 +288,6 @@ function reload_table()
 {
     table.ajax.reload(null,false); //reload datatable ajax 
 }
-
-
-function update()
-{
-    $('#btnSave').text('saving...'); //change button text
-    $('#btnSave').attr('disabled',true); //set button disable 
-
-    uploadURI = "<?php echo site_url('variable/ajax_update_form')?>";
-
-    var inputFile = $('input[name=file_edit]');
-     
-      var fileToUpload = inputFile[0].files[0];
-        // make sure there is file to upload
-        if (fileToUpload != 'undefined') {
-            // provide the form data
-            // that would be sent to sever through ajax
-            var formData = new FormData();
-            formData.append("file_edit", fileToUpload);
-             var other_data = $('form').serializeArray();
-            $.each(other_data,function(key,input){
-                formData.append(input.name,input.value);
-            });
-            
-            
-            // now upload the file using $.ajax
-            $.ajax({
-                url: uploadURI,
-                type: 'post',
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                success: function(data)
-                {
-                if(data.status) //if success close modal and reload ajax table
-                {
-                    
-                    $('#modal_edit').modal('hide');
-                    reload_table();
-                }
-                else 
-                {
-                    if(data.status == 'error')
-                    {
-                        alert(data.error);
-                    }
-                    else
-                    {
-                        for (var i = 0; i < data.inputerror.length; i++) 
-                        {
-                           
-                                $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
-                                $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
-                        }
-                    }
-                }
-                $('#btnSave').text('save'); //change button text
-                $('#btnSave').attr('disabled',false); //set button enable 
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert('Error edit data');
-                    $('#btnSave').text('save'); //change button text
-                    $('#btnSave').attr('disabled',false); //set button enable 
-                }
-                  
-            });
-        }
-}
-
-
 
 //Funcion para hacer el update del formulario donde se muestran todas las variables de un tipo de variable
 function update_variables()
@@ -397,21 +321,17 @@ function update_variables()
             }
             $('#btnSave').text('save'); //change button text
             $('#btnSave').attr('disabled',false); //set button enable 
-
-
         },     
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert('Error update answers');
             $('#btnSave').text('save'); //change button text
             $('#btnSave').attr('disabled',false); //set button enable 
-
         }
     });    
 }
 
-
-
+//Funcion para añadir una nueva variable o actualizar una
 function save()
 {
     $('#btnSave').text('saving...'); //change button text
@@ -434,7 +354,6 @@ function save()
         dataType: "JSON",
         success: function(data)
         {
-
             if(data.status) //if success close modal and reload ajax table
             {
                 $('#modal_form').modal('hide');
@@ -451,15 +370,12 @@ function save()
             }
             $('#btnSave').text('save'); //change button text
             $('#btnSave').attr('disabled',false); //set button enable 
-
-
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
             alert('Error adding / update data');
             $('#btnSave').text('save'); //change button text
             $('#btnSave').attr('disabled',false); //set button enable 
-
         }
     });
 }
@@ -485,13 +401,10 @@ function delete_type_variable(id)
                 alert('Error deleting data');
             }
         });
-
     }
 }
 
-
-
-//Elimina una variable
+//Elimina un ejemplo de variable dentro del formulario
 function delete_variables(id)
 {
     if(confirm('Are you sure delete this data?'))

@@ -10,17 +10,11 @@
         
       <div class="form-group">
 
-        
-
           <div class="text-danger"> <?php echo $this->session->flashdata('flash_message'); ?></div>
           <div class="text-success"> <?php echo $this->session->flashdata('correct'); ?></div>
           <div class="confirm-div alert-success"></div>
 
-
-
           <form action="<?php echo site_url('audio/upload');?>" method="post" id="form" class="form-horizontal" enctype="multipart/form-data">
-
-            
 
             <h4 for="email">introduzca la frase:</h4>
             <input  type="text" name="frase" size="70" />
@@ -37,8 +31,6 @@
     </div> <!-- /.col-lg-4 col-lg-offset-4-->
 
     </div> <!-- /.container-->
-
-
 
 
 <script>

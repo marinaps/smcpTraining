@@ -3,7 +3,6 @@
   $categories = get_base_categories();
   ?>
 
-
     <div class="containermenu">
 
         <ol class="breadcrumb">
@@ -43,8 +42,6 @@
         </div><!-- /.col-md-4 col -->
 
 
-
-
     <footer class="footer-demo section-dark">
         <div class="container">
             <nav class="pull-left">
@@ -55,9 +52,6 @@
             </div>
         </div>
     </footer>
-
-
-
 
 
 

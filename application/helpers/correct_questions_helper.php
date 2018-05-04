@@ -13,7 +13,7 @@ if(!function_exists('correct_disordered'))
      * @param string $post con la respuesta dada por el alumno
      * @param string $id_exam con el id del examen
      */
-    function correct_disordered($id, $post, $id_exam)
+    function correct_disordered_old($id, $post, $id_exam)
     {
         $ci =& get_instance();
 
@@ -36,6 +36,88 @@ if(!function_exists('correct_disordered'))
                 );
         }
         //actualiza un entry con la respuesta y si es correcta o no
+        $ci->chat->create_entry($id_exam, $id, $entry, 2);
+
+        return $is_correct;
+    }
+}
+
+
+
+//si no existe la función correct_variablequestions la creamos
+if(!function_exists('correct_disordered'))
+{
+    /**
+     * Funcion para corregir una frase con variables
+     *  
+     * @return boolean true si la respuesta es correcta
+     *
+     * @param string $id con el id de la pregunta
+     * @param string $id_exam con el id del examen
+     * @param string $respuesta_dada con la respuesta dada por el alumno
+     */
+    function correct_disordered($id, $id_exam, $respuesta_dada)
+    {
+        $ci =& get_instance();
+
+        //array para almacenar todas las respuestas correctas de la pregunta dada, por el id. 
+        $correct_answers = $ci->chat->get_answer($id); 
+        
+        /*----------------------------------------------------------------------------*/
+        /*
+         *   Esto se hace para obtener una respuesta al azar que sea correcta para mostrar al alumno como ejemplo.
+         */
+
+            //obtiene una respuesta correcta al azar de la pregunta con el id dado
+            $answer = $ci->chat->get_answer($id);
+
+            //si la respuesta tiene una variable entra en el if
+            if(strpos($answer['answer'], '$'))
+            {
+                //se separa la frase por los signos de $ donde esta la/las variables
+                //puede haber mas de una variable en una misma frase
+                $porciones = explode("$", $answer['answer']);
+                
+                //num es el tamaño del array porciones
+                $num = count($porciones); 
+
+                for ($j = 0; $j < $num; $j++) 
+                {   
+                    //si se trata de una parte impar entonces es donde va una variable
+                    /* en este if lo que se hace es ver que tipo de variable se trata y busca un ejemplo de ella para sustituirla */
+                    if($j%2 != 0)
+                    {   
+                        //obtiene el id de la variable, dada por su nombre
+                        $id_type_variable = $ci->chat->get_id_type_variable($porciones[$j]);
+                        //obtiene un ejemplo de esa variable, dada por su id
+                        $variable_example = $ci->chat->get_variable_example($id_type_variable->id);
+                        //sustituye el ejemplo de la variable en la frase
+                        $answer['answer'] = str_replace("$".$porciones[$j]."$", $variable_example->name, $answer['answer']);                         
+                    }
+                }
+                $ci->data['examples_answers'][] =  $answer['answer'];
+
+            }
+            //si la respuesta no tiene variable, se utiliza directamente como respuesta ejemplo
+            else
+            {
+                $ci->data['examples_answers'][] =  $answer['answer'];
+            }
+        /*----------------------------------------------------------------------------*/
+        
+        //se inicializa a FALSE
+        $is_correct=FALSE;
+
+        //se comprueba si la respuesta es correcta llamando a la funcion validar_frase
+        $is_correct = validar_frase($respuesta_dada, $correct_answers['answer']);
+            
+
+        $entry = array(
+                'answer' => $respuesta_dada,
+                'correct' => $is_correct
+                );
+
+        //crea la entry con la respuesta y si es o no correcta
         $ci->chat->create_entry($id_exam, $id, $entry, 2);
 
         return $is_correct;
@@ -266,7 +348,6 @@ if(!function_exists('validar_frase'))
             {
                 $long[$i] = strlen($porciones[$i]);
             }
-
             $cont = 0; //este contador va sumando los caracteres de los strings de las partes para poder avanzar
             $is_correct = TRUE;
 
@@ -701,8 +782,7 @@ if(!function_exists('validar_frase'))
                             //El maximo numero de caracteres para una posicion es de 32. 
                             //Primero separamos el string por espacios para asegurarnos que no hay caracteres de la siguiente palabra de la frase.
                             
-                            $aux = explode(" ", trim(substr($frasealumno,$cont, 39 )));
-
+                            $aux = explode(" ", trim(substr($frasealumno,$cont, 45 )));
                             //Una vez hecho esto ya tendremos la cadena con la posicion.
                             //La posicion se divide en dos partes: latitud y longitud, que estan seguidas, asi que para obtener cada parte separamos el string o bien por la N o por la S(norte o sur) que es lo que separa una parte de otra, y nos quedamos con las dos primeras partes(parte[0] y parte[1]).
                             
@@ -718,6 +798,7 @@ if(!function_exists('validar_frase'))
                             //Si la parte 2, la longitud, detras tiene una coma la quita 
                             if(substr($partes[1], -1) == ',')
                                 $partes[1] = substr($partes[1], 0, -1); 
+
 
                             $is_correct = validate_position(trim($partes[0]), trim($partes[1]));
 

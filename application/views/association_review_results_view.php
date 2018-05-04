@@ -24,13 +24,10 @@
     <div id="testContent">
 
       <div class="question-section">
-        
 
         <h2 class= "center">Score Obtained:  </h2>
         <h1 class= "with-score center"><span><?php echo $correct ?> / <?php echo $num_questions?></span></h1>  
 
-
-        
 
         <!--///////////////////////////////  QUESTION-ANSWER  ///////////////////////////////////-->
 
@@ -50,11 +47,7 @@
 
            <?php }} ?>
         <?php } ?>
-
-        <!--/////////////////////////////////      /////////////////////////////////-->
-
       
-
         <br><br>
 
         <input class="btn btn-primary btn-lg" type="submit" value="Go back to results" onclick="location.href='<?php echo site_url('result/association_level_results');?>/'" >   

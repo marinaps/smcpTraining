@@ -10,125 +10,18 @@ class Main_model extends CI_Model {
         $this->status = $this->config->item('status');
         $this->roles = $this->config->item('roles');
     }       
-    
-    /**
-     * Crea e inserta un nuevo token para la url en la BD 
-     *
-     * @return string con el token creado
-     * @param string $user_id id del usuario
-    */  
-    public function insertToken($user_id)
-    {   
-        $token = substr(sha1(rand()), 0, 30); 
-        $date = date('Y-m-d');
-        
-        $string = array(
-                'token'=> $token,
-                'user_id'=>$user_id,
-                'created'=>$date
-            );
-        $query = $this->db->insert_string('tokens',$string);
-        $this->db->query($query);
-        return $token;
-        
-    }
-
-
-    /**
-     * Elimina un token de la BD
-     *
-     * @param string $token token que se quiere eliminar
-    */  
-    public function deleteToken($token)
-    {   
-        
-        $this->db->from('tokens');
-        $this->db->where('token', $token);
-        $this->db->delete('tokens');
-    }
-
-
-    /**
-     * Elimina el token antiguo del usuario indicado
-     *
-     * Cuando se crea un nuevo token de un usuario se borra(si lo hay) el token antiguo
-     *
-     * @param string $user_id id del usuario del que se quiere borrar el token
-    */  
-    public function deleteOldToken($user_id)
-    {   
-        
-        $this->db->from('tokens');
-        $this->db->where('user_id', $user_id);
-        $this->db->delete('tokens');
-    }
-    
-
-    /**
-     * Comprueba si un token esta en la BD o no
-     *
-     * @return boolean true si el token coincide con alguno de la BD
-     * @param string $token token que se quiere comprobar
-    */ 
-    public function isTokenValid($token)
-    {
-        $q = $this->db->get_where('tokens', array('token' => $token), 1); 
-
-        if($this->db->affected_rows() > 0)
-        {
-            $row = $q->row();             
-            
-            $created = $row->created;
-            $createdTS = strtotime($created);
-            $today = date('Y-m-d'); 
-            $todayTS = strtotime($today);
-            
-            if($createdTS != $todayTS)
-            {
-                return false;
-            }
-            
-            $user_info = $this->getUserInfo($row->user_id);
-            return $user_info;
-            
-        }else
-        {
-            return false;
-        }  
-    }  
-    
-
-    /**
-     * Devuelve los datos de un usuario dado su id
-     *
-     * @return object con los datos del usuario
-     * @param string $id id del usuario 
-    */ 
-    public function getUserInfo($id)
-    {
-        $q = $this->db->get_where('users', array('id' => $id), 1);  
-
-        if($this->db->affected_rows() > 0)
-        {
-            $row = $q->row();
-            return $row;
-
-        }else{
-            error_log('no user found getUserInfo('.$id.')');
-            return false;
-        }
-    }
 
 
     /**
      * Devuelve los datos de un usuario dado su email
      *
      * @return object con los datos del usuario
-     * @param string $id id del usuario 
+     * @param string $email email del usuario 
     */ 
     public function getUserInfoByEmail($email)
     {
         $q = $this->db->get_where('users', array('email' => $email), 1);  
+
         if($this->db->affected_rows() > 0)
         {
             $row = $q->row();
@@ -167,7 +60,6 @@ class Main_model extends CI_Model {
         $user_info = $this->getUserInfo($post['id']); 
         return $user_info; 
     }
-    
 
     /**
      * Comprueba los datos de inicio de sesion de un usuario
@@ -181,15 +73,14 @@ class Main_model extends CI_Model {
         $this->db->select('*');
         $this->db->where('email', $post['email']);
         $query = $this->db->get('users'); 
-        
 
-        if ($query->num_rows() > 0){
-           $userInfo = $query->row();  
-        }
+        if ($query->num_rows() > 0)
+            $userInfo = $query->row();  
         else 
             return false;
         
-        if( md5($post['password']) != $userInfo->password OR $userInfo->status !='approved'){
+        if(md5($post['password']) != $userInfo->password OR $userInfo->status !='approved')
+        {
             error_log('Unsuccessful login attempt('.$post['email'].')');
             return false; 
         }
@@ -199,19 +90,17 @@ class Main_model extends CI_Model {
         unset($userInfo->password);
         return $userInfo; 
     }
-    
 
     /**
      * Actualiza la hora de login de un usuario dado su id
      *
-     * @param array $id id del usuario
+     * @param string $id id del usuario
     */ 
     public function updateLoginTime($id)
     {
         $this->db->where('id', $id);
         $this->db->update('users', array('last_login' => date('Y-m-d h:i:s A')));
     }
-    
 
     /**
      * Actualiza la contraseña de un usuario
@@ -226,11 +115,93 @@ class Main_model extends CI_Model {
         
         $success = $this->db->affected_rows(); 
         
-        if(!$success){
+        if(!$success)
+        {
             error_log('Unable to updatePassword('.$post['user_id'].')');
             return false;
         }        
         return true;
     } 
+
+    /**
+     * Crea e inserta un nuevo token para la url en la BD 
+     *
+     * @return string con el token creado
+     * @param string $user_id id del usuario
+    */  
+    public function insertToken($user_id)
+    {   
+        $token = substr(sha1(rand()), 0, 30); 
+        $date = date('Y-m-d');
+        
+        $string = array(
+                'token'=> $token,
+                'user_id'=>$user_id,
+                'created'=>$date
+            );
+        $query = $this->db->insert_string('tokens',$string);
+        $this->db->query($query);
+
+        return $token;
+        
+    }
+
+    /**
+     * Elimina un token de la BD
+     *
+     * @param string $token token que se quiere eliminar
+    */  
+    public function deleteToken($token)
+    {   
+        $this->db->from('tokens');
+        $this->db->where('token', $token);
+        $this->db->delete('tokens');
+    }
+
+    /**
+     * Elimina el token antiguo del usuario indicado
+     *
+     * Cuando se crea un nuevo token de un usuario se borra(si lo hay) el token antiguo
+     *
+     * @param string $user_id id del usuario del que se quiere borrar el token
+    */  
+    public function deleteOldToken($user_id)
+    {   
+        $this->db->from('tokens');
+        $this->db->where('user_id', $user_id);
+        $this->db->delete('tokens');
+    }
+
+    /**
+     * Comprueba si un token esta en la BD o no
+     *
+     * @return boolean true si el token coincide con alguno de la BD
+     * @param string $token token que se quiere comprobar
+    */ 
+    public function isTokenValid($token)
+    {
+        $q = $this->db->get_where('tokens', array('token' => $token), 1); 
+
+        if($this->db->affected_rows() > 0)
+        {
+            $row = $q->row();             
+            
+            $created = $row->created;
+            $createdTS = strtotime($created);
+            $today = date('Y-m-d'); 
+            $todayTS = strtotime($today);
+            
+            if($createdTS != $todayTS)
+            {
+                return false;
+            }
+            
+            $user_info = $this->getUserInfo($row->user_id);
+
+            return $user_info;
+            
+        }else
+            return false; 
+    }  
     
 }

@@ -36,7 +36,6 @@ if(!function_exists('validate_restricted'))
             return TRUE;
         else
             return FALSE;
-
     }
 }
 
@@ -116,6 +115,7 @@ if(!function_exists('validate_date'))
             //Si la cadena tiene 3 caracteres entonces nos quedamos con el primero
             $number = substr($parts[1], 0, 1);
         }
+        
 
         //Array con todos los posibles numeros
         $array_nums = array("1st", "2nd", "3rd", "4th", "5th", "6th", "7th" , "8th", "9th", "10th", "11th",
@@ -129,18 +129,18 @@ if(!function_exists('validate_date'))
 
         //si la parte del numero no esta en el array de numeros devuelve FALSE
         if ( ! in_array($parts[1], $array_nums)) {
-            echo "en el primero";
+            //echo "en el primero";
             return FALSE;
 
         }elseif( ! array_key_exists($parts[0], $array_months)) { 
             //si la parte del mes no esta en el array de los meses devuelve FALSE
            //array_key_exists() devuelve TRUE si la key dada existe en el array
-            echo "en el segundo";
+            //echo "en el segundo";
             return FALSE;
 
         }elseif ( $number > $array_months[$parts[0]]  ) {
             //si el numero que hemos separado antes de las terminaciones es mayor que el maximo numero de dias que tiene ese mes devuelve FALSE
-            echo "en el tercero";
+            //echo "en el tercero";
             return FALSE;
         }
 
@@ -378,26 +378,6 @@ if(!function_exists('validate_pressure'))
     }
 }
 
-//si no existe la función validate_pressure la creamos
-if(!function_exists('validate_pressure'))
-{
-    /**
-     * Funcion para validar pressure
-     * Numerico: maximo 4 caracteres. Desde 0 1300
-     * 
-     * @return boolean true si pressure es correcto
-     *
-     * @param string $pressure con la variable dada por el alumno
-     */
-    function validate_pressure($pressure)
-    {
-        if ($pressure >= 0 && $pressure <= 1300 && ctype_digit($pressure))
-        {
-            return TRUE;
-        }
-        return FALSE;
-    }
-}
 
 //si no existe la función validate_speed la creamos
 if(!function_exists('validate_speed'))

@@ -36,17 +36,15 @@ class Configuration extends CI_Controller {
         $this->load->view('configuration_view');
 	}
 
-
    /**
      * Devuelve todas las categorias que componen el final test
      *
-     * @return array con los las categorias 
+     * @return array con las categorias 
     */  
     public function ajax_get_categories_ft()
     {
         $datos['final_test_categories'] = $this->configuration->get_final_test_categories();
         $datos['tam'] = count($datos['final_test_categories']);
-
 
         $variable = array( 'categories' => $datos['final_test_categories'], 
                            'tam' => $datos['tam']
@@ -56,22 +54,22 @@ class Configuration extends CI_Controller {
     }
 
     /**
-     * Devuelve todas las categorias que componen el final test
+     * Actualiza las categorias del final test.
      *
-     * @return array con los las categorias 
     */  
     public function update_categories_ft()
     {
-        //echo count($_POST['category']);
         if (isset($_POST['categories']))
         {
             $cat = $_POST['categories'];
 
             //se vacia la tabla categories_final_test
             $this->db->empty_table('categories_final_test'); 
+
             //se va iterando por cada una de las categorias (input type hidden)
             foreach($cat as $c) 
-            {   //si la categoria tiene el checkbox a true, es decir si esta marcada entonces se almacena en la BD
+            {   
+            //si la categoria tiene el checkbox a true, es decir si esta marcada entonces se almacena en la BD
                 if($this->input->post('category['.$c.']') )
                 {
                     $data = array(
@@ -84,6 +82,4 @@ class Configuration extends CI_Controller {
         //finalmente se redirecciona a la pagina de inicio del controlador configuration
         redirect(site_url().'/configuration/');
     }
-
-  
 }
